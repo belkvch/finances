@@ -1,6 +1,7 @@
 package com.belkvch.finances.service;
 
 import com.belkvch.finances.entyti.Operations;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,13 +33,16 @@ public class DefaultOperationsService implements OperationsService {
         Scanner scannerName = new Scanner(System.in);
         System.out.println("Enter the name of operation: ");
         String newNameOfOperation = scannerName.nextLine();
-        System.out.println("Enter the date of operation: ");
-        String format = "MM/dd/yyyy";
+
+        System.out.println("Enter the date of operation with form *dd-MM-yyyy*: ");
         Scanner scannerDate = new Scanner(System.in);
-        String input = scannerDate.nextLine();
-        Date date = (new SimpleDateFormat("MM/dd/yyyy")).parse("12/10/1994");
+        String date = scannerDate.next();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date2 = null;
+        date2 = dateFormat.parse(date);
         Calendar newDateOfOperation = Calendar.getInstance();
-        newDateOfOperation.setTime(date);
+        newDateOfOperation.setTime(date2);
+
         Scanner scannerSalary = new Scanner(System.in);
         System.out.println("Enter the price of operation: ");
         BigDecimal newPriceOfOperation = scannerSalary.nextBigDecimal();
@@ -78,13 +82,14 @@ public class DefaultOperationsService implements OperationsService {
                 System.out.println("The name was changed");
                 break;
             case 2:
-                System.out.println("Enter the date of operation: ");
-                String format = "MM/dd/yyyy";
+                System.out.println("Enter the date of operation with form *dd-MM-yyyy*: ");
                 Scanner scannerDate = new Scanner(System.in);
-                String input = scannerDate.nextLine();
-                Date date = (new SimpleDateFormat("MM/dd/yyyy")).parse("12/10/1994");
+                String date = scannerDate.next();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                Date date2 = null;
+                date2 = dateFormat.parse(date);
                 Calendar newDateOfOperation = Calendar.getInstance();
-                newDateOfOperation.setTime(date);
+                newDateOfOperation.setTime(date2);
                 operationChange.setDateOfOperation(newDateOfOperation);
                 System.out.println("The date was changed");
                 break;

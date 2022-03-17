@@ -3,6 +3,7 @@ package com.belkvch.finances;
 import com.belkvch.finances.view.OperationsView;
 import com.belkvch.finances.сontroller.OperationsController;
 import com.belkvch.finances.service.DefaultOperationsService;
+
 import java.text.ParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -46,23 +47,28 @@ public class StartClass {
 
                     case 2:
 //        Task 3 (Add operation)
-                        System.out.println("Add new operation: ");
-                        operationsController.addNewOperation();
-                        System.out.println();
-                        break;
+                        try {
+                            System.out.println("Add new operation: ");
+                            operationsController.addNewOperation();
+                            System.out.println();
+                        } catch (NullPointerException nullPointerException) {
+                            System.out.println("Wrong application work");
+                        } finally {
+                            break;
+                        }
 
                     case 3:
 //        Task 5 (Delete operation)
                         try {
                             Scanner deleteInt = new Scanner(System.in);
-                            System.out.println("Choose the operation to remove: ");
+                            System.out.println("Choose the id of operation to remove: ");
                             int scannerIdDelete = deleteInt.nextInt();
                             operationsController.operationInfo(scannerIdDelete);
                             System.out.println();
                             Scanner deleteChooseText = new Scanner(System.in);
                             System.out.println("Write *Yes* if you want to delete this operation");
                             String scannerChooseTextDelete = deleteChooseText.nextLine();
-                            if (scannerChooseTextDelete.equals("Yes")) {
+                            if (scannerChooseTextDelete.equalsIgnoreCase("Yes")) {
                                 operationsController.deleteOperation(scannerIdDelete);
                                 System.out.println("This operation was deleted.");
                             } else {
@@ -79,7 +85,7 @@ public class StartClass {
 //        Task 4 (Update operation)
                         try {
                             Scanner changeInt = new Scanner(System.in);
-                            System.out.println("Choose the operation to update: ");
+                            System.out.println("Enter the id of operation to update: ");
                             int scannerIdToChange = changeInt.nextInt();
                             operationsController.operationInfo(scannerIdToChange);
                             operationsController.updateOperation(scannerIdToChange);
