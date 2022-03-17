@@ -1,6 +1,5 @@
 package com.belkvch.finances.сontroller;
 
-import java.io.IOException;
 import java.text.ParseException;
 import com.belkvch.finances.service.DefaultOperationsService;
 import com.belkvch.finances.view.OperationsView;
@@ -18,7 +17,7 @@ public class OperationsController {
         operationsView.showOperationDetails(defaultOperationsService.getOperationById(id));
     }
 
-    public void addNewOperation() throws IOException, ParseException {
+    public void addNewOperation() throws ParseException {
         operationsView.showOperationDetails(defaultOperationsService.addNewOperation());
     }
 
@@ -28,5 +27,9 @@ public class OperationsController {
 
     public void updateOperation(int id) throws ParseException {
         defaultOperationsService.changeOperationById(id);
+    }
+
+    public void showAllOperations() {
+        operationsView.showAllOperationsDetails(defaultOperationsService.showAllOperations());
     }
 }

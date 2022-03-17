@@ -1,8 +1,6 @@
 package com.belkvch.finances.service;
 
 import com.belkvch.finances.entyti.Operations;
-
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,9 +19,6 @@ public class DefaultOperationsService implements OperationsService {
         operationsList.add(new Operations(2, "Buy MacBook", Calendar.getInstance(), new BigDecimal("432432")));
     }
 
-    public List<Operations> getOperationsList() {
-        return this.operationsList;
-    }
 
     @Override
     public Operations getOperationById(int id) {
@@ -31,8 +26,9 @@ public class DefaultOperationsService implements OperationsService {
         return operationForGetById;
     }
 
+
     @Override
-    public Operations addNewOperation() throws IOException, ParseException {
+    public Operations addNewOperation() throws ParseException {
         Scanner scannerName = new Scanner(System.in);
         System.out.println("Enter the name of operation: ");
         String newNameOfOperation = scannerName.nextLine();
@@ -48,13 +44,14 @@ public class DefaultOperationsService implements OperationsService {
         BigDecimal newPriceOfOperation = scannerSalary.nextBigDecimal();
         int id = operationsList.size();
         Operations newOperation = new Operations(id, newNameOfOperation, newDateOfOperation, newPriceOfOperation);
+        operationsList.add(newOperation);
         return newOperation;
     }
 
     @Override
-    public Operations deleteOperationById(Integer id) {
+    public Operations deleteOperationById(int id) {
         Operations operation = operationsList.get(id);
-        if (id != null) {
+        if (id < operationsList.size()) {
             operationsList.remove(id);
         } else {
             System.out.println("Incorrect id. There are " + operationsList.size() + " operations.");
@@ -105,5 +102,10 @@ public class DefaultOperationsService implements OperationsService {
         }
 
         return operationChange;
+    }
+
+    @Override
+    public List<Operations> showAllOperations() {
+        return operationsList;
     }
 }
