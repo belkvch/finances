@@ -49,14 +49,13 @@ public class DefaultOperationsService implements OperationsService {
     }
 
     @Override
-    public Operations deleteOperationById(int id) {
+    public void deleteOperationById(int id) {
         Operations operation = operationsList.get(id);
         if (id < operationsList.size()) {
             operationsList.remove(id);
         } else {
             System.out.println("Incorrect id. There are " + operationsList.size() + " operations.");
         }
-        return operation;
     }
 
     @Override

@@ -10,7 +10,7 @@ public interface OperationsService {
 
     Operations addNewOperation() throws IOException, ParseException;
 
-    Operations deleteOperationById(int id);
+    void deleteOperationById(int id);
 
     Operations changeOperationById(Integer id) throws ParseException;
 
