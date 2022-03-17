@@ -25,4 +25,8 @@ public class OperationsController {
     public void deleteOperation(int id) {
         defaultOperationsService.deleteOperationById(id);
     }
+
+    public void updateOperation(int id) throws ParseException {
+        defaultOperationsService.changeOperationById(id);
+    }
 }
