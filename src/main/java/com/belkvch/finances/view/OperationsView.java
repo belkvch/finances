@@ -1,6 +1,8 @@
 package com.belkvch.finances.view;
 
 import com.belkvch.finances.entyti.Operations;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class OperationsView {
@@ -10,8 +12,10 @@ public class OperationsView {
     public void showOperationDetails(Operations operation) {
         System.out.println("The information about operation with id = " + operation.getId());
         System.out.println("Operation: " + operation.getNameOfOperation());
-        System.out.println("Date: " + operation.getDateOfOperation().getTime());
-        System.out.println("Price: " + operation.getPriceOfOperation());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String stringDate= dateFormat.format(operation.getDateOfOperation().getTime());
+        System.out.println("Date: " + stringDate);
+        System.out.println("Price: " + operation.getPriceOfOperation().abs());
     }
 
     public void showAllOperationsDetails(List<Operations> operationsList){

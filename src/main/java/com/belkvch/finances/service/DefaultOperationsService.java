@@ -29,23 +29,29 @@ public class DefaultOperationsService implements OperationsService {
 
 
     @Override
-    public Operations addNewOperation() throws ParseException {
+    public Operations addNewOperation() {
         Scanner scannerName = new Scanner(System.in);
         System.out.println("Enter the name of operation: ");
         String newNameOfOperation = scannerName.nextLine();
 
-        System.out.println("Enter the date of operation with form *dd-MM-yyyy*: ");
-        Scanner scannerDate = new Scanner(System.in);
-        String date = scannerDate.next();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Date date2 = null;
-        date2 = dateFormat.parse(date);
-        Calendar newDateOfOperation = Calendar.getInstance();
-        newDateOfOperation.setTime(date2);
+        Calendar newDateOfOperation = null;
+        try {
+            System.out.println("Enter the date of operation with form *dd-MM-yyyy*: ");
+            Scanner scannerDate = new Scanner(System.in);
+            String date = scannerDate.next();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date date2 = dateFormat.parse(date);
+            newDateOfOperation = Calendar.getInstance();
+            newDateOfOperation.setTime(date2);
+        } catch (ParseException parseException) {
+            System.out.println("Error with date");
+            return null;
+        }
 
         Scanner scannerSalary = new Scanner(System.in);
         System.out.println("Enter the price of operation: ");
         BigDecimal newPriceOfOperation = scannerSalary.nextBigDecimal();
+
         int id = operationsList.size();
         Operations newOperation = new Operations(id, newNameOfOperation, newDateOfOperation, newPriceOfOperation);
         operationsList.add(newOperation);
@@ -63,7 +69,7 @@ public class DefaultOperationsService implements OperationsService {
     }
 
     @Override
-    public Operations changeOperationById(Integer id) throws ParseException {
+    public Operations changeOperationById(Integer id) {
         Operations operationChange = operationsList.get(id);
 
         Scanner scannerForChange = new Scanner(System.in);
@@ -82,17 +88,23 @@ public class DefaultOperationsService implements OperationsService {
                 System.out.println("The name was changed");
                 break;
             case 2:
-                System.out.println("Enter the date of operation with form *dd-MM-yyyy*: ");
-                Scanner scannerDate = new Scanner(System.in);
-                String date = scannerDate.next();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                Date date2 = null;
-                date2 = dateFormat.parse(date);
-                Calendar newDateOfOperation = Calendar.getInstance();
-                newDateOfOperation.setTime(date2);
-                operationChange.setDateOfOperation(newDateOfOperation);
-                System.out.println("The date was changed");
-                break;
+                Calendar newDateOfOperation = null;
+                try {
+                    System.out.println("Enter the date of operation with form *dd-MM-yyyy*: ");
+                    Scanner scannerDate = new Scanner(System.in);
+                    String date = scannerDate.next();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    Date date2 = dateFormat.parse(date);
+                    newDateOfOperation = Calendar.getInstance();
+                    int dateCalendar = newDateOfOperation.get(Calendar.DATE);
+                    int monthCalendar = newDateOfOperation.get(Calendar.MONTH);
+                    newDateOfOperation.setTime(date2);
+                    System.out.println("The date was changed");
+                } catch (ParseException parseException) {
+                    System.out.println("Error with date");
+                } finally {
+                    break;
+                }
             case 3:
                 Scanner scannerSalary = new Scanner(System.in);
                 System.out.println("Enter the price of operation: ");
