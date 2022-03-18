@@ -40,6 +40,7 @@ public class DefaultOperationsService implements OperationsService {
             Scanner scannerDate = new Scanner(System.in);
             String date = scannerDate.next();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            dateFormat.setLenient(false);
             Date date2 = dateFormat.parse(date);
             newDateOfOperation = Calendar.getInstance();
             newDateOfOperation.setTime(date2);
@@ -94,6 +95,7 @@ public class DefaultOperationsService implements OperationsService {
                     Scanner scannerDate = new Scanner(System.in);
                     String date = scannerDate.next();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    dateFormat.setLenient(false);
                     Date date2 = dateFormat.parse(date);
                     newDateOfOperation = Calendar.getInstance();
                     int dateCalendar = newDateOfOperation.get(Calendar.DATE);
