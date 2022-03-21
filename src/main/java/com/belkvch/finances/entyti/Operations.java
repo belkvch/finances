@@ -1,15 +1,18 @@
 package com.belkvch.finances.entyti;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.util.Date;
 
 public class Operations {
     private int id;
     private String nameOfOperation;
-    private Calendar dateOfOperation;
+    private Date dateOfOperation;
     private BigDecimal priceOfOperation;
 
-    public Operations(int id, String nameOfOperation, Calendar dateOfOperation, BigDecimal priceOfOperation) {
+    public Operations() {
+    }
+
+    public Operations(int id, String nameOfOperation, Date dateOfOperation, BigDecimal priceOfOperation) {
         this.id = id;
         this.nameOfOperation = nameOfOperation;
         this.dateOfOperation = dateOfOperation;
@@ -24,7 +27,7 @@ public class Operations {
         return this.nameOfOperation;
     }
 
-    public Calendar getDateOfOperation() {
+    public Date getDateOfOperation() {
         return this.dateOfOperation;
     }
 
@@ -40,7 +43,7 @@ public class Operations {
         this.nameOfOperation = nameOfOperation;
     }
 
-    public void setDateOfOperation(Calendar dateOfOperation) {
+    public void setDateOfOperation(Date dateOfOperation) {
         this.dateOfOperation = dateOfOperation;
     }
 
