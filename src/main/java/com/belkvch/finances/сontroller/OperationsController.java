@@ -160,7 +160,7 @@ public class OperationsController {
                             String newNameOfOperation = scannerName.nextLine();
                             operationUpdate.setNameOfOperation(newNameOfOperation);
                             System.out.println("The name was changed");
-                            operationsService.changeOperation(operationUpdate);
+                            operationsService.changeOperationName(operationUpdate);
                             break;
                         case "2":
                             try {
@@ -172,7 +172,7 @@ public class OperationsController {
                                 Date date2 = dateFormat.parse(date);
                                 operationUpdate.setDateOfOperation(date2);
                                 System.out.println("The date was changed");
-                                operationsService.changeOperation(operationUpdate);
+                                operationsService.changeOperationDate(operationUpdate);
                             } catch (ParseException parseException) {
                                 System.out.println("Error with date");
                             } finally {
@@ -184,7 +184,7 @@ public class OperationsController {
                             BigDecimal newPriceOfOperationUpdate = scannerSalaryUpdate.nextBigDecimal();
                             operationUpdate.setPriceOfOperation(newPriceOfOperationUpdate);
                             System.out.println("The price was changed");
-                            operationsService.changeOperation(operationUpdate);
+                            operationsService.changeOperationSalary(operationUpdate);
                             break;
                         default:
                             System.out.println("Enter 1-3 to change operation");

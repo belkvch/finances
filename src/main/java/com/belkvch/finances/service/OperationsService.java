@@ -11,7 +11,9 @@ public interface OperationsService {
 
     Operations deleteOperation(Operations operation);
 
-    Operations changeOperation(Operations operation) throws ParseException;
+    Operations changeOperationName(Operations operation) throws ParseException;
+    Operations changeOperationDate(Operations operation);
+    Operations changeOperationSalary(Operations operation);
 
     List<Operations> showAllOperations();
 

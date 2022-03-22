@@ -13,8 +13,8 @@ public class DefaultOperationsDAO implements OperationsDAO {
     private static final String SELECT_OPERATION_BY_ID = "select * from finances_bd where id = ?";
     private static final String INSERT_OPERATION = "insert into finances_bd(name,date_op,salary)  VALUES(?,?,?)";
     private static final String UPDATE_OPERATION_NAME = "update finances_bd set name = ? where id = ?";
-    private static final String UPDATE_OPERATION_DATE = "update finances_bd set name = ? where id = ?";
-    private static final String UPDATE_OPERATION_SALARY = "update finances_bd set name = ? where id = ?";
+    private static final String UPDATE_OPERATION_DATE = "update finances_bd set date_op = ? where id = ?";
+    private static final String UPDATE_OPERATION_SALARY = "update finances_bd set salary = ? where id = ?";
     private static final String DELETE_OPERATION = "delete from finances_bd where id = ?";
     private static final String SELECT_OPERATION_BY_NAME = "select * from finances_bd where name = ?";
 
@@ -103,7 +103,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_OPERATION);
             preparedStatement.setString(1, operation.getNameOfOperation());
-            java.util.Date utilDate =  operation.getDateOfOperation();
+            java.util.Date utilDate = operation.getDateOfOperation();
             java.sql.Date date = new java.sql.Date(utilDate.getTime());
             preparedStatement.setDate(2, date);
             preparedStatement.setBigDecimal(3, operation.getPriceOfOperation());
@@ -123,24 +123,42 @@ public class DefaultOperationsDAO implements OperationsDAO {
 //    HELP ME, IDK, MAYBE WRONG SQL UPDATE, I TRIED WITH COMMAS, BUT IT DIDN'T WORK TOO :(((
 
     @Override
-    public Operations changeOperation(Operations operation) {
+    public Operations changeOperationName(Operations operation) {
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_OPERATION_NAME);
             preparedStatement.setString(1, operation.getNameOfOperation());
             preparedStatement.setInt(2, operation.getId());
             preparedStatement.executeUpdate();
+            return operation;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
 
-            PreparedStatement preparedStatementDate = connection.prepareStatement(UPDATE_OPERATION_DATE);
-            java.util.Date utilDate =  operation.getDateOfOperation();
+    @Override
+    public Operations changeOperationDate(Operations operation) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_OPERATION_DATE);
+            java.util.Date utilDate = operation.getDateOfOperation();
             java.sql.Date date = new java.sql.Date(utilDate.getTime());
-            preparedStatementDate.setDate(1, date);
-            preparedStatementDate.setInt(2, operation.getId());
-            preparedStatementDate.executeUpdate();
+            preparedStatement.setDate(1, date);
+            preparedStatement.setInt(2, operation.getId());
+            preparedStatement.executeUpdate();
+            return operation;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
 
-            PreparedStatement preparedStatementSalary = connection.prepareStatement(UPDATE_OPERATION_SALARY);
-            preparedStatementSalary.setBigDecimal(1, operation.getPriceOfOperation());
-            preparedStatementSalary.setInt(2, operation.getId());
-            preparedStatementSalary.executeUpdate();
+    @Override
+    public Operations changeOperationSalary(Operations operation) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_OPERATION_SALARY);
+            preparedStatement.setBigDecimal(1, operation.getPriceOfOperation());
+            preparedStatement.setInt(2, operation.getId());
+            preparedStatement.executeUpdate();
             return operation;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

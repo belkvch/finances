@@ -8,7 +8,9 @@ public interface OperationsDAO {
     Operations getOperationById(int id);
     List<Operations> showAllOperations();
     Operations addNewOperation(Operations operations);
-    Operations deleteOperation(Operations cat);
-    Operations changeOperation(Operations cat);
+    Operations deleteOperation(Operations operations);
+    Operations changeOperationName(Operations operations);
+    Operations changeOperationDate(Operations operation);
+    Operations changeOperationSalary(Operations operation);
     Operations getOperationByName(String name);
 }

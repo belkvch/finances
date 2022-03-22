@@ -49,8 +49,18 @@ public class DefaultOperationsService implements OperationsService {
     }
 
     @Override
-    public Operations changeOperation(Operations operation) {
-        return operationsDAO.changeOperation(operation);
+    public Operations changeOperationName(Operations operation) {
+        return operationsDAO.changeOperationName(operation);
+    }
+
+    @Override
+    public Operations changeOperationDate(Operations operation) {
+        return operationsDAO.changeOperationDate(operation);
+    }
+
+    @Override
+    public Operations changeOperationSalary(Operations operation) {
+        return operationsDAO.changeOperationSalary(operation);
     }
 
     @Override
