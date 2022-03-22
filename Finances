@@ -1,0 +1,109 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.2
+-- Dumped by pg_dump version 14.2
+
+-- Started on 2022-03-22 18:00:43
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 210 (class 1259 OID 16748)
+-- Name: finances_bd; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.finances_bd (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    date_op date NOT NULL,
+    salary numeric(15,6) NOT NULL
+);
+
+
+ALTER TABLE public.finances_bd OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 16747)
+-- Name: finances_bd_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.finances_bd_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.finances_bd_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3313 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: finances_bd_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.finances_bd_id_seq OWNED BY public.finances_bd.id;
+
+
+--
+-- TOC entry 3164 (class 2604 OID 16751)
+-- Name: finances_bd id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.finances_bd ALTER COLUMN id SET DEFAULT nextval('public.finances_bd_id_seq'::regclass);
+
+
+--
+-- TOC entry 3307 (class 0 OID 16748)
+-- Dependencies: 210
+-- Data for Name: finances_bd; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.finances_bd (id, name, date_op, salary) FROM stdin;
+1	Buy IPhone	2020-11-15	200.200000
+2	Spotify	2022-12-10	2.000000
+3	Subscription WoW	2022-03-22	10.250000
+\.
+
+
+--
+-- TOC entry 3314 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: finances_bd_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.finances_bd_id_seq', 3, true);
+
+
+--
+-- TOC entry 3166 (class 2606 OID 16753)
+-- Name: finances_bd finances_bd_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.finances_bd
+    ADD CONSTRAINT finances_bd_pkey PRIMARY KEY (id);
+
+
+-- Completed on 2022-03-22 18:00:44
+
+--
+-- PostgreSQL database dump complete
+--
+
