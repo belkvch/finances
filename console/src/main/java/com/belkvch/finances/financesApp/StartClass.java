@@ -1,8 +1,8 @@
-package com.belkvch.finances;
+package com.belkvch.finances.financesApp;
 
-import com.belkvch.finances.view.OperationsView;
-import com.belkvch.finances.сontroller.OperationsController;
-import com.belkvch.finances.service.DefaultOperationsService;
+import com.belkvch.finances.financesApp.view.OperationsView;
+import com.belkvch.finances.financesApp.сontroller.OperationsController;
+import com.belkvch.finances.financesApp.service.DefaultOperationsService;
 
 import java.text.ParseException;
 import java.util.InputMismatchException;

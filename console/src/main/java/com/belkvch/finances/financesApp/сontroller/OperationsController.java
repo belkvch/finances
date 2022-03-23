@@ -1,4 +1,4 @@
-package com.belkvch.finances.сontroller;
+package com.belkvch.finances.financesApp.сontroller;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -7,10 +7,10 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.belkvch.finances.entyti.Operations;
-import com.belkvch.finances.service.DefaultOperationsService;
-import com.belkvch.finances.service.OperationsService;
-import com.belkvch.finances.view.OperationsView;
+import com.belkvch.finances.financesApp.entyti.Operations;
+import com.belkvch.finances.financesApp.service.DefaultOperationsService;
+import com.belkvch.finances.financesApp.service.OperationsService;
+import com.belkvch.finances.financesApp.view.OperationsView;
 
 public class OperationsController {
     private final DefaultOperationsService defaultOperationsService;

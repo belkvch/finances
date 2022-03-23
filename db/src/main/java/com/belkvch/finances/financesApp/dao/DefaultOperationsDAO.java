@@ -1,7 +1,7 @@
-package com.belkvch.finances.dao;
+package com.belkvch.finances.financesApp.dao;
 
-import com.belkvch.finances.dao.DBManager.DBManager;
-import com.belkvch.finances.entyti.Operations;
+import com.belkvch.finances.financesApp.dao.DBManager.DBManager;
+import com.belkvch.finances.financesApp.entyti.Operations;
 
 import java.sql.*;
 import java.util.ArrayList;

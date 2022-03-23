@@ -1,6 +1,6 @@
-package com.belkvch.finances.service;
+package com.belkvch.finances.financesApp.service;
 
-import com.belkvch.finances.entyti.Operations;
+import com.belkvch.finances.financesApp.entyti.Operations;
 import java.text.ParseException;
 import java.util.List;
 

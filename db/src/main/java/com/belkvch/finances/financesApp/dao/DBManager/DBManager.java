@@ -1,4 +1,4 @@
-package com.belkvch.finances.dao.DBManager;
+package com.belkvch.finances.financesApp.dao.DBManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

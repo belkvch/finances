@@ -1,6 +1,6 @@
-package com.belkvch.finances.view;
+package com.belkvch.finances.financesApp.view;
 
-import com.belkvch.finances.entyti.Operations;
+import com.belkvch.finances.financesApp.entyti.Operations;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

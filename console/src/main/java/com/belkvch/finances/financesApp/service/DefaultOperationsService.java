@@ -1,8 +1,8 @@
-package com.belkvch.finances.service;
+package com.belkvch.finances.financesApp.service;
 
-import com.belkvch.finances.dao.DefaultOperationsDAO;
-import com.belkvch.finances.dao.OperationsDAO;
-import com.belkvch.finances.entyti.Operations;
+import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
+import com.belkvch.finances.financesApp.dao.OperationsDAO;
+import com.belkvch.finances.financesApp.entyti.Operations;
 
 
 import java.util.List;

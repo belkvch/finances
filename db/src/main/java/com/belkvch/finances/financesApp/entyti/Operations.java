@@ -1,4 +1,4 @@
-package com.belkvch.finances.entyti;
+package com.belkvch.finances.financesApp.entyti;
 
 import java.math.BigDecimal;
 import java.util.Date;
