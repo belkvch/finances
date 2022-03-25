@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class OperationServlet extends HttpServlet {
@@ -17,4 +21,31 @@ public class OperationServlet extends HttpServlet {
         req.setAttribute("operations", operations);
         req.getRequestDispatcher("/operations.jsp").forward(req, resp);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if ("create".equals(req.getParameter("actionType"))) {
+            Operations operation = new Operations();
+            operation.setNameOfOperation(req.getParameter("name"));
+
+            String dateString = req.getParameter("date");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date submitDate = null;
+            try {
+                submitDate = sdf.parse(dateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            operation.setDateOfOperation(submitDate);
+
+            BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
+            operation.setPriceOfOperation(bigDecimal);
+
+            DefaultOperationsDAO.getInstance().addNewOperation(operation);
+        } else {
+            System.out.println("some another actionType");
+        }
+        resp.sendRedirect("/operations");
+    }
+
 }

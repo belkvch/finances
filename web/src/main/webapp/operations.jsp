@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title>Cats</title>
+    <title>Operations</title>
 </head>
 <body>
 <table>
@@ -25,6 +25,22 @@
         <%}%>
     </tr>
 </table>
+
+<br>
+<form method="POST" action="/operations/">
+    Creation form
+    <br>
+    <label>Operation name: </label><input name="name"/>
+    <br>
+    <label>Operation date: </label><input name="date"/>
+    <br>
+    <label>Operation salary: </label><input name="salary"/>
+    <br>
+    <input type="hidden" name="actionType" value="create">
+    <br>
+    <button type="submit">Create a new operation</button>
+</form>
+
 
 
 </body>
