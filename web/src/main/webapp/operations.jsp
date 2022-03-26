@@ -15,13 +15,23 @@
         <th><b>Price</b></th>
     </tr>
     <%
-        List<Operations> operations = (List<Operations>)request.getAttribute("operations");
-        for(Operations operation:operations){%>
+        List<Operations> operations = (List<Operations>) request.getAttribute("operations");
+        for (Operations operation : operations) {%>
     <tr>
-        <td><%=operation.getNameOfOperation()%></td>
-        <td><%=operation.getId()%></td>
-        <td><%=operation.getDateOfOperation()%></td>
-        <td><%=operation.getPriceOfOperation()%></td>
+        <td><%=operation.getNameOfOperation()%>
+        </td>
+        <td><%=operation.getId()%>
+        </td>
+        <td><%=operation.getDateOfOperation()%>
+        </td>
+        <td><%=operation.getPriceOfOperation()%>
+        </td>
+        <td><a href="/update?id=<%=operation.getId()%>">Edit</a>
+            <form method="post" action="/delete" style="display:inline;">
+                <input type="hidden" name="id" value="<%=operation.getId()%>">
+                <input type="submit" value="Delete">
+            </form>
+        </td>
         <%}%>
     </tr>
 </table>
@@ -34,7 +44,7 @@
     <br>
     <div class="form-group">
         <label>Operation date:</label>
-        <input type="date" name = "date" data-date-format='yyyy-mm-dd' class="form-control">
+        <input type="date" name="date" data-date-format='yyyy-mm-dd' class="form-control">
     </div>
     <br>
     <label>Operation salary: </label><input name="salary"/>
@@ -43,8 +53,5 @@
     <br>
     <button type="submit">Create a new operation</button>
 </form>
-
-
-
 </body>
 </html>

@@ -27,8 +27,6 @@ public class OperationServlet extends HttpServlet {
         if ("create".equals(req.getParameter("actionType"))) {
             Operations operation = new Operations();
             operation.setNameOfOperation(req.getParameter("name"));
-
-
             try {
                 String date = req.getParameter("date");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -40,9 +38,7 @@ public class OperationServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 System.out.println(e);
             }
-
             try {
-
                 BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
                 if (bigDecimal.compareTo(BigDecimal.valueOf(0))==0) {
                     operation.setPriceOfOperation(bigDecimal);
@@ -50,12 +46,10 @@ public class OperationServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 System.out.println(e);
             }
-
             DefaultOperationsDAO.getInstance().addNewOperation(operation);
         } else {
-            System.out.println("some another actionType");
+            System.out.println("Some another actionType");
         }
         resp.sendRedirect("/operations");
     }
-
 }
