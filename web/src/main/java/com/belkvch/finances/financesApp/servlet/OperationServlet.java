@@ -28,18 +28,28 @@ public class OperationServlet extends HttpServlet {
             Operations operation = new Operations();
             operation.setNameOfOperation(req.getParameter("name"));
 
-            String dateString = req.getParameter("date");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date submitDate = null;
+
             try {
-                submitDate = sdf.parse(dateString);
+                String date = req.getParameter("date");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                sdf.setLenient(false);
+                Date submitDate = sdf.parse(date);
+                operation.setDateOfOperation(submitDate);
             } catch (ParseException e) {
                 e.printStackTrace();
+            } catch (NumberFormatException e) {
+                System.out.println(e);
             }
-            operation.setDateOfOperation(submitDate);
 
-            BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
-            operation.setPriceOfOperation(bigDecimal);
+            try {
+
+                BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
+                if (bigDecimal.compareTo(BigDecimal.valueOf(0))==0) {
+                    operation.setPriceOfOperation(bigDecimal);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(e);
+            }
 
             DefaultOperationsDAO.getInstance().addNewOperation(operation);
         } else {

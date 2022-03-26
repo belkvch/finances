@@ -32,7 +32,10 @@
     <br>
     <label>Operation name: </label><input name="name"/>
     <br>
-    <label>Operation date: </label><input name="date"/>
+    <div class="form-group">
+        <label>Operation date:</label>
+        <input type="date" name = "date" data-date-format='yyyy-mm-dd' class="form-control">
+    </div>
     <br>
     <label>Operation salary: </label><input name="salary"/>
     <br>
