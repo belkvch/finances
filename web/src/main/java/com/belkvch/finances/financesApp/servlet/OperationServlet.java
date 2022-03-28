@@ -40,7 +40,7 @@ public class OperationServlet extends HttpServlet {
             }
             try {
                 BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
-                if (bigDecimal.compareTo(BigDecimal.valueOf(0))==0) {
+                if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
                     operation.setPriceOfOperation(bigDecimal);
                 }
             } catch (NumberFormatException e) {

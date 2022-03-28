@@ -18,12 +18,16 @@ import java.util.Date;
 public class UpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
-        if (operation != null) {
-            request.setAttribute("operation", operation);
-            getServletContext().getRequestDispatcher("/update.jsp").forward(request, response);
-        } else {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
+            if (operation != null) {
+                request.setAttribute("operation", operation);
+                getServletContext().getRequestDispatcher("/update.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("/operations");
+            }
+        } catch (NumberFormatException e) {
             response.sendRedirect("/operations");
         }
     }
@@ -53,7 +57,7 @@ public class UpdateServlet extends HttpServlet {
 
                 try {
                     BigDecimal bigDecimal = new BigDecimal(request.getParameter("salary"));
-                    if (bigDecimal.compareTo(BigDecimal.valueOf(0)) == 0) {
+                    if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
                         operation.setPriceOfOperation(bigDecimal);
                         DefaultOperationsDAO.getInstance().changeOperationSalary(operation);
                     }
