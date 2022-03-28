@@ -25,10 +25,10 @@ public class UpdateServlet extends HttpServlet {
                 request.setAttribute("operation", operation);
                 getServletContext().getRequestDispatcher("/update.jsp").forward(request, response);
             } else {
-                response.sendRedirect("/operations");
+                response.sendRedirect("/error");
             }
         } catch (NumberFormatException e) {
-            response.sendRedirect("/operations");
+            response.sendRedirect("/error");
         }
     }
 
@@ -49,10 +49,10 @@ public class UpdateServlet extends HttpServlet {
                     operation.setDateOfOperation(submitDate);
                     DefaultOperationsDAO.getInstance().changeOperationDate(operation);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    response.sendRedirect("/error");
 
                 } catch (NumberFormatException e) {
-                    System.out.println(e);
+                    response.sendRedirect("/error");
                 }
 
                 try {
@@ -60,13 +60,15 @@ public class UpdateServlet extends HttpServlet {
                     if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
                         operation.setPriceOfOperation(bigDecimal);
                         DefaultOperationsDAO.getInstance().changeOperationSalary(operation);
+                    } else {
+                        response.sendRedirect("/error");
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println(e);
+                    response.sendRedirect("/error");
                 }
             }
         } else {
-            System.out.println("Some another actionType");
+            response.sendRedirect("/error");
         }
         response.sendRedirect("/operations");
     }

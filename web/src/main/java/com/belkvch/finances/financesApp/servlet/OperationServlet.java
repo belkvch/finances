@@ -34,21 +34,23 @@ public class OperationServlet extends HttpServlet {
                 Date submitDate = sdf.parse(date);
                 operation.setDateOfOperation(submitDate);
             } catch (ParseException e) {
-                e.printStackTrace();
+                resp.sendRedirect("/error");
             } catch (NumberFormatException e) {
-                System.out.println(e);
+                resp.sendRedirect("/error");
             }
             try {
                 BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
                 if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
                     operation.setPriceOfOperation(bigDecimal);
+                } else {
+                    resp.sendRedirect("/error");
                 }
             } catch (NumberFormatException e) {
-                System.out.println(e);
+                resp.sendRedirect("/error");
             }
             DefaultOperationsDAO.getInstance().addNewOperation(operation);
         } else {
-            System.out.println("Some another actionType");
+            resp.sendRedirect("/error");
         }
         resp.sendRedirect("/operations");
     }

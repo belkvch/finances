@@ -19,7 +19,7 @@ public class DeleteServlet extends HttpServlet {
             DefaultOperationsDAO.getInstance().deleteOperation(operation);
             response.sendRedirect(request.getContextPath() + "/operations");
         } catch (Exception ex) {
-            response.sendRedirect("/operations");
+            response.sendRedirect("/error");
         }
     }
 }
