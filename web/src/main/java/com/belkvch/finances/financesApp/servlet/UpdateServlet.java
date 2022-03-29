@@ -38,8 +38,12 @@ public class UpdateServlet extends HttpServlet {
             Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
             if (operation != null) {
                 String name = request.getParameter("name");
-                operation.setNameOfOperation(name);
-                DefaultOperationsDAO.getInstance().changeOperationName(operation);
+                if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+                    response.sendRedirect("/error");
+                } else {
+                    operation.setNameOfOperation(name);
+                    DefaultOperationsDAO.getInstance().changeOperationName(operation);
+                }
 
                 String date = request.getParameter("date");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

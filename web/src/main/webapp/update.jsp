@@ -32,7 +32,7 @@
         </div>
         <div class="mb-3">
             <label>Operation name:
-                <input name="name" value="<%=operation.getNameOfOperation()%>" class="form-control"/>
+                <input name="name" value="<%=operation.getNameOfOperation()%>" class="form-control" required/>
             </label>
         </div>
         <div class="mb-3">
@@ -40,13 +40,13 @@
                 <label>Operation date:
                     <input type="date" name="date" value="<%=operation.getDateOfOperation()%>"
                            data-date-format='yyyy-mm-dd'
-                           class="form-control">
+                           class="form-control" required>
                 </label>
             </div>
         </div>
         <div class="mb-3">
             <label>Operation salary:
-                <input name="salary" value="<%=operation.getPriceOfOperation()%>" class="form-control"/>
+                <input type="number" min="1" step=".01" name="salary" value="<%=operation.getPriceOfOperation()%>" class="form-control" required/>
             </label>
         </div>
         <div class="mb-3">

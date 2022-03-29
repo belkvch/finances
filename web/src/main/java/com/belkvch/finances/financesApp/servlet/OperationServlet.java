@@ -26,7 +26,14 @@ public class OperationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if ("create".equals(req.getParameter("actionType"))) {
             Operations operation = new Operations();
-            operation.setNameOfOperation(req.getParameter("name"));
+
+            String name = req.getParameter("name");
+            if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+                resp.sendRedirect("/error");
+            } else {
+                operation.setNameOfOperation(name);
+            }
+
             try {
                 String date = req.getParameter("date");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

@@ -57,19 +57,19 @@
     <form method="POST" action="/operations/">
         <div class="mb-3 mt-3">
             <label>Operation name:
-                <input name="name" placeholder="Enter name" class="form-control"/>
+                <input name="name" placeholder="Enter name" class="form-control" required/>
             </label>
         </div>
         <div class="mb-3">
             <div class="form-group">
                 <label>Operation date:
-                    <input type="date" name="date" data-date-format='yyyy-mm-dd' class="form-control">
+                    <input type="date" name="date" data-date-format='yyyy-mm-dd' class="form-control" required>
                 </label>
             </div>
         </div>
         <div class="mb-3">
             <label>Operation salary:
-                <input name="salary" placeholder="Enter price" class="form-control"/>
+                <input type="number" min="1" step=".01" name="salary" placeholder="Enter price" class="form-control" required/>
             </label>
         </div>
         <div class="mb-3">
