@@ -116,6 +116,8 @@ public class DefaultOperationsDAO implements OperationsDAO {
             return operation;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } catch (NullPointerException e){
+            System.out.println(e);
         }
         return null;
     }
