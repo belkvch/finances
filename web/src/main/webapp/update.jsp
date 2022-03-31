@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.belkvch.finances.financesApp.entyti.Operations" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -10,16 +10,43 @@
 </head>
 <body>
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/main">
+            <img src="https://avatanplus.com/files/resources/original/593c1cca299df15c92d075ba.png" alt="Logo"
+                 style="width:40px;"
+                 class="rounded-pill">
+        </a>
+        <a class="navbar-brand" href="/main">CatCash</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)">Link</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div class="container mt-3">
-    <% Operations operation = (Operations) request.getAttribute("operation");%>
-    <h2>Information about operation ID#<%=operation.getId()%>
+    <c:forEach items="${operations}" var="operation">
+    <h2>Information about operation ID#<c:out value="${operation.getId()}"/>
     </h2>
     <ul class="list-group">
-        <li class="list-group-item"> Name: <%=operation.getNameOfOperation()%>
+        <li class="list-group-item"> Name: <c:out value="${operation.getNameOfOperation()}"/>
         </li>
-        <li class="list-group-item"> Date: <%=operation.getDateOfOperation()%>
+        <li class="list-group-item"> Date: <c:out value="${operation.getDateOfOperation()}"/>
         </li>
-        <li class="list-group-item"> Price: <%=operation.getPriceOfOperation()%>
+        <li class="list-group-item"> Price: <c:out value="${operation.getPriceOfOperation()}"/>
         </li>
     </ul>
 </div>
@@ -28,17 +55,18 @@
     <h2>Update the operation</h2>
     <form method="POST" action="/update">
         <div class="mb-3 mt-3">
-            <input type="hidden" value="<%=operation.getId()%>" name="id"/>
+            <input type="hidden" value="<c:out value="${operation.getId()}"/>" name="id"/>
         </div>
         <div class="mb-3">
             <label>Operation name:
-                <input name="name" value="<%=operation.getNameOfOperation()%>" class="form-control" required/>
+                <input name="name" value="<c:out value="${operation.getNameOfOperation()}"/>" class="form-control"
+                       required/>
             </label>
         </div>
         <div class="mb-3">
             <div class="form-group">
                 <label>Operation date:
-                    <input type="date" name="date" value="<%=operation.getDateOfOperation()%>"
+                    <input type="date" name="date" value="<c:out value="${operation.getDateOfOperation()}"/>"
                            data-date-format='yyyy-mm-dd'
                            class="form-control" required>
                 </label>
@@ -46,7 +74,8 @@
         </div>
         <div class="mb-3">
             <label>Operation salary:
-                <input type="number" min="1" step=".01" name="salary" value="<%=operation.getPriceOfOperation()%>" class="form-control" required/>
+                <input type="number" min="0.01" step=".01" name="salary" value="<c:out
+        value="${operation.getPriceOfOperation()}"/>" class="form-control" required/>
             </label>
         </div>
         <div class="mb-3">
@@ -56,11 +85,59 @@
             <button type="submit" class="btn btn-outline-primary">Update the operation</button>
         </div>
         <div class="mb-3">
-            <a href="/operations/">Main page</a>
+            <a href="/operations/">Your operations</a>
         </div>
     </form>
 </div>
+</c:forEach>
 
+
+<footer class="text-center text-lg-start bg-light text-muted">
+    <section
+            class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+        <div class="me-5 d-none d-lg-block">
+            <span>Get connected with us on social networks:</span>
+        </div>
+        <div>
+            <a href="https://www.instagram.com/belkvch/" class="me-4 text-reset">
+                Instagram
+            </a>
+            <a href="https://www.linkedin.com/in/polina-belkevich-a28123230/" class="me-4 text-reset">
+                Linkedin
+            </a>
+            <a href="https://gitlab.com/belkvch" class="me-4 text-reset">
+                GitLab
+            </a>
+        </div>
+    </section>
+    <section class="">
+        <div class="container text-center text-md-start mt-5">
+            <div class="row mt-3">
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        CatCash
+                    </h6>
+                    <p>We are small Belarusian studio, which develops financial web2 apps.
+                        Our mission is to make your operations accurate and life is easier.
+                    <p>Inspiring leader, that builds amazing products and bring innovative ideas to life.
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        Contact
+                    </h6>
+                    <p> Belarus, Minsk</p>
+                    <p> pbelkevich@gmail.com</p>
+                    <p> + 375(29)844-65-98</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2022 Copyright:
+        <a class="text-reset fw-bold" href="https://www.netcracker.com/">netcracker.com</a>
+    </div>
+</footer>
 
 </body>
 </html>
