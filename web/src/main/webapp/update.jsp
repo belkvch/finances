@@ -29,10 +29,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)">Link</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">Link</a>
-                </li>
             </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="text" placeholder="Search">
+                <button class="btn btn-outline-primary" type="button">Search</button>
+            </form>
+            <div>
+                <form method="post" action="/logout" style="display:inline;">
+                    <input type="hidden">
+                    <button type="submit" class="btn btn-outline-dark"
+                            onclick="return confirm('Are you sure to sign out?');">Sign Out
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </nav>

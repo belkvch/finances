@@ -1,0 +1,44 @@
+package com.belkvch.finances.financesApp.servlet;
+
+import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+public class UserFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+        HttpSession httpSession = httpServletRequest.getSession(true);
+        String url = httpServletRequest.getRequestURI();
+        String username = servletRequest.getParameter("login");
+        String password = servletRequest.getParameter("password");
+        if(httpSession.getAttribute("login") != null){
+            filterChain.doFilter(servletRequest, servletResponse);
+        } else if(username != null && password != null && DefaultUserDAO.getInstance().getByLoginPassword(username, password) != null) {
+            httpSession.setAttribute("login", username);
+            httpServletResponse.sendRedirect("/operations");
+        }
+        else {
+            if("/login".equals(url) || "/registration".equals(url)){
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
+            httpServletRequest.getRequestDispatcher("/login.jsp").forward(httpServletRequest, httpServletResponse);
+        }
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}

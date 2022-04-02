@@ -30,17 +30,27 @@
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)">Link</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">Link</a>
-                </li>
             </ul>
             <form class="d-flex">
                 <input class="form-control me-2" type="text" placeholder="Search">
                 <button class="btn btn-outline-primary" type="button">Search</button>
             </form>
         </div>
+        <div class="d-flex">
+            <form method="post" action="/logout" style="display:inline;" class="d-flex">
+                <input type="hidden">
+                <button type="submit" class="btn btn-outline-dark btn-sm"
+                        onclick="return confirm('Are you sure to sign out?');">Sign Out
+                </button>
+            </form>
+        </div>
     </div>
 </nav>
+
+<center>
+<h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
+</center>
+<br>
 
 <div class="container mt-3">
     <h2>Your operations:</h2>
