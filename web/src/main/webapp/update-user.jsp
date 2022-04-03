@@ -3,11 +3,10 @@
 
 <html>
 <head>
-    <title>Users</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Users</title>
 </head>
 <body>
 
@@ -35,49 +34,62 @@
                 <input class="form-control me-2" type="text" placeholder="Search">
                 <button class="btn btn-outline-primary" type="button">Search</button>
             </form>
-        </div>
-        <div class="d-flex">
-            <form method="post" action="/logout" style="display:inline;" class="d-flex">
-                <input type="hidden">
-                <button type="submit" class="btn btn-outline-dark btn-sm"
-                        onclick="return confirm('Are you sure to sign out?');">Sign Out
-                </button>
-            </form>
+            <div>
+                <form method="post" action="/logout" style="display:inline;">
+                    <input type="hidden">
+                    <button type="submit" class="btn btn-outline-dark"
+                            onclick="return confirm('Are you sure to sign out?');">Sign Out
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </nav>
 
-<center>
-    <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
-</center>
-<br>
-
 <div class="container mt-3">
-    <h2>Users: </h2>
-    <table class="table table-borderless">
-        <thead>
-        <tr>
-            <th><b>Id</b></th>
-            <th><b>Username</b></th>
-            <th><b>Edit</b></th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${users}" var="user">
-            <tr>
-                <td><c:out value="${user.getId()}"/>
-                </td>
-                <td><c:out value="${user.getLogin()}"/>
-                </td>
-                <td><a href="/update-user?id=${user.id}">Edit</a></td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+    <c:forEach items="${users}" var="user">
+    <h2>Information about user ID#<c:out value="${user.getId()}"/>
+    </h2>
+    <ul class="list-group">
+        <li class="list-group-item"> Username: <c:out value="${user.getLogin()}"/>
+        </li>
+    </ul>
 </div>
 
-<br>
+<div class="container mt-3">
+    <h2>Update the user</h2>
+    <form method="POST" action="/update-user">
+        <div class="mb-3 mt-3">
+            <input type="hidden" value="<c:out value="${user.getId()}"/>" name="id"/>
+        </div>
 
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio1" name="role" value="USER" checked>
+            <label class="form-check-label" for="radio1">USER</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio2" name="role" value="ADMIN">
+            <label class="form-check-label" for="radio2">ADMIN</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio3" name="role" value="BAN">
+            <label class="form-check-label" for="radio3">BAN</label>
+        </div>
+
+        <div class="mb-3">
+            <input type="hidden" name="actionType" value="update">
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-outline-primary">Update the user</button>
+        </div>
+        <div class="mb-3">
+            <a href="/admin">Users</a>
+        </div>
+    </form>
+</div>
+</c:forEach>
+
+<br>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section
