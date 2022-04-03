@@ -1,6 +1,8 @@
 package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
+import com.belkvch.finances.financesApp.entyti.User;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -23,14 +25,17 @@ public class UserFilter implements Filter {
         String url = httpServletRequest.getRequestURI();
         String username = servletRequest.getParameter("login");
         String password = servletRequest.getParameter("password");
-        if(httpSession.getAttribute("login") != null){
+//        User user = DefaultUserDAO.getInstance().getByLogin(username);
+        if (httpSession.getAttribute("login") != null) {
             filterChain.doFilter(servletRequest, servletResponse);
-        } else if(username != null && password != null && DefaultUserDAO.getInstance().getByLoginPassword(username, password) != null) {
+        } else if (username != null && password != null && DefaultUserDAO.getInstance().getByLoginPassword(username, password) != null) {
+//        } else if(username != null && password != null && user != null) {
+//            if (BCrypt.checkpw(password, user.getPassword())) {
             httpSession.setAttribute("login", username);
             httpServletResponse.sendRedirect("/operations");
-        }
-        else {
-            if("/login".equals(url) || "/registration".equals(url)){
+//            }
+        } else {
+            if ("/login".equals(url) || "/registration".equals(url)) {
                 filterChain.doFilter(servletRequest, servletResponse);
             }
             httpServletRequest.getRequestDispatcher("/login.jsp").forward(httpServletRequest, httpServletResponse);
