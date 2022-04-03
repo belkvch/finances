@@ -6,6 +6,7 @@
 
     <groupId>pobe</groupId>
     <artifactId>finances</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <build>
         <plugins>
@@ -19,6 +20,11 @@
             </plugin>
         </plugins>
     </build>
+    <modules>
+        <module>db</module>
+        <module>console</module>
+        <module>web</module>
+    </modules>
 
     <dependencies>
         <dependency>

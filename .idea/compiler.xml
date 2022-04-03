@@ -7,11 +7,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="finances" />
+        <module name="console" />
+        <module name="web" />
+        <module name="db" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="console" target="7" />
+      <module name="db" target="7" />
       <module name="finances" target="7" />
+      <module name="web" target="7" />
     </bytecodeTargetLevel>
   </component>
 </project>
