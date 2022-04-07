@@ -28,7 +28,7 @@
                     <a class="nav-link" href="/admin">Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">Link</a>
+                    <a class="nav-link" href="/currency">Currency</a>
                 </li>
             </ul>
             <form class="d-flex">

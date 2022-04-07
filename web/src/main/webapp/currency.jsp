@@ -3,10 +3,11 @@
 
 <html>
 <head>
+    <title>Operations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Operation</title>
 </head>
 <body>
 
@@ -34,72 +35,42 @@
                 <input class="form-control me-2" type="text" placeholder="Search">
                 <button class="btn btn-outline-primary" type="button">Search</button>
             </form>
-            <div>
-                <form method="post" action="/logout" style="display:inline;">
-                    <input type="hidden">
-                    <button type="submit" class="btn btn-outline-dark"
-                            onclick="return confirm('Are you sure to sign out?');">Sign Out
-                    </button>
-                </form>
-            </div>
+        </div>
+        <div class="d-flex">
+            <form method="post" action="/logout" style="display:inline;" class="d-flex">
+                <input type="hidden">
+                <button type="submit" class="btn btn-outline-dark btn-sm"
+                        onclick="return confirm('Are you sure to sign out?');">Sign Out
+                </button>
+            </form>
         </div>
     </div>
 </nav>
 
-<div class="container mt-3">
-    <c:forEach items="${operations}" var="operation">
-    <h2>Information about operation ID#<c:out value="${operation.getId()}"/>
-    </h2>
-    <ul class="list-group">
-        <li class="list-group-item"> Name: <c:out value="${operation.getNameOfOperation()}"/>
-        </li>
-        <li class="list-group-item"> Date: <c:out value="${operation.getDateOfOperation()}"/>
-        </li>
-        <li class="list-group-item"> Price: <c:out value="${operation.getPriceOfOperation()}"/>
-        </li>
-    </ul>
-</div>
+<center>
+    <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
+</center>
+<br>
 
 <div class="container mt-3">
-    <h2>Update the operation</h2>
-    <form method="POST" action="/update">
-        <div class="mb-3 mt-3">
-            <input type="hidden" value="<c:out value="${operation.getId()}"/>" name="id"/>
-        </div>
-        <div class="mb-3">
-            <label>Operation name:
-                <input name="name" value="<c:out value="${operation.getNameOfOperation()}"/>" class="form-control"
-                       required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <div class="form-group">
-                <label>Operation date:
-                    <input type="date" name="date" value="<c:out value="${operation.getDateOfOperation()}"/>"
-                           data-date-format='yyyy-mm-dd'
-                           class="form-control" required>
-                </label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label>Operation salary:
-                <input type="number" min="0.01" step=".01" name="salary" value="<c:out
-        value="${operation.getPriceOfOperation()}"/>" class="form-control" required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <input type="hidden" name="actionType" value="update">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Update the operation</button>
-        </div>
-        <div class="mb-3">
-            <a href="/operations/">Your operations</a>
-        </div>
-    </form>
+    <h2>Currency:</h2>
+    <table class="table table-borderless">
+        <thead>
+        <tr>
+            <th><b>Name</b></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${currencies}" var="currencies">
+            <tr>
+                <td><c:out value="${currencies.getName()}"/>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </div>
-</c:forEach>
 
+<br>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section
