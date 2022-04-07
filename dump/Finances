@@ -5,7 +5,7 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-03-22 18:00:43
+-- Started on 2022-04-07 19:20:51
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,19 +23,97 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 210 (class 1259 OID 16748)
--- Name: finances_bd; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 218 (class 1259 OID 17063)
+-- Name: accounts; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.finances_bd (
+CREATE TABLE public.accounts (
     id integer NOT NULL,
-    name character varying(100) NOT NULL,
-    date_op date NOT NULL,
-    salary numeric(15,6) NOT NULL
+    amount numeric(15,2),
+    currency_id integer,
+    user_id integer
 );
 
 
-ALTER TABLE public.finances_bd OWNER TO postgres;
+ALTER TABLE public.accounts OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 17062)
+-- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.accounts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.accounts_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3356 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.accounts_id_seq OWNED BY public.accounts.id;
+
+
+--
+-- TOC entry 216 (class 1259 OID 17055)
+-- Name: currency; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.currency (
+    id integer NOT NULL,
+    name character varying(250)
+);
+
+
+ALTER TABLE public.currency OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 17054)
+-- Name: currency_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.currency_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.currency_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3357 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: currency_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.currency_id_seq OWNED BY public.currency.id;
+
+
+--
+-- TOC entry 210 (class 1259 OID 16748)
+-- Name: operations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.operations (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    date_op date NOT NULL,
+    salary numeric(15,2) NOT NULL
+);
+
+
+ALTER TABLE public.operations OWNER TO postgres;
 
 --
 -- TOC entry 209 (class 1259 OID 16747)
@@ -54,54 +132,313 @@ CREATE SEQUENCE public.finances_bd_id_seq
 ALTER TABLE public.finances_bd_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3313 (class 0 OID 0)
+-- TOC entry 3358 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: finances_bd_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.finances_bd_id_seq OWNED BY public.finances_bd.id;
+ALTER SEQUENCE public.finances_bd_id_seq OWNED BY public.operations.id;
 
 
 --
--- TOC entry 3164 (class 2604 OID 16751)
--- Name: finances_bd id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 212 (class 1259 OID 17036)
+-- Name: roles; Type: TABLE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.finances_bd ALTER COLUMN id SET DEFAULT nextval('public.finances_bd_id_seq'::regclass);
+CREATE TABLE public.roles (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.roles OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 17035)
+-- Name: roles_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.roles_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.roles_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3359 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.roles_id_seq OWNED BY public.roles.id;
 
 
 --
--- TOC entry 3307 (class 0 OID 16748)
--- Dependencies: 210
--- Data for Name: finances_bd; Type: TABLE DATA; Schema: public; Owner: postgres
+-- TOC entry 214 (class 1259 OID 17043)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
-COPY public.finances_bd (id, name, date_op, salary) FROM stdin;
-1	Buy IPhone	2020-11-15	200.200000
-2	Spotify	2022-12-10	2.000000
-3	Subscription WoW	2022-03-22	10.250000
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username character varying(100) NOT NULL,
+    password character varying(100) NOT NULL,
+    role_id integer NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 17042)
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3360 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- TOC entry 3188 (class 2604 OID 17066)
+-- Name: accounts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accounts ALTER COLUMN id SET DEFAULT nextval('public.accounts_id_seq'::regclass);
+
+
+--
+-- TOC entry 3187 (class 2604 OID 17058)
+-- Name: currency id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.currency ALTER COLUMN id SET DEFAULT nextval('public.currency_id_seq'::regclass);
+
+
+--
+-- TOC entry 3184 (class 2604 OID 16751)
+-- Name: operations id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operations ALTER COLUMN id SET DEFAULT nextval('public.finances_bd_id_seq'::regclass);
+
+
+--
+-- TOC entry 3185 (class 2604 OID 17039)
+-- Name: roles id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roles ALTER COLUMN id SET DEFAULT nextval('public.roles_id_seq'::regclass);
+
+
+--
+-- TOC entry 3186 (class 2604 OID 17046)
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- TOC entry 3350 (class 0 OID 17063)
+-- Dependencies: 218
+-- Data for Name: accounts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.accounts (id, amount, currency_id, user_id) FROM stdin;
+1	500.00	1	1
 \.
 
 
 --
--- TOC entry 3314 (class 0 OID 0)
+-- TOC entry 3348 (class 0 OID 17055)
+-- Dependencies: 216
+-- Data for Name: currency; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.currency (id, name) FROM stdin;
+1	BYN
+2	EUR
+3	USD
+\.
+
+
+--
+-- TOC entry 3342 (class 0 OID 16748)
+-- Dependencies: 210
+-- Data for Name: operations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.operations (id, name, date_op, salary) FROM stdin;
+1	Buy IPhone 13	2020-11-15	200.20
+2	Yandex Music	2022-12-10	2.00
+3	Subscription WoW	2022-03-22	10.29
+39	Buy IPhone 13	2022-03-29	100.00
+\.
+
+
+--
+-- TOC entry 3344 (class 0 OID 17036)
+-- Dependencies: 212
+-- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.roles (id, name) FROM stdin;
+1	USER
+2	ADMIN
+3	BAN
+\.
+
+
+--
+-- TOC entry 3346 (class 0 OID 17043)
+-- Dependencies: 214
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, username, password, role_id) FROM stdin;
+1	user	user	1
+2	belkvch	1234567Pd	2
+\.
+
+
+--
+-- TOC entry 3361 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: accounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.accounts_id_seq', 1, false);
+
+
+--
+-- TOC entry 3362 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: currency_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.currency_id_seq', 1, false);
+
+
+--
+-- TOC entry 3363 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: finances_bd_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.finances_bd_id_seq', 3, true);
+SELECT pg_catalog.setval('public.finances_bd_id_seq', 47, true);
 
 
 --
--- TOC entry 3166 (class 2606 OID 16753)
--- Name: finances_bd finances_bd_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 3364 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.finances_bd
+SELECT pg_catalog.setval('public.roles_id_seq', 1, false);
+
+
+--
+-- TOC entry 3365 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
+
+
+--
+-- TOC entry 3198 (class 2606 OID 17068)
+-- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3196 (class 2606 OID 17060)
+-- Name: currency currency_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.currency
+    ADD CONSTRAINT currency_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3190 (class 2606 OID 16753)
+-- Name: operations finances_bd_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.operations
     ADD CONSTRAINT finances_bd_pkey PRIMARY KEY (id);
 
 
--- Completed on 2022-03-22 18:00:44
+--
+-- TOC entry 3192 (class 2606 OID 17041)
+-- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3194 (class 2606 OID 17048)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3200 (class 2606 OID 17069)
+-- Name: accounts accounts_currency_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_currency_id_fkey FOREIGN KEY (currency_id) REFERENCES public.currency(id);
+
+
+--
+-- TOC entry 3201 (class 2606 OID 17074)
+-- Name: accounts accounts_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 3199 (class 2606 OID 17049)
+-- Name: users users_role_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.roles(id);
+
+
+-- Completed on 2022-04-07 19:20:51
 
 --
 -- PostgreSQL database dump complete
