@@ -9,14 +9,14 @@ import java.util.List;
 
 public class DefaultOperationsDAO implements OperationsDAO {
     private static volatile DefaultOperationsDAO instance;
-    private static final String SELECT_ALL = "select * from finances_bd";
-    private static final String SELECT_OPERATION_BY_ID = "select * from finances_bd where id = ?";
-    private static final String INSERT_OPERATION = "insert into finances_bd(name,date_op,salary)  VALUES(?,?,?)";
-    private static final String UPDATE_OPERATION_NAME = "update finances_bd set name = ? where id = ?";
-    private static final String UPDATE_OPERATION_DATE = "update finances_bd set date_op = ? where id = ?";
-    private static final String UPDATE_OPERATION_SALARY = "update finances_bd set salary = ? where id = ?";
-    private static final String DELETE_OPERATION = "delete from finances_bd where id = ?";
-    private static final String SELECT_OPERATION_BY_NAME = "select * from finances_bd where name = ?";
+    private static final String SELECT_ALL = "select * from operations";
+    private static final String SELECT_OPERATION_BY_ID = "select * from operations where id = ?";
+    private static final String INSERT_OPERATION = "insert into operations(name,date_op,salary)  VALUES(?,?,?)";
+    private static final String UPDATE_OPERATION_NAME = "update operations set name = ? where id = ?";
+    private static final String UPDATE_OPERATION_DATE = "update operations set date_op = ? where id = ?";
+    private static final String UPDATE_OPERATION_SALARY = "update operations set salary = ? where id = ?";
+    private static final String DELETE_OPERATION = "delete from operations where id = ?";
+    private static final String SELECT_OPERATION_BY_NAME = "select * from operations where name = ?";
 
     private DefaultOperationsDAO() {
     }
@@ -121,8 +121,6 @@ public class DefaultOperationsDAO implements OperationsDAO {
         }
         return null;
     }
-
-//    HELP ME, IDK, MAYBE WRONG SQL UPDATE, I TRIED WITH COMMAS, BUT IT DIDN'T WORK TOO :(((
 
     @Override
     public Operations changeOperationName(Operations operation) {

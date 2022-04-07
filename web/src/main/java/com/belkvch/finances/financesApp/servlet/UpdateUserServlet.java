@@ -37,11 +37,11 @@ public class UpdateUserServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             User user = DefaultUserDAO.getInstance().getUserById(id);
             if (user != null) {
-                String role = request.getParameter("role");
-                if (role == null || role.isEmpty() || role.trim().isEmpty()) {
+                int role = Integer.parseInt(request.getParameter("role"));
+                if (role == 0) {
                     response.sendRedirect("/error");
                 } else {
-                    user.setRole(role);
+                    user.setRoleId(role);
                     DefaultUserDAO.getInstance().changeUserRole(user);
                 }
             } else {

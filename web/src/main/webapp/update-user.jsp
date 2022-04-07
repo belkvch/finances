@@ -53,6 +53,8 @@
     <ul class="list-group">
         <li class="list-group-item"> Username: <c:out value="${user.getLogin()}"/>
         </li>
+        <li class="list-group-item"> Role: <c:out value="${user.getRoleId()}"/>
+        </li>
     </ul>
 </div>
 
@@ -64,15 +66,15 @@
         </div>
 
         <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio1" name="role" value="USER" checked>
+            <input type="radio" class="form-check-input" id="radio1" name="role_id" value="1" checked>
             <label class="form-check-label" for="radio1">USER</label>
         </div>
         <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio2" name="role" value="ADMIN">
+            <input type="radio" class="form-check-input" id="radio2" name="role_id" value="2">
             <label class="form-check-label" for="radio2">ADMIN</label>
         </div>
         <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio3" name="role" value="BAN">
+            <input type="radio" class="form-check-input" id="radio3" name="role_id" value="3">
             <label class="form-check-label" for="radio3">BAN</label>
         </div>
 

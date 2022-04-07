@@ -59,6 +59,7 @@
         <tr>
             <th><b>Id</b></th>
             <th><b>Username</b></th>
+            <th><b>Role</b></th>
             <th><b>Edit</b></th>
         </tr>
         </thead>
@@ -68,6 +69,8 @@
                 <td><c:out value="${user.getId()}"/>
                 </td>
                 <td><c:out value="${user.getLogin()}"/>
+                </td>
+                <td><c:out value="${user.getRoleId()}"/>
                 </td>
                 <td><a href="/update-user?id=${user.id}">Edit</a></td>
             </tr>

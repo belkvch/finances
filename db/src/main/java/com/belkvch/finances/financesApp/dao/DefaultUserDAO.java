@@ -1,6 +1,7 @@
 package com.belkvch.finances.financesApp.dao;
 
 import com.belkvch.finances.financesApp.dao.DBManager.DBManager;
+import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
 
 import java.sql.*;
@@ -12,12 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 public class DefaultUserDAO implements UserDAO {
     private static volatile DefaultUserDAO instance;
     private static final String SELECT_ALL = "select * from users";
-    private static final String INSERT_USER = "insert into users(username, password, role) values (?, ?, ?)";
+    private static final String INSERT_USER = "insert into users(username, password, role_id) values (?, ?, ?)";
     private static final String SELECT_USER_BY_LOGIN = "select * from users where username = ?";
     private static final String SELECT_USER_BY_LOGIN_PASSWORD = "select * from users where username = ? and password = ?";
     private static final String SELECT_PASSWORD = "select password from users where username = ?";
     private static final String SELECT_USER_BY_ID = "select * from users where id = ?";
-    private static final String UPDATE_USER_ROLE = "update users set role = ? where id = ?";
+    private static final String UPDATE_USER_ROLE = "update users set role_id = ? where id = ?";
 
     public static DefaultUserDAO getInstance() {
         if (instance == null) {
@@ -35,7 +36,7 @@ public class DefaultUserDAO implements UserDAO {
         user.setId(resultSet.getInt("id"));
         user.setLogin(resultSet.getString("username"));
         user.setPassword(resultSet.getString("password"));
-        user.setPassword(resultSet.getString("role"));
+        user.setRoleId(resultSet.getInt("role_id"));
         return user;
     }
 
@@ -58,11 +59,12 @@ public class DefaultUserDAO implements UserDAO {
     public User addUser(User user) {
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);
-            String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+//            String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
             preparedStatement.setString(1, user.getLogin());
-            preparedStatement.setString(2, passwordHash);
-            user.setRole("USER");
-            preparedStatement.setString(3, user.getRole());
+            preparedStatement.setString(2, user.getPassword());
+//            preparedStatement.setString(2, passwordHash);
+            user.setRoleId(1);
+            preparedStatement.setObject(3, user.getRoleId());
             preparedStatement.executeUpdate();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {
@@ -142,7 +144,7 @@ public class DefaultUserDAO implements UserDAO {
     public User changeUserRole(User user) {
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_ROLE);
-            preparedStatement.setString(1, user.getRole());
+            preparedStatement.setObject(1, user.getRoleId());
             preparedStatement.setInt(2, user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
