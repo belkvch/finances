@@ -25,21 +25,20 @@
         <div class="collapse navbar-collapse" id="mynavbar">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">Users</a>
+                    <a class="nav-link" href="/accounts">Accounts</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/currency">Currency</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Users</a>
+                </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="text" placeholder="Search">
-                <button class="btn btn-outline-primary" type="button">Search</button>
-            </form>
         </div>
         <div class="d-flex">
             <form method="post" action="/logout" style="display:inline;" class="d-flex">
                 <input type="hidden">
-                <button type="submit" class="btn btn-outline-dark btn-sm"
+                <button type="submit" class="btn btn-outline-primary btn-sm"
                         onclick="return confirm('Are you sure to sign out?');">Sign Out
                 </button>
             </form>

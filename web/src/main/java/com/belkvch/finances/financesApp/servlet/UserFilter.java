@@ -32,8 +32,9 @@ public class UserFilter implements Filter {
 //        } else if(username != null && password != null && user != null) {
 //            if (BCrypt.checkpw(password, user.getPassword())) {
             httpSession.setAttribute("login", username);
+            httpSession.setAttribute("id", DefaultUserDAO.getInstance().getByLogin(username).getId());
 //            httpSession.setAttribute("role", DefaultUserDAO.getInstance().getByLogin(username).getRole());
-            httpServletResponse.sendRedirect("/operations");
+            httpServletResponse.sendRedirect("/main");
 //            }
         } else {
             if ("/login".equals(url) || "/registration".equals(url)) {

@@ -1,7 +1,6 @@
 package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
-import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
 
 import javax.servlet.ServletException;

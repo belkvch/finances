@@ -10,6 +10,7 @@ import java.util.List;
 public class DefaultOperationsDAO implements OperationsDAO {
     private static volatile DefaultOperationsDAO instance;
     private static final String SELECT_ALL = "select * from operations";
+    private static final String SELECT_ALL_FOR_ACCOUNT = "select * from operations where account_id=?";
     private static final String SELECT_OPERATION_BY_ID = "select * from operations where id = ?";
     private static final String INSERT_OPERATION = "insert into operations(name,date_op,salary)  VALUES(?,?,?)";
     private static final String UPDATE_OPERATION_NAME = "update operations set name = ? where id = ?";
@@ -99,6 +100,25 @@ public class DefaultOperationsDAO implements OperationsDAO {
     }
 
     @Override
+    public List<Operations> showAllOperationsForAccount(int id) {
+        List<Operations> operations = new ArrayList<>();
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FOR_ACCOUNT);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+            operations.add(initOperation(resultSet));
+        }
+    } catch(
+    SQLException throwables)
+
+    {
+        throwables.printStackTrace();
+    }
+        return operations;
+}
+
+    @Override
     public Operations addNewOperation(Operations operation) {
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_OPERATION);
@@ -116,7 +136,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
             return operation;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println(e);
         }
         return null;

@@ -46,58 +46,35 @@
     </div>
 </nav>
 
-<div class="container mt-3">
-    <c:forEach items="${operations}" var="operation">
-    <h2>Information about operation ID#<c:out value="${operation.getId()}"/>
-    </h2>
-    <ul class="list-group">
-        <li class="list-group-item"> Name: <c:out value="${operation.getNameOfOperation()}"/>
-        </li>
-        <li class="list-group-item"> Date: <c:out value="${operation.getDateOfOperation()}"/>
-        </li>
-        <li class="list-group-item"> Price: <c:out value="${operation.getPriceOfOperation()}"/>
-        </li>
-    </ul>
-</div>
+<center>
+    <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
+</center>
 
-<div class="container mt-3">
-    <h2>Update the operation</h2>
-    <form method="POST" action="/update">
-        <div class="mb-3 mt-3">
-            <input type="hidden" value="<c:out value="${operation.getId()}"/>" name="id"/>
+<br>
+
+<c:forEach items="${accounts}" var="accounts">
+    <c:if test="${accounts != null}">
+        <div class="container mt-3">
+            <h2>You're accounts:</h2>
+            <table class="table table-borderless">
+                <thead>
+                <tr>
+                    <th><b>Balance</b></th>
+                    <th><b>Currency</b></th>
+                    <th><b>Operations</b></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><c:out value="${accounts.getAmount()}"/>
+                    <td><c:out value="${accounts.getCurrencyId()}"/>
+                    <td><a href="/operations?id=${accounts.id}">Show</a>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="mb-3">
-            <label>Operation name:
-                <input name="name" value="<c:out value="${operation.getNameOfOperation()}"/>" class="form-control"
-                       required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <div class="form-group">
-                <label>Operation date:
-                    <input type="date" name="date" value="<c:out value="${operation.getDateOfOperation()}"/>"
-                           data-date-format='yyyy-mm-dd'
-                           class="form-control" required>
-                </label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label>Operation salary:
-                <input type="number" min="0.01" step=".01" name="salary" value="<c:out
-        value="${operation.getPriceOfOperation()}"/>" class="form-control" required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <input type="hidden" name="actionType" value="update">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Update the operation</button>
-        </div>
-        <div class="mb-3">
-            <a href="/operations/">Your operations</a>
-        </div>
-    </form>
-</div>
+        <br>
+    </c:if>
 </c:forEach>
 
 
@@ -150,3 +127,4 @@
 
 </body>
 </html>
+

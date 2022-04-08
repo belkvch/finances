@@ -24,7 +24,7 @@
 </div>
 <br>
 <br>
-<center><a href="/operations/" class="btn btn-outline-primary btn-lg">Start for free</a></center>
+<center><a href="/accounts" class="btn btn-outline-primary btn-lg">Start for free</a></center>
 <br>
 <br>
 

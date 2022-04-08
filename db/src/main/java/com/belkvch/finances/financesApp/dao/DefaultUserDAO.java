@@ -1,7 +1,6 @@
 package com.belkvch.finances.financesApp.dao;
 
 import com.belkvch.finances.financesApp.dao.DBManager.DBManager;
-import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
 
 import java.sql.*;

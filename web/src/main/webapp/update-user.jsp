@@ -3,10 +3,11 @@
 
 <html>
 <head>
+    <title>Operations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Users</title>
 </head>
 <body>
 
@@ -24,24 +25,23 @@
         <div class="collapse navbar-collapse" id="mynavbar">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">Users</a>
+                    <a class="nav-link" href="/accounts">Accounts</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/currency">Currency</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Users</a>
+                </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="text" placeholder="Search">
-                <button class="btn btn-outline-primary" type="button">Search</button>
+        </div>
+        <div class="d-flex">
+            <form method="post" action="/logout" style="display:inline;" class="d-flex">
+                <input type="hidden">
+                <button type="submit" class="btn btn-outline-primary btn-sm"
+                        onclick="return confirm('Are you sure to sign out?');">Sign Out
+                </button>
             </form>
-            <div>
-                <form method="post" action="/logout" style="display:inline;">
-                    <input type="hidden">
-                    <button type="submit" class="btn btn-outline-dark"
-                            onclick="return confirm('Are you sure to sign out?');">Sign Out
-                    </button>
-                </form>
-            </div>
         </div>
     </div>
 </nav>

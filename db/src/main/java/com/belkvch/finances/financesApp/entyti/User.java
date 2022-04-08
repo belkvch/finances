@@ -1,5 +1,7 @@
 package com.belkvch.finances.financesApp.entyti;
 
+import java.util.List;
+
 public class User {
     private int id;
     private String login;

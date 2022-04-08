@@ -1,29 +1,29 @@
 package com.belkvch.finances.financesApp.entyti;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 
 public class Accounts {
     private int id;
     private BigDecimal amount;
-    private Currency currencyId;
-    private User userId;
+    private int currencyId;
+    private int userId;
 
     public Accounts() {
     }
 
-    public Accounts(BigDecimal amount, Currency currencyId, User userId) {
+    public Accounts(BigDecimal amount, int currencyId, int userId) {
         this.amount = amount;
         this.currencyId = currencyId;
         this.userId = userId;
     }
 
-    public Accounts(int id, BigDecimal amount, Currency currencyId, User userId) {
+    public Accounts(int id, BigDecimal amount, int currencyId, int userId) {
         this.id = id;
         this.amount = amount;
         this.currencyId = currencyId;
         this.userId = userId;
     }
+
 
     public int getId() {
         return id;
@@ -41,19 +41,19 @@ public class Accounts {
         this.amount = amount;
     }
 
-    public Currency getCurrencyId() {
+    public int getCurrencyId() {
         return currencyId;
     }
 
-    public void setCurrencyId(Currency currencyId) {
+    public void setCurrencyId(int currencyId) {
         this.currencyId = currencyId;
     }
 
-    public User getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 }

@@ -7,6 +7,9 @@ import java.util.List;
 public interface OperationsDAO {
     Operations getOperationById(int id);
     List<Operations> showAllOperations();
+
+    List<Operations> showAllOperationsForAccount(int id);
+
     Operations addNewOperation(Operations operations);
     Operations deleteOperation(Operations operations);
     Operations changeOperationName(Operations operations);
