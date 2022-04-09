@@ -2,8 +2,8 @@ package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
-import com.belkvch.finances.financesApp.entyti.Accounts;
-import com.belkvch.finances.financesApp.entyti.Operations;
+import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
+import com.belkvch.finances.financesApp.entyti.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,41 +32,35 @@ public class AccountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if ("create".equals(req.getParameter("actionType"))) {
-            Operations operation = new Operations();
+            Accounts account = new Accounts();
 
-            String name = req.getParameter("name");
-            if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+            HttpSession httpSession = req.getSession(true);
+            int userId = (int) httpSession.getAttribute("id");
+            account.setUserId(new User(userId));
+
+            int currencyId = Integer.parseInt(req.getParameter("currency_id"));
+            if (currencyId == 0) {
                 resp.sendRedirect("/error");
             } else {
-                operation.setNameOfOperation(name);
+                account.setCurrencyId(new Currency(currencyId));
             }
 
             try {
-                String date = req.getParameter("date");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                sdf.setLenient(false);
-                Date submitDate = sdf.parse(date);
-                operation.setDateOfOperation(submitDate);
-            } catch (ParseException e) {
-                resp.sendRedirect("/error");
-            } catch (NumberFormatException e) {
-                resp.sendRedirect("/error");
-            }
-            try {
-                BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
+                BigDecimal bigDecimal = new BigDecimal(req.getParameter("amount"));
                 if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
-                    operation.setPriceOfOperation(bigDecimal);
+                    account.setAmount(bigDecimal);
                 } else {
                     resp.sendRedirect("/error");
                 }
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             }
-            DefaultOperationsDAO.getInstance().addNewOperation(operation);
+
+            DefaultAccountDAO.getInstance().addNewAccount(account);
         } else {
             resp.sendRedirect("/error");
         }
-        resp.sendRedirect("/operations");
+        resp.sendRedirect("/accounts");
     }
 }
 

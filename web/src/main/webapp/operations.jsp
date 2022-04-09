@@ -85,7 +85,6 @@
                     </form>
                 </td>
             </tr>
-        </c:forEach>
         </tbody>
     </table>
 </div>
@@ -94,8 +93,9 @@
 
 <div class="container mt-3">
     <h2>Add new operation</h2>
-    <form method="POST" action="/operations/">
+    <form method="POST" action="/operations">
         <div class="mb-3 mt-3">
+            <input type="hidden" name="id" value="${operation.getAccountId()}">
             <label>Operation name:
                 <input name="name" placeholder="Enter name" class="form-control" required/>
             </label>
@@ -121,7 +121,7 @@
         </div>
     </form>
 </div>
-
+</c:forEach>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section

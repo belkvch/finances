@@ -98,7 +98,7 @@ public class OperationsController {
                     System.out.println("Enter the price of operation: ");
                     BigDecimal newPriceOfOperation = scannerSalary.nextBigDecimal();
                     operation.setPriceOfOperation(newPriceOfOperation.abs());
-                    operationsService.addNewOperation(operation);
+//                    operationsService.addNewOperation(operation);
                     System.out.print("Operation was added.");
 
                     System.out.println();

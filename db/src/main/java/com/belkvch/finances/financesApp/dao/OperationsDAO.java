@@ -12,6 +12,9 @@ public interface OperationsDAO {
 
     Operations addNewOperation(Operations operations);
     Operations deleteOperation(Operations operations);
+
+//    Operations addNewOperation(Operations operation, int id);
+
     Operations changeOperationName(Operations operations);
     Operations changeOperationDate(Operations operation);
     Operations changeOperationSalary(Operations operation);

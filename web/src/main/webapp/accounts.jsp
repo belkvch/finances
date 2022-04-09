@@ -67,7 +67,7 @@
                 <tbody>
                 <tr>
                     <td><c:out value="${accounts.getAmount()}"/>
-                    <td><c:out value="${accounts.getCurrencyId()}"/>
+                    <td><c:out value="${accounts.getCurrencyId().getName()}"/>
                     <td><a href="/operations?id=${accounts.id}">Show</a>
                 </tr>
                 </tbody>
@@ -77,6 +77,42 @@
     </c:if>
 </c:forEach>
 
+
+<div class="container mt-3">
+    <h2>Add new operation</h2>
+    <form method="POST" action="/accounts">
+<%--        <div class="mb-3 mt-3">--%>
+<%--            <input type="hidden" value="<c:out value="${account.getUserId.getId()}"/>" name="user_id"/>--%>
+<%--        </div>--%>
+
+        <div class="mb-3">
+            <label>Account balance:
+                <input type="number" min="0.01" step=".01" name="amount" placeholder="Enter price" class="form-control"
+                       required/>
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio1" name="currency_id" value="1" checked>
+            <label class="form-check-label" for="radio1">BYN</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio2" name="currency_id" value="2">
+            <label class="form-check-label" for="radio2">EUR</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio3" name="currency_id" value="3">
+            <label class="form-check-label" for="radio3">USD</label>
+        </div>
+
+        <div class="mb-3">
+            <input type="hidden" name="actionType" value="create">
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-outline-primary">Add</button>
+        </div>
+    </form>
+</div>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section

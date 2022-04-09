@@ -5,19 +5,19 @@ import java.math.BigDecimal;
 public class Accounts {
     private int id;
     private BigDecimal amount;
-    private int currencyId;
-    private int userId;
+    private Currency currencyId;
+    private User userId;
 
     public Accounts() {
     }
 
-    public Accounts(BigDecimal amount, int currencyId, int userId) {
+    public Accounts(BigDecimal amount, Currency currencyId, User userId) {
         this.amount = amount;
         this.currencyId = currencyId;
         this.userId = userId;
     }
 
-    public Accounts(int id, BigDecimal amount, int currencyId, int userId) {
+    public Accounts(int id, BigDecimal amount, Currency currencyId, User userId) {
         this.id = id;
         this.amount = amount;
         this.currencyId = currencyId;
@@ -41,19 +41,19 @@ public class Accounts {
         this.amount = amount;
     }
 
-    public int getCurrencyId() {
+    public Currency getCurrencyId() {
         return currencyId;
     }
 
-    public void setCurrencyId(int currencyId) {
+    public void setCurrencyId(Currency currencyId) {
         this.currencyId = currencyId;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 }

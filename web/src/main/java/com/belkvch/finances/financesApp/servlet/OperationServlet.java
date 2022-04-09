@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,8 +39,11 @@ public class OperationServlet extends HttpServlet {
         if ("create".equals(req.getParameter("actionType"))) {
             Operations operation = new Operations();
 
+            int account_id = Integer.parseInt(req.getParameter("id").trim());
+            operation.setAccountId(account_id);
+
             String name = req.getParameter("name");
-            if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+            if (name == null|| name.isEmpty() || name.trim().isEmpty()) {
                 resp.sendRedirect("/error");
             } else {
                 operation.setNameOfOperation(name);
@@ -58,6 +60,7 @@ public class OperationServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             }
+
             try {
                 BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
                 if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
@@ -68,6 +71,7 @@ public class OperationServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             }
+
             DefaultOperationsDAO.getInstance().addNewOperation(operation);
         } else {
             resp.sendRedirect("/error");

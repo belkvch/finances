@@ -9,6 +9,14 @@ public class Currency {
         this.name = name;
     }
 
+    public Currency(int id) {
+        this.id = id;
+    }
+
+    public Currency(String name) {
+        this.name = name;
+    }
+
     public Currency() {
     }
 

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface AccountDAO {
     List<Accounts> showAllAccountsForUser(int userId);
+
+    Accounts addNewAccount(Accounts accounts);
 }

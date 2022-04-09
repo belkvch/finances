@@ -12,7 +12,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
     private static final String SELECT_ALL = "select * from operations";
     private static final String SELECT_ALL_FOR_ACCOUNT = "select * from operations where account_id=?";
     private static final String SELECT_OPERATION_BY_ID = "select * from operations where id = ?";
-    private static final String INSERT_OPERATION = "insert into operations(name,date_op,salary)  VALUES(?,?,?)";
+    private static final String INSERT_OPERATION = "insert into operations(name,date_op,salary,account_id)  VALUES(?,?,?,?)";
     private static final String UPDATE_OPERATION_NAME = "update operations set name = ? where id = ?";
     private static final String UPDATE_OPERATION_DATE = "update operations set date_op = ? where id = ?";
     private static final String UPDATE_OPERATION_SALARY = "update operations set salary = ? where id = ?";
@@ -127,6 +127,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
             java.sql.Date date = new java.sql.Date(utilDate.getTime());
             preparedStatement.setDate(2, date);
             preparedStatement.setBigDecimal(3, operation.getPriceOfOperation());
+            preparedStatement.setInt(4, operation.getAccountId());
             preparedStatement.executeUpdate();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {
