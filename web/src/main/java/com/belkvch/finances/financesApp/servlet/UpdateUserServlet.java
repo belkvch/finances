@@ -1,6 +1,7 @@
 package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
+import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
 
 import javax.servlet.ServletException;
@@ -37,17 +38,17 @@ public class UpdateUserServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             User user = DefaultUserDAO.getInstance().getUserById(id);
             if (user != null) {
-                int role = Integer.parseInt(request.getParameter("role"));
+                int role = Integer.parseInt(request.getParameter("role_id"));
                 if (role == 0) {
                     response.sendRedirect("/error");
                 } else {
-                    user.setRoleId(role);
+                    user.setRoleId(new Role(role));
                     DefaultUserDAO.getInstance().changeUserRole(user);
                 }
             } else {
                 response.sendRedirect("/error");
             }
-            response.sendRedirect("/operations");
+            response.sendRedirect("/admin");
         }
     }
 }

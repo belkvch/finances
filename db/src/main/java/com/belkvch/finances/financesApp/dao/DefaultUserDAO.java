@@ -1,6 +1,7 @@
 package com.belkvch.finances.financesApp.dao;
 
 import com.belkvch.finances.financesApp.dao.DBManager.DBManager;
+import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
 
 import java.sql.*;
@@ -11,13 +12,13 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class DefaultUserDAO implements UserDAO {
     private static volatile DefaultUserDAO instance;
-    private static final String SELECT_ALL = "select * from users";
+    private static final String SELECT_ALL = "select * from users,roles where users.role_id = roles.id";
     private static final String INSERT_USER = "insert into users(username, password, role_id) values (?, ?, ?)";
-    private static final String SELECT_USER_BY_LOGIN = "select * from users where username = ?";
-    private static final String SELECT_USER_BY_LOGIN_PASSWORD = "select * from users where username = ? and password = ?";
+    private static final String SELECT_USER_BY_LOGIN = "select * from users,roles where username = ?";
+    private static final String SELECT_USER_BY_LOGIN_PASSWORD = "select * from users,roles where username = ? and password = ?";
     private static final String SELECT_PASSWORD = "select password from users where username = ?";
-    private static final String SELECT_USER_BY_ID = "select * from users where id = ?";
-    private static final String UPDATE_USER_ROLE = "update users set role_id = ? where id = ?";
+    private static final String SELECT_USER_BY_ID = "select * from users,roles where users.id = ? AND users.role_id = roles.id";
+    private static final String UPDATE_USER_ROLE = "update users set role_id = ? from roles where users.id = ? AND users.role_id = roles.id";
 
     public static DefaultUserDAO getInstance() {
         if (instance == null) {
@@ -35,7 +36,7 @@ public class DefaultUserDAO implements UserDAO {
         user.setId(resultSet.getInt("id"));
         user.setLogin(resultSet.getString("username"));
         user.setPassword(resultSet.getString("password"));
-        user.setRoleId(resultSet.getInt("role_id"));
+        user.setRoleId(new Role(resultSet.getInt("id"), resultSet.getString("name")));
         return user;
     }
 
@@ -62,8 +63,8 @@ public class DefaultUserDAO implements UserDAO {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());
 //            preparedStatement.setString(2, passwordHash);
-            user.setRoleId(1);
-            preparedStatement.setObject(3, user.getRoleId());
+            user.setRoleId(new Role(1,"USER"));
+            preparedStatement.setObject(3, user.getRoleId().getId());
             preparedStatement.executeUpdate();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {
@@ -143,12 +144,14 @@ public class DefaultUserDAO implements UserDAO {
     public User changeUserRole(User user) {
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_ROLE);
-            preparedStatement.setObject(1, user.getRoleId());
+            preparedStatement.setInt(1, user.getRoleId().getId());
             preparedStatement.setInt(2, user.getId());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return initUser(resultSet);
-            }
+            preparedStatement.executeUpdate();
+            return user;
+//            ResultSet resultSet = preparedStatement.executeUpdate();
+//            if (resultSet.next()) {
+//                return initUser(resultSet);
+//            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

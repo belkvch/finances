@@ -69,7 +69,7 @@
                 </td>
                 <td><c:out value="${user.getLogin()}"/>
                 </td>
-                <td><c:out value="${user.getRoleId()}"/>
+                <td><c:out value="${user.getRoleId().getName()}"/>
                 </td>
                 <td><a href="/update-user?id=${user.id}">Edit</a></td>
             </tr>

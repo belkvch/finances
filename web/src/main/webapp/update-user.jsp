@@ -53,7 +53,7 @@
     <ul class="list-group">
         <li class="list-group-item"> Username: <c:out value="${user.getLogin()}"/>
         </li>
-        <li class="list-group-item"> Role: <c:out value="${user.getRoleId()}"/>
+        <li class="list-group-item"> Role: <c:out value="${user.getRoleId().getName()}"/>
         </li>
     </ul>
 </div>
