@@ -25,17 +25,17 @@ public class UserFilter implements Filter {
         String url = httpServletRequest.getRequestURI();
         String username = servletRequest.getParameter("login");
         String password = servletRequest.getParameter("password");
-//        User user = DefaultUserDAO.getInstance().getByLogin(username);
+        User user = DefaultUserDAO.getInstance().getByLogin(username);
         if (httpSession.getAttribute("login") != null) {
             filterChain.doFilter(servletRequest, servletResponse);
-        } else if (username != null && password != null && DefaultUserDAO.getInstance().getByLoginPassword(username, password) != null) {
-//        } else if(username != null && password != null && user != null) {
-//            if (BCrypt.checkpw(password, user.getPassword())) {
+//        } else if (username != null && password != null && DefaultUserDAO.getInstance().getByLoginPassword(username, password) != null) {
+        } else if(username != null && password != null && user != null) {
+            if (BCrypt.checkpw(password, user.getPassword())) {
             httpSession.setAttribute("login", username);
             httpSession.setAttribute("id", DefaultUserDAO.getInstance().getByLogin(username).getId());
 //            httpSession.setAttribute("role", DefaultUserDAO.getInstance().getByLogin(username).getRole());
             httpServletResponse.sendRedirect("/main");
-//            }
+            }
         } else {
             if ("/login".equals(url) || "/registration".equals(url)) {
                 filterChain.doFilter(servletRequest, servletResponse);
