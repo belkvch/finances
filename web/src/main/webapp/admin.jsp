@@ -46,59 +46,39 @@
     </div>
 </nav>
 
-<div class="container mt-3">
-    <c:forEach items="${operations}" var="operation">
-    <h2>Information about operation ID#<c:out value="${operation.getId()}"/>
-    </h2>
-    <ul class="list-group">
-        <li class="list-group-item"> Name: <c:out value="${operation.getNameOfOperation()}"/>
-        </li>
-        <li class="list-group-item"> Date: <c:out value="${operation.getDateOfOperation()}"/>
-        </li>
-        <li class="list-group-item"> Price: <c:out value="${operation.getPriceOfOperation()}"/>
-        </li>
-    </ul>
-</div>
+<center>
+    <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
+</center>
+<br>
 
 <div class="container mt-3">
-    <h2>Update the operation</h2>
-    <form method="POST" action="/update">
-        <div class="mb-3 mt-3">
-            <input type="hidden" value="<c:out value="${operation.getId()}"/>" name="id"/>
-        </div>
-        <div class="mb-3">
-            <label>Operation name:
-                <input name="name" value="<c:out value="${operation.getNameOfOperation()}"/>" class="form-control"
-                       required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <div class="form-group">
-                <label>Operation date:
-                    <input type="date" name="date" value="<c:out value="${operation.getDateOfOperation()}"/>"
-                           data-date-format='yyyy-mm-dd'
-                           class="form-control" required>
-                </label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label>Operation salary:
-                <input type="number" min="0.01" step=".01" name="salary" value="<c:out
-        value="${operation.getPriceOfOperation()}"/>" class="form-control" required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <input type="hidden" name="actionType" value="update">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Update the operation</button>
-        </div>
-        <div class="mb-3">
-            <a href="/operations/">Your operations</a>
-        </div>
-    </form>
+    <h2>Users: </h2>
+    <table class="table table-borderless">
+        <thead>
+        <tr>
+            <th><b>Id</b></th>
+            <th><b>Username</b></th>
+            <th><b>Role</b></th>
+            <th><b>Edit</b></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${users}" var="user">
+            <tr>
+                <td><c:out value="${user.getId()}"/>
+                </td>
+                <td><c:out value="${user.getLogin()}"/>
+                </td>
+                <td><c:out value="${user.getRoleId().getName()}"/>
+                </td>
+                <td><a href="/update-user?id=${user.id}">Edit</a></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </div>
-</c:forEach>
+
+<br>
 
 
 <footer class="text-center text-lg-start bg-light text-muted">

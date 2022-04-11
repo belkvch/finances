@@ -7,7 +7,7 @@ import java.util.List;
 public interface OperationsService {
     Operations getOperationById(int id) throws ParseException;
 
-    Operations addNewOperation(Operations operation);
+//    Operations addNewOperation(Operations operation);
 
     Operations deleteOperation(Operations operation);
 

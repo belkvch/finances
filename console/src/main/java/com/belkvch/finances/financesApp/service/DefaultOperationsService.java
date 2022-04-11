@@ -38,10 +38,10 @@ public class DefaultOperationsService implements OperationsService {
         return operationsDAO.getOperationByName(name);
     }
 
-    @Override
-    public Operations addNewOperation(Operations operation) {
-        return operationsDAO.addNewOperation(operation);
-    }
+//    @Override
+//    public Operations addNewOperation(Operations operation) {
+//        return operationsDAO.addNewOperation(operation);
+//    }
 
     @Override
     public Operations deleteOperation(Operations operation) {

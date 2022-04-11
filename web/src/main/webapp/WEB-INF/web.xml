@@ -4,6 +4,11 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
+    <filter>
+        <filter-name>UserFilter</filter-name>
+        <filter-class>com.belkvch.finances.financesApp.servlet.UserFilter</filter-class>
+    </filter>
+
     <servlet>
         <servlet-name>OperationServlet</servlet-name>
         <servlet-class>com.belkvch.finances.financesApp.servlet.OperationServlet</servlet-class>
@@ -13,4 +18,21 @@
         <servlet-name>OperationServlet</servlet-name>
         <url-pattern>/operations/*</url-pattern>
     </servlet-mapping>
+
+
+    <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+<!--    <filter>-->
+<!--        <filter-name>AdminFilter</filter-name>-->
+<!--        <filter-class>com.belkvch.finances.financesApp.servlet.AdminFilter</filter-class>-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>AdminFilter</filter-name>-->
+<!--        <url-pattern>/admin/*</url-pattern>-->
+<!--    </filter-mapping>-->
+
+
 </web-app>

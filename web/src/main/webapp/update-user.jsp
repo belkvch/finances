@@ -47,59 +47,51 @@
 </nav>
 
 <div class="container mt-3">
-    <c:forEach items="${operations}" var="operation">
-    <h2>Information about operation ID#<c:out value="${operation.getId()}"/>
+    <c:forEach items="${users}" var="user">
+    <h2>Information about user ID#<c:out value="${user.getId()}"/>
     </h2>
     <ul class="list-group">
-        <li class="list-group-item"> Name: <c:out value="${operation.getNameOfOperation()}"/>
+        <li class="list-group-item"> Username: <c:out value="${user.getLogin()}"/>
         </li>
-        <li class="list-group-item"> Date: <c:out value="${operation.getDateOfOperation()}"/>
-        </li>
-        <li class="list-group-item"> Price: <c:out value="${operation.getPriceOfOperation()}"/>
+        <li class="list-group-item"> Role: <c:out value="${user.getRoleId().getName()}"/>
         </li>
     </ul>
 </div>
 
 <div class="container mt-3">
-    <h2>Update the operation</h2>
-    <form method="POST" action="/update">
+    <h2>Update the user</h2>
+    <form method="POST" action="/update-user">
         <div class="mb-3 mt-3">
-            <input type="hidden" value="<c:out value="${operation.getId()}"/>" name="id"/>
+            <input type="hidden" value="<c:out value="${user.getId()}"/>" name="id"/>
         </div>
-        <div class="mb-3">
-            <label>Operation name:
-                <input name="name" value="<c:out value="${operation.getNameOfOperation()}"/>" class="form-control"
-                       required/>
-            </label>
+
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio1" name="role_id" value="1" checked>
+            <label class="form-check-label" for="radio1">USER</label>
         </div>
-        <div class="mb-3">
-            <div class="form-group">
-                <label>Operation date:
-                    <input type="date" name="date" value="<c:out value="${operation.getDateOfOperation()}"/>"
-                           data-date-format='yyyy-mm-dd'
-                           class="form-control" required>
-                </label>
-            </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio2" name="role_id" value="2">
+            <label class="form-check-label" for="radio2">ADMIN</label>
         </div>
-        <div class="mb-3">
-            <label>Operation salary:
-                <input type="number" min="0.01" step=".01" name="salary" value="<c:out
-        value="${operation.getPriceOfOperation()}"/>" class="form-control" required/>
-            </label>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio3" name="role_id" value="3">
+            <label class="form-check-label" for="radio3">BAN</label>
         </div>
+
         <div class="mb-3">
             <input type="hidden" name="actionType" value="update">
         </div>
         <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Update the operation</button>
+            <button type="submit" class="btn btn-outline-primary">Update the user</button>
         </div>
         <div class="mb-3">
-            <a href="/operations/">Your operations</a>
+            <a href="/admin">Users</a>
         </div>
     </form>
 </div>
 </c:forEach>
 
+<br>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section

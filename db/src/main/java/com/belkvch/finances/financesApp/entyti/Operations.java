@@ -8,15 +8,17 @@ public class Operations {
     private String nameOfOperation;
     private Date dateOfOperation;
     private BigDecimal priceOfOperation;
+    private int accountId;
 
     public Operations() {
     }
 
-    public Operations(int id, String nameOfOperation, Date dateOfOperation, BigDecimal priceOfOperation) {
+    public Operations(int id, String nameOfOperation, Date dateOfOperation, BigDecimal priceOfOperation, int accountId) {
         this.id = id;
         this.nameOfOperation = nameOfOperation;
         this.dateOfOperation = dateOfOperation;
         this.priceOfOperation = priceOfOperation;
+        this.accountId = accountId;
     }
 
     public int getId() {
@@ -49,5 +51,13 @@ public class Operations {
 
     public void setPriceOfOperation(BigDecimal priceOfOperation) {
         this.priceOfOperation = priceOfOperation;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 }

@@ -46,60 +46,73 @@
     </div>
 </nav>
 
-<div class="container mt-3">
-    <c:forEach items="${operations}" var="operation">
-    <h2>Information about operation ID#<c:out value="${operation.getId()}"/>
-    </h2>
-    <ul class="list-group">
-        <li class="list-group-item"> Name: <c:out value="${operation.getNameOfOperation()}"/>
-        </li>
-        <li class="list-group-item"> Date: <c:out value="${operation.getDateOfOperation()}"/>
-        </li>
-        <li class="list-group-item"> Price: <c:out value="${operation.getPriceOfOperation()}"/>
-        </li>
-    </ul>
-</div>
+<center>
+    <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
+</center>
+
+<br>
+
+<c:forEach items="${accounts}" var="accounts">
+    <c:if test="${accounts != null}">
+        <div class="container mt-3">
+            <h2>You're accounts:</h2>
+            <table class="table table-borderless">
+                <thead>
+                <tr>
+                    <th><b>Balance</b></th>
+                    <th><b>Currency</b></th>
+                    <th><b>Operations</b></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><c:out value="${accounts.getAmount()}"/>
+                    <td><c:out value="${accounts.getCurrencyId().getName()}"/>
+                    <td><a href="/operations?id=${accounts.id}">Show</a>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+    </c:if>
+</c:forEach>
+
 
 <div class="container mt-3">
-    <h2>Update the operation</h2>
-    <form method="POST" action="/update">
-        <div class="mb-3 mt-3">
-            <input type="hidden" value="<c:out value="${operation.getId()}"/>" name="id"/>
-        </div>
+    <h2>Add new operation</h2>
+    <form method="POST" action="/accounts">
+<%--        <div class="mb-3 mt-3">--%>
+<%--            <input type="hidden" value="<c:out value="${account.getUserId.getId()}"/>" name="user_id"/>--%>
+<%--        </div>--%>
+
         <div class="mb-3">
-            <label>Operation name:
-                <input name="name" value="<c:out value="${operation.getNameOfOperation()}"/>" class="form-control"
+            <label>Account balance:
+                <input type="number" min="0.01" step=".01" name="amount" placeholder="Enter price" class="form-control"
                        required/>
             </label>
         </div>
+
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio1" name="currency_id" value="1" checked>
+            <label class="form-check-label" for="radio1">BYN</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio2" name="currency_id" value="2">
+            <label class="form-check-label" for="radio2">EUR</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio3" name="currency_id" value="3">
+            <label class="form-check-label" for="radio3">USD</label>
+        </div>
+
         <div class="mb-3">
-            <div class="form-group">
-                <label>Operation date:
-                    <input type="date" name="date" value="<c:out value="${operation.getDateOfOperation()}"/>"
-                           data-date-format='yyyy-mm-dd'
-                           class="form-control" required>
-                </label>
-            </div>
+            <input type="hidden" name="actionType" value="create">
         </div>
         <div class="mb-3">
-            <label>Operation salary:
-                <input type="number" min="0.01" step=".01" name="salary" value="<c:out
-        value="${operation.getPriceOfOperation()}"/>" class="form-control" required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <input type="hidden" name="actionType" value="update">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Update the operation</button>
-        </div>
-        <div class="mb-3">
-            <a href="/operations/">Your operations</a>
+            <button type="submit" class="btn btn-outline-primary">Add</button>
         </div>
     </form>
 </div>
-</c:forEach>
-
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section
@@ -150,3 +163,4 @@
 
 </body>
 </html>
+

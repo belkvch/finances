@@ -22,7 +22,7 @@
         <img class="card-img-top" src="https://en.meming.world/images/en/1/13/Thumbs_Up_Crying_Cat.jpg" alt="Card image" style="width:100%">
         <div class="card-body">
             <p class="card-text">There is a problem. Don't worry and be attentive</p>
-            <a href="/operations/" class="btn btn-outline-primary">Try again</a>
+            <a href="/main" class="btn btn-outline-primary">Try again</a>
         </div>
     </div>
 </div>
