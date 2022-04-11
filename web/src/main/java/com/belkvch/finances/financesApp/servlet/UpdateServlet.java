@@ -75,10 +75,10 @@ public class UpdateServlet extends HttpServlet {
                     response.sendRedirect("/error");
                 }
             }
+            response.sendRedirect("/operations?id=" + operation.getAccountId());
         } else {
             response.sendRedirect("/error");
         }
-        response.sendRedirect("/operations");
     }
 }
 

@@ -94,7 +94,7 @@
             <button type="submit" class="btn btn-outline-primary">Update the operation</button>
         </div>
         <div class="mb-3">
-            <a href="/operations/">Your operations</a>
+            <a href="/operations?id=${operation.accountId}">Your operations</a>
         </div>
     </form>
 </div>

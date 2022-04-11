@@ -39,6 +39,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
         operation.setNameOfOperation(resultSet.getString("name"));
         operation.setDateOfOperation(resultSet.getDate("date_op"));
         operation.setPriceOfOperation(resultSet.getBigDecimal("salary"));
+        operation.setAccountId(resultSet.getInt("account_id"));
         return operation;
     }
 
@@ -116,7 +117,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
         throwables.printStackTrace();
     }
         return operations;
-}
+    }
 
     @Override
     public Operations addNewOperation(Operations operation) {

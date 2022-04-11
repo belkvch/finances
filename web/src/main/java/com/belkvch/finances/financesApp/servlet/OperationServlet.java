@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class OperationServlet extends HttpServlet {
             int id = Integer.parseInt(req.getParameter("id"));
             List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
             if (operations != null) {
+                List<Operations> operationsList = new ArrayList<>();
+                operationsList.add(new Operations(id));
+                req.setAttribute("operationsList", operationsList);
+
                 req.setAttribute("operations", operations);
                 getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
             } else {
@@ -39,7 +44,7 @@ public class OperationServlet extends HttpServlet {
         if ("create".equals(req.getParameter("actionType"))) {
             Operations operation = new Operations();
 
-            int account_id = Integer.parseInt(req.getParameter("id").trim());
+            int account_id = Integer.parseInt(req.getParameter("id"));
             operation.setAccountId(account_id);
 
             String name = req.getParameter("name");
@@ -73,9 +78,10 @@ public class OperationServlet extends HttpServlet {
             }
 
             DefaultOperationsDAO.getInstance().addNewOperation(operation);
+
+            resp.sendRedirect("/operations?id=" + operation.getAccountId());
         } else {
             resp.sendRedirect("/error");
         }
-        resp.sendRedirect("/operations");
     }
 }

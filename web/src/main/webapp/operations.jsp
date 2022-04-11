@@ -47,7 +47,7 @@
 </nav>
 
 <center>
-<h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
+    <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
 </center>
 <br>
 
@@ -85,6 +85,7 @@
                     </form>
                 </td>
             </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>
@@ -95,7 +96,9 @@
     <h2>Add new operation</h2>
     <form method="POST" action="/operations">
         <div class="mb-3 mt-3">
-            <input type="hidden" name="id" value="${operation.getAccountId()}">
+            <c:forEach items="${operationsList}" var="operationsList">
+            <input type="hidden" name="id" value="${operationsList.getAccountId()}">
+            </c:forEach>
             <label>Operation name:
                 <input name="name" placeholder="Enter name" class="form-control" required/>
             </label>
@@ -121,7 +124,6 @@
         </div>
     </form>
 </div>
-</c:forEach>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section
