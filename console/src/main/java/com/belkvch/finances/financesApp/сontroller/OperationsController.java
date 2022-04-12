@@ -8,7 +8,7 @@ import java.util.InputMismatchException;
 import java.util.Properties;
 import java.util.Scanner;
 
-import com.belkvch.finances.financesApp.ejb.DefaultOperationsService;
+//import com.belkvch.finances.financesApp.ejb.DefaultOperationsService;
 import com.belkvch.finances.financesApp.entyti.Operations;
 import com.belkvch.finances.financesApp.service.OperationsService;
 import com.belkvch.finances.financesApp.view.OperationsView;
@@ -27,7 +27,7 @@ public class OperationsController {
 
         public OperationsController(OperationsView operationsView) {
             this.operationsView = operationsView;
-            this.operationsService = DefaultOperationsService.getInstance();
+//            this.operationsService = DefaultOperationsService.getInstance();
 
         Properties p = new Properties();
         p.setProperty("java.naming.factory.initial", "org.wildfly.naming.client.WildFlyInitialContextFactory");
