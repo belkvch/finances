@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        button { margin: 5px 5px 5px 5px }
+    </style>
 </head>
 <body>
 
@@ -35,8 +38,17 @@
                 </li>
             </ul>
         </div>
+        <div class="dropdown">
+            <button type="button" class="btn btn-outline-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown">
+                Account info
+            </button>
+            <ul class="dropdown-menu">
+                <li><span class="dropdown-item-text">Login: ${sessionScope.login} </span></li>
+                <li><span class="dropdown-item-text">ID: ${sessionScope.id} </span></li>
+            </ul>
+        </div>
         <div class="d-flex">
-            <form method="post" action="/logout" style="display:inline;" class="d-flex">
+            <form method="post" action="/logout" class="d-flex">
                 <input type="hidden">
                 <button type="submit" class="btn btn-outline-primary btn-sm"
                         onclick="return confirm('Are you sure to sign out?');">Sign Out
@@ -79,12 +91,8 @@
 
 
 <div class="container mt-3">
-    <h2>Add new operation</h2>
+    <h2>Add new account</h2>
     <form method="POST" action="/accounts">
-<%--        <div class="mb-3 mt-3">--%>
-<%--            <input type="hidden" value="<c:out value="${account.getUserId.getId()}"/>" name="user_id"/>--%>
-<%--        </div>--%>
-
         <div class="mb-3">
             <label>Account balance:
                 <input type="number" min="0.01" step=".01" name="amount" placeholder="Enter price" class="form-control"

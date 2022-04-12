@@ -1,13 +1,17 @@
 package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
+import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.Operations;
+import com.belkvch.finances.financesApp.entyti.Role;
+import com.belkvch.finances.financesApp.entyti.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -20,21 +24,29 @@ import java.util.List;
 public class OperationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            int id = Integer.parseInt(req.getParameter("id"));
-            List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
-            if (operations != null) {
-                List<Operations> operationsList = new ArrayList<>();
-                operationsList.add(new Operations(id));
-                req.setAttribute("operationsList", operationsList);
+        HttpSession httpSession = req.getSession(true);
+        int userId = (int) httpSession.getAttribute("id");
+        User currenUser = DefaultUserDAO.getInstance().getUserById(userId);
+        Role roleBan = new Role("BAN");
+        if (currenUser.getRoleId().getName().equals(roleBan.getName())) {
+            req.getRequestDispatcher("/ban.jsp").forward(req, resp);
+        } else {
+            try {
+                int id = Integer.parseInt(req.getParameter("id"));
+                List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
+                if (operations != null) {
+                    List<Operations> operationsList = new ArrayList<>();
+                    operationsList.add(new Operations(id));
+                    req.setAttribute("operationsList", operationsList);
 
-                req.setAttribute("operations", operations);
-                getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
-            } else {
+                    req.setAttribute("operations", operations);
+                    getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
+                } else {
+                    resp.sendRedirect("/error");
+                }
+            } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             }
-        } catch (NumberFormatException e) {
-            resp.sendRedirect("/error");
         }
     }
 
@@ -48,7 +60,7 @@ public class OperationServlet extends HttpServlet {
             operation.setAccountId(account_id);
 
             String name = req.getParameter("name");
-            if (name == null|| name.isEmpty() || name.trim().isEmpty()) {
+            if (name == null || name.isEmpty() || name.trim().isEmpty()) {
                 resp.sendRedirect("/error");
             } else {
                 operation.setNameOfOperation(name);

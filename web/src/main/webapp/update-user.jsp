@@ -58,38 +58,49 @@
     </ul>
 </div>
 
-<div class="container mt-3">
-    <h2>Update the user</h2>
-    <form method="POST" action="/update-user">
-        <div class="mb-3 mt-3">
-            <input type="hidden" value="<c:out value="${user.getId()}"/>" name="id"/>
-        </div>
 
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio1" name="role_id" value="1" checked>
-            <label class="form-check-label" for="radio1">USER</label>
+<c:choose>
+    <c:when test="${user.getRoleId().getId() == 2}">
+        <div class="container mt-3">
+            <div class="mb-3">
+                <a href="/admin">Users</a>
+            </div>
         </div>
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio2" name="role_id" value="2">
-            <label class="form-check-label" for="radio2">ADMIN</label>
+    </c:when>
+    <c:otherwise>
+        <div class="container mt-3">
+            <h2>Update the user</h2>
+            <form method="POST" action="/update-user">
+                <div class="mb-3 mt-3">
+                    <input type="hidden" value="<c:out value="${user.getId()}"/>" name="id"/>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="radio1" name="role_id" value="1" checked>
+                    <label class="form-check-label" for="radio1">USER</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="radio2" name="role_id" value="2">
+                    <label class="form-check-label" for="radio2">ADMIN</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="radio3" name="role_id" value="3">
+                    <label class="form-check-label" for="radio3">BAN</label>
+                </div>
+                <div class="mb-3">
+                    <input type="hidden" name="actionType" value="update">
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-outline-primary">Update the user</button>
+                </div>
+                <div class="mb-3">
+                    <a href="/admin">Users</a>
+                </div>
+            </form>
         </div>
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio3" name="role_id" value="3">
-            <label class="form-check-label" for="radio3">BAN</label>
-        </div>
-
-        <div class="mb-3">
-            <input type="hidden" name="actionType" value="update">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Update the user</button>
-        </div>
-        <div class="mb-3">
-            <a href="/admin">Users</a>
-        </div>
-    </form>
-</div>
+    </c:otherwise>
+</c:choose>
 </c:forEach>
+
 
 <br>
 

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,19 +19,28 @@ public class UpdateUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            User user = DefaultUserDAO.getInstance().getUserById(id);
-            if (user != null) {
-                List<User> users = new ArrayList<>();
-                users.add(user);
-                request.setAttribute("users", users);
-                getServletContext().getRequestDispatcher("/update-user.jsp").forward(request, response);
+            HttpSession httpSession = request.getSession(true);
+            int userId = (int) httpSession.getAttribute("id");
+            User currenUser = DefaultUserDAO.getInstance().getUserById(userId);
+            Role roleAdmin = new Role("ADMIN");
+            if (currenUser.getRoleId().getName().equals(roleAdmin.getName())) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                User user = DefaultUserDAO.getInstance().getUserById(id);
+                if (user != null) {
+                    List<User> users = new ArrayList<>();
+                    users.add(user);
+                    request.setAttribute("users", users);
+                    getServletContext().getRequestDispatcher("/update-user.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect("/error");
+                }
             } else {
-                response.sendRedirect("/error");
+                response.sendRedirect("/accounts");
             }
         } catch (NumberFormatException e) {
             response.sendRedirect("/error");
         }
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,13 +52,15 @@ public class UpdateUserServlet extends HttpServlet {
                 if (role == 0) {
                     response.sendRedirect("/error");
                 } else {
-                    user.setRoleId(new Role(role));
-                    DefaultUserDAO.getInstance().changeUserRole(user);
+                    if (user.getRoleId().getId() != 2) {
+                        user.setRoleId(new Role(role));
+                        DefaultUserDAO.getInstance().changeUserRole(user);
+                    } else {
+                        response.sendRedirect("/error");
+                    }
+                    response.sendRedirect("/admin");
                 }
-            } else {
-                response.sendRedirect("/error");
             }
-            response.sendRedirect("/admin");
         }
     }
 }

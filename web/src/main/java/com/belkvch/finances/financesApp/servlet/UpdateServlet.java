@@ -1,13 +1,17 @@
 package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
+import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.Operations;
+import com.belkvch.finances.financesApp.entyti.Role;
+import com.belkvch.finances.financesApp.entyti.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -20,19 +24,27 @@ import java.util.List;
 public class UpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
-            if (operation != null) {
-                List<Operations> operations = new ArrayList<>();
-                operations.add(operation);
-                request.setAttribute("operations", operations);
-                getServletContext().getRequestDispatcher("/update.jsp").forward(request, response);
-            } else {
+        HttpSession httpSession = request.getSession(true);
+        int userId = (int) httpSession.getAttribute("id");
+        User currenUser = DefaultUserDAO.getInstance().getUserById(userId);
+        Role roleBan = new Role("BAN");
+        if (currenUser.getRoleId().getName().equals(roleBan.getName())) {
+            request.getRequestDispatcher("/ban.jsp").forward(request, response);
+        } else {
+            try {
+                int id = Integer.parseInt(request.getParameter("id"));
+                Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
+                if (operation != null) {
+                    List<Operations> operations = new ArrayList<>();
+                    operations.add(operation);
+                    request.setAttribute("operations", operations);
+                    getServletContext().getRequestDispatcher("/update.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect("/error");
+                }
+            } catch (NumberFormatException e) {
                 response.sendRedirect("/error");
             }
-        } catch (NumberFormatException e) {
-            response.sendRedirect("/error");
         }
     }
 

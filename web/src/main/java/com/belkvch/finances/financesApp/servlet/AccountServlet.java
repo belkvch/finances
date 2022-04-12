@@ -24,9 +24,15 @@ public class AccountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession(true);
         int userId = (int) httpSession.getAttribute("id");
-        List<Accounts> accounts = DefaultAccountDAO.getInstance().showAllAccountsForUser(userId);
-        req.setAttribute("accounts", accounts);
-        req.getRequestDispatcher("/accounts.jsp").forward(req, resp);
+        User currenUser = DefaultUserDAO.getInstance().getUserById(userId);
+        Role roleBan = new Role("BAN");
+        if (currenUser.getRoleId().getName().equals(roleBan.getName())) {
+            req.getRequestDispatcher("/ban.jsp").forward(req, resp);
+        } else {
+            List<Accounts> accounts = DefaultAccountDAO.getInstance().showAllAccountsForUser(userId);
+            req.setAttribute("accounts", accounts);
+            req.getRequestDispatcher("/accounts.jsp").forward(req, resp);
+        }
     }
 
     @Override
