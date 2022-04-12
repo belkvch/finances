@@ -59,10 +59,10 @@ public class DefaultUserDAO implements UserDAO {
     public User addUser(User user) {
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);
-//            String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+            String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
             preparedStatement.setString(1, user.getLogin());
-            preparedStatement.setString(2, user.getPassword());
-//            preparedStatement.setString(2, passwordHash);
+//            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(2, passwordHash);
             user.setRoleId(new Role(1,"USER"));
             preparedStatement.setObject(3, user.getRoleId().getId());
             preparedStatement.executeUpdate();

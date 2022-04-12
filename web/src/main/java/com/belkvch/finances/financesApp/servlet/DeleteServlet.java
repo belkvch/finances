@@ -17,7 +17,7 @@ public class DeleteServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
             DefaultOperationsDAO.getInstance().deleteOperation(operation);
-            response.sendRedirect(request.getContextPath() + "/operations");
+            response.sendRedirect(request.getContextPath() + "/operations?id=" + operation.getAccountId());
         } catch (Exception ex) {
             response.sendRedirect("/error");
         }

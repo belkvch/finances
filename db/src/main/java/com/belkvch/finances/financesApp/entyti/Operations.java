@@ -13,8 +13,19 @@ public class Operations {
     public Operations() {
     }
 
+    public Operations(int accountId) {
+        this.accountId = accountId;
+    }
+
     public Operations(int id, String nameOfOperation, Date dateOfOperation, BigDecimal priceOfOperation, int accountId) {
         this.id = id;
+        this.nameOfOperation = nameOfOperation;
+        this.dateOfOperation = dateOfOperation;
+        this.priceOfOperation = priceOfOperation;
+        this.accountId = accountId;
+    }
+
+    public Operations(String nameOfOperation, Date dateOfOperation, BigDecimal priceOfOperation, int accountId) {
         this.nameOfOperation = nameOfOperation;
         this.dateOfOperation = dateOfOperation;
         this.priceOfOperation = priceOfOperation;

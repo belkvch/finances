@@ -10,12 +10,14 @@
         <module name="console" />
         <module name="web" />
         <module name="db" />
+        <module name="service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="console" target="7" />
       <module name="db" target="7" />
       <module name="finances" target="7" />
+      <module name="service" target="7" />
       <module name="web" target="7" />
     </bytecodeTargetLevel>
   </component>
