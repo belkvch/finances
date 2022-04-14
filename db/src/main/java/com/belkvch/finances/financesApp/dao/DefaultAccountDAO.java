@@ -14,6 +14,7 @@ public class DefaultAccountDAO implements AccountDAO {
     private static final String SELECT_ALL = "select * from accounts,users,currency where accounts.user_id = ? " +
             "and accounts.currency_id=currency.id and accounts.user_id=users.id";
     private static final String INSERT_ACCOUNT = "insert into accounts(currency_id,user_id,amount)  VALUES(?,?,?)";
+    private static final String SELECT_ACCOUNT_BY_ID = "select * from accounts,users,currency where accounts.id = ?";
 
     private DefaultAccountDAO() {
     }
@@ -72,6 +73,21 @@ public class DefaultAccountDAO implements AccountDAO {
             throwables.printStackTrace();
         } catch (NullPointerException e) {
             System.out.println(e);
+        }
+        return null;
+    }
+
+    @Override
+    public Accounts getAccountById(int id) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ACCOUNT_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return initAccount(resultSet);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return null;
     }

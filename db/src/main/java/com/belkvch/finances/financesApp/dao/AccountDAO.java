@@ -8,4 +8,6 @@ public interface AccountDAO {
     List<Accounts> showAllAccountsForUser(int userId);
 
     Accounts addNewAccount(Accounts accounts);
+
+    Accounts getAccountById(int id);
 }
