@@ -36,18 +36,18 @@ public class OperationServlet extends HttpServlet {
             try {
                 int id = Integer.parseInt(req.getParameter("id"));
 
-                Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
-                if (account.getUserId().getId() == userId) {
+//                Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
+//                if (account.getUserId().getId() == userId) {
 
-                List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
-                List<Operations> operationsList = new ArrayList<>();
-                req.setAttribute("operationsList", operationsList);
-                operationsList.add(new Operations(id));
-                req.setAttribute("operations", operations);
-                getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
-                } else {
-                    resp.sendRedirect("/error");
-                }
+                    List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
+                    List<Operations> operationsList = new ArrayList<>();
+                    req.setAttribute("operationsList", operationsList);
+
+                    req.setAttribute("operations", operations);
+                    getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
+//                } else {
+//                    resp.sendRedirect("/error");
+//                }
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             }
@@ -56,7 +56,8 @@ public class OperationServlet extends HttpServlet {
 
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws
+            ServletException, IOException {
         if ("create".equals(req.getParameter("actionType"))) {
             Operations operation = new Operations();
 
