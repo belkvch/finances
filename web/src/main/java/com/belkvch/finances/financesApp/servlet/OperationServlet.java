@@ -1,7 +1,9 @@
 package com.belkvch.finances.financesApp.servlet;
 
+import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
+import com.belkvch.finances.financesApp.entyti.Accounts;
 import com.belkvch.finances.financesApp.entyti.Operations;
 import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
@@ -33,14 +35,16 @@ public class OperationServlet extends HttpServlet {
         } else {
             try {
                 int id = Integer.parseInt(req.getParameter("id"));
-                List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
-                if (operations != null) {
-                    List<Operations> operationsList = new ArrayList<>();
-                    operationsList.add(new Operations(id));
-                    req.setAttribute("operationsList", operationsList);
 
-                    req.setAttribute("operations", operations);
-                    getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
+                Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
+                if (account.getUserId().getId() == userId) {
+
+                List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
+                List<Operations> operationsList = new ArrayList<>();
+                req.setAttribute("operationsList", operationsList);
+                operationsList.add(new Operations(id));
+                req.setAttribute("operations", operations);
+                getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
                 } else {
                     resp.sendRedirect("/error");
                 }
