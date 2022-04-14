@@ -9,7 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        button { margin: 5px 5px 5px 5px }
+        button {
+            margin: 5px 5px 5px 5px
+        }
     </style>
 </head>
 <body>
@@ -74,6 +76,7 @@
                     <th><b>Balance</b></th>
                     <th><b>Currency</b></th>
                     <th><b>Operations</b></th>
+                    <th><b>Add</b></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -81,6 +84,18 @@
                     <td><c:out value="${accounts.getAmount()}"/>
                     <td><c:out value="${accounts.getCurrencyId().getName()}"/>
                     <td><a href="/operations?id=${accounts.id}">Show</a>
+                    <td>
+                        <form method="POST" action="/updateAccount">
+                            <div class="mb-3">
+                                <label>
+                                    <input type="number" min="0.01" step=".01" name="amount" class="form-control"
+                                           required/>
+                                </label>
+                                <input type="hidden" name="id" value="${accounts.getId()}">
+                                <button type="submit" class="btn btn-outline-primary">Add</button>
+                            </div>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>

@@ -87,14 +87,21 @@ public class OperationServlet extends HttpServlet {
                 BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
                 if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
                     operation.setPriceOfOperation(bigDecimal);
+                    Accounts account = DefaultAccountDAO.getInstance().getAccountById(operation.getAccountId());
+                    BigDecimal subtract = account.getAmount().subtract(bigDecimal);
+                    if (subtract.compareTo(BigDecimal.valueOf(0)) > 0) {
+                        account.setAmount(subtract);
+                        DefaultAccountDAO.getInstance().changeOperationAmount(account);
+                        DefaultOperationsDAO.getInstance().addNewOperation(operation);
+                    } else {
+                        resp.sendRedirect("/error");
+                    }
                 } else {
                     resp.sendRedirect("/error");
                 }
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             }
-
-            DefaultOperationsDAO.getInstance().addNewOperation(operation);
 
             resp.sendRedirect("/operations?id=" + operation.getAccountId());
         } else {

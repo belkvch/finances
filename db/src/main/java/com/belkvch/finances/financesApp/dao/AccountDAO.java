@@ -10,4 +10,6 @@ public interface AccountDAO {
     Accounts addNewAccount(Accounts accounts);
 
     Accounts getAccountById(int id);
+
+    Accounts changeOperationAmount(Accounts account);
 }

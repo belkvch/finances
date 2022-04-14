@@ -39,7 +39,6 @@ public class AccountServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if ("create".equals(req.getParameter("actionType"))) {
             Accounts account = new Accounts();
-
             HttpSession httpSession = req.getSession(true);
             int userId = (int) httpSession.getAttribute("id");
             account.setUserId(new User(userId));
@@ -50,7 +49,6 @@ public class AccountServlet extends HttpServlet {
             } else {
                 account.setCurrencyId(new Currency(currencyId));
             }
-
             try {
                 BigDecimal bigDecimal = new BigDecimal(req.getParameter("amount"));
                 if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
@@ -61,12 +59,10 @@ public class AccountServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             }
-
             DefaultAccountDAO.getInstance().addNewAccount(account);
         } else {
             resp.sendRedirect("/error");
         }
-        resp.sendRedirect("/accounts");
     }
 }
 

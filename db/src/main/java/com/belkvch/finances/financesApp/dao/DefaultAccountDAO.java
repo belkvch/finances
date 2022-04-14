@@ -15,6 +15,7 @@ public class DefaultAccountDAO implements AccountDAO {
             "and accounts.currency_id=currency.id and accounts.user_id=users.id";
     private static final String INSERT_ACCOUNT = "insert into accounts(currency_id,user_id,amount)  VALUES(?,?,?)";
     private static final String SELECT_ACCOUNT_BY_ID = "select * from accounts,users,currency where accounts.id = ?";
+    private static final String UPDATE_ACCOUNT_AMOUNT = "update accounts set amount = ? where id = ?";
 
     private DefaultAccountDAO() {
     }
@@ -86,6 +87,20 @@ public class DefaultAccountDAO implements AccountDAO {
             if (resultSet.next()) {
                 return initAccount(resultSet);
             }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Accounts changeOperationAmount(Accounts account) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_AMOUNT);
+            preparedStatement.setBigDecimal(1, account.getAmount());
+            preparedStatement.setInt(2, account.getId());
+            preparedStatement.executeUpdate();
+            return account;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
