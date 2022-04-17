@@ -16,6 +16,10 @@ public class DefaultAccountDAO implements AccountDAO {
     private static final String INSERT_ACCOUNT = "insert into accounts(currency_id,user_id,amount)  VALUES(?,?,?)";
     private static final String SELECT_ACCOUNT_BY_ID = "select * from accounts,users,currency where accounts.id = ?";
     private static final String UPDATE_ACCOUNT_AMOUNT = "update accounts set amount = ? where id = ?";
+    private static final String SELECT_MAX_ACCOUNT = "SELECT * FROM accounts, currency" +
+            " WHERE accounts.id = (SELECT MAX (accounts.id) FROM accounts);";
+
+    private static final String INSERT_CATEGORY_ACCOUNT = "insert into account_category(account_id, category_id)  VALUES(?,1), (?,2), (?,3), (?,4), (?,5)";
 
     private DefaultAccountDAO() {
     }
@@ -106,4 +110,38 @@ public class DefaultAccountDAO implements AccountDAO {
         }
         return null;
     }
+
+    @Override
+    public Accounts getLastAccount() {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MAX_ACCOUNT);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return initAccount(resultSet);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Accounts getAccountCategoryConn(Accounts newAccount) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY_ACCOUNT);
+            preparedStatement.setInt(1, newAccount.getId());
+            preparedStatement.setInt(2, newAccount.getId());
+            preparedStatement.setInt(3, newAccount.getId());
+            preparedStatement.setInt(4, newAccount.getId());
+            preparedStatement.setInt(5, newAccount.getId());
+            preparedStatement.executeUpdate();
+            return newAccount;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
 }

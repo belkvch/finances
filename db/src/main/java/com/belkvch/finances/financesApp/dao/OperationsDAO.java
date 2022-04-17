@@ -19,4 +19,6 @@ public interface OperationsDAO {
     Operations changeOperationDate(Operations operation);
     Operations changeOperationSalary(Operations operation);
     Operations getOperationByName(String name);
+
+    Operations changeOperationCategory(Operations operation);
 }

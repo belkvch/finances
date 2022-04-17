@@ -1,12 +1,10 @@
 package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
+import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
-import com.belkvch.finances.financesApp.entyti.Accounts;
-import com.belkvch.finances.financesApp.entyti.Operations;
-import com.belkvch.finances.financesApp.entyti.Role;
-import com.belkvch.finances.financesApp.entyti.User;
+import com.belkvch.finances.financesApp.entyti.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,13 +36,15 @@ public class OperationServlet extends HttpServlet {
 
                 Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
                 if (account.getUserId().getId() == userId) {
+                    List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
+                    req.setAttribute("categories", categories);
 
-                List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
-                List<Operations> operationsList = new ArrayList<>();
-                req.setAttribute("operationsList", operationsList);
-                operationsList.add(new Operations(id));
-                req.setAttribute("operations", operations);
-                getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
+                    List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
+                    List<Operations> operationsList = new ArrayList<>();
+                    req.setAttribute("operationsList", operationsList);
+                    operationsList.add(new Operations(id));
+                    req.setAttribute("operations", operations);
+                    getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
                 } else {
                     resp.sendRedirect("/error");
                 }
@@ -83,13 +83,16 @@ public class OperationServlet extends HttpServlet {
                 resp.sendRedirect("/error");
             }
 
+            int categoryId = Integer.parseInt(req.getParameter("category_id"));
+            operation.setCategoryId(new Category(categoryId));
+
             try {
                 BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
                 if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
                     operation.setPriceOfOperation(bigDecimal);
                     Accounts account = DefaultAccountDAO.getInstance().getAccountById(operation.getAccountId());
                     BigDecimal subtract = account.getAmount().subtract(bigDecimal);
-                    if (subtract.compareTo(BigDecimal.valueOf(0)) > 0) {
+                    if (subtract.compareTo(BigDecimal.valueOf(0)) > 0 || subtract.compareTo(BigDecimal.valueOf(0)) == 0) {
                         account.setAmount(subtract);
                         DefaultAccountDAO.getInstance().changeOperationAmount(account);
                         DefaultOperationsDAO.getInstance().addNewOperation(operation);

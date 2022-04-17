@@ -55,7 +55,9 @@
         </li>
         <li class="list-group-item"> Date: <c:out value="${operation.getDateOfOperation()}"/>
         </li>
-        <li class="list-group-item"> Price: <c:out value="${operation.getPriceOfOperation()}"/>
+        <li class="list-group-item"> Amount: <c:out value="${operation.getPriceOfOperation()}"/>
+        </li>
+        <li class="list-group-item"> Category: <c:out value="${operation.getCategoryId().getName()}"/>
         </li>
     </ul>
 </div>
@@ -82,9 +84,18 @@
             </div>
         </div>
         <div class="mb-3">
-            <label>Operation salary:
+            <label>Operation amount:
                 <input type="number" min="0.01" step=".01" name="salary" value="<c:out
         value="${operation.getPriceOfOperation()}"/>" class="form-control" required/>
+            </label>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Operation category:
+                <select class="form-select"  name="category_id">
+                    <c:forEach items="${categories}" var="categories">
+                        <option value="${categories.getId()}"> <c:out value="${categories.getName()}"/></option>
+                    </c:forEach>
+                </select>
             </label>
         </div>
         <div class="mb-3">

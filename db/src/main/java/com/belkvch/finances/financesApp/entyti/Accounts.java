@@ -11,6 +11,10 @@ public class Accounts {
     public Accounts() {
     }
 
+    public Accounts(int id) {
+        this.id = id;
+    }
+
     public Accounts(BigDecimal amount, Currency currencyId, User userId) {
         this.amount = amount;
         this.currencyId = currencyId;

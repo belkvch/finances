@@ -60,6 +60,7 @@
             <th><b>Id</b></th>
             <th><b>Date</b></th>
             <th><b>Price</b></th>
+            <th><b>Category</b></th>
             <th><b>Edit</b></th>
             <th><b>Delete</b></th>
         </tr>
@@ -74,6 +75,8 @@
                 <td><c:out value="${operation.getDateOfOperation()}"/>
                 </td>
                 <td><c:out value="${operation.getPriceOfOperation()}"/>
+                </td>
+                <td><c:out value="${operation.getCategoryId().getName()}"/>
                 </td>
                 <td><a href="/update?id=${operation.id}">Edit</a></td>
                 <td>
@@ -97,7 +100,7 @@
     <form method="POST" action="/operations">
         <div class="mb-3 mt-3">
             <c:forEach items="${operationsList}" var="operationsList">
-            <input type="hidden" name="id" value="${operationsList.getAccountId()}">
+                <input type="hidden" name="id" value="${operationsList.getAccountId()}">
             </c:forEach>
             <label>Operation name:
                 <input name="name" placeholder="Enter name" class="form-control" required/>
@@ -111,9 +114,18 @@
             </div>
         </div>
         <div class="mb-3">
-            <label>Operation salary:
+            <label>Operation amount:
                 <input type="number" min="0.01" step=".01" name="salary" placeholder="Enter price" class="form-control"
                        required/>
+            </label>
+        </div>
+        <div class="mb-3">
+                <label class="form-label">Operation category:
+                    <select class="form-select"  name="category_id">
+                <c:forEach items="${categories}" var="categories">
+                    <option value="${categories.getId()}"> <c:out value="${categories.getName()}"/></option>
+                </c:forEach>
+            </select>
             </label>
         </div>
         <div class="mb-3">
@@ -124,6 +136,7 @@
         </div>
     </form>
 </div>
+
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section

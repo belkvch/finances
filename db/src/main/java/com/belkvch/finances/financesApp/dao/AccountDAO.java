@@ -12,4 +12,8 @@ public interface AccountDAO {
     Accounts getAccountById(int id);
 
     Accounts changeOperationAmount(Accounts account);
+
+    Accounts getLastAccount();
+
+    Accounts getAccountCategoryConn(Accounts newAccount);
 }

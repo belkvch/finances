@@ -3,16 +3,11 @@
 
 <html>
 <head>
-    <title>Operations</title>
+    <title>Categories</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        button {
-            margin: 5px 5px 5px 5px
-        }
-    </style>
 </head>
 <body>
 
@@ -40,17 +35,8 @@
                 </li>
             </ul>
         </div>
-        <div class="dropdown">
-            <button type="button" class="btn btn-outline-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown">
-                Account info
-            </button>
-            <ul class="dropdown-menu">
-                <li><span class="dropdown-item-text">Login: ${sessionScope.login} </span></li>
-                <li><span class="dropdown-item-text">ID: ${sessionScope.id} </span></li>
-            </ul>
-        </div>
         <div class="d-flex">
-            <form method="post" action="/logout" class="d-flex">
+            <form method="post" action="/logout" style="display:inline;" class="d-flex">
                 <input type="hidden">
                 <button type="submit" class="btn btn-outline-primary btn-sm"
                         onclick="return confirm('Are you sure to sign out?');">Sign Out
@@ -63,73 +49,72 @@
 <center>
     <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
 </center>
-
 <br>
 
-<c:forEach items="${accounts}" var="accounts">
-    <c:if test="${accounts != null}">
-        <div class="container mt-3">
-            <h2>You're accounts:</h2>
-            <table class="table table-borderless">
-                <thead>
-                <tr>
-                    <th><b>Balance</b></th>
-                    <th><b>Currency</b></th>
-                    <th><b>Operations</b></th>
-                    <th><b>Categories</b></th>
-                    <th><b>Add</b></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><c:out value="${accounts.getAmount()}"/>
-                    <td><c:out value="${accounts.getCurrencyId().getName()}"/>
-                    <td><a href="/operations?id=${accounts.id}">Show</a>
-                    <td><a href="/category?id=${accounts.id}">Show</a>
-                    <td>
-                        <form method="POST" action="/updateAccount">
+<div class="container mt-3">
+    <h2>Categories:</h2>
+    <table class="table table-borderless">
+        <thead>
+        <tr>
+            <th><b>Name</b></th>
+            <th><b>Update</b></th>
+            <th><b>Delete</b></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${categories}" var="categories">
+            <tr>
+                <td><c:out value="${categories.getName()}"/>
+                </td>
+                <td>
+                    <form method="POST" action="/updateCategory">
+                        <c:forEach items="${accounts}" var="accounts">
+                            <input type="hidden" name="id" value="${accounts.getId()}">
+                        </c:forEach>
+                        <c:if test="${categories.id > 5}">
+                        <div class="mb-3">
+                            <label>
+                                <input name="category_name" class="form-control" required/>
+                            </label>
+                            <input type="hidden" name="category_id" value="${categories.getId()}">
+                            <button type="submit" class="btn btn-outline-primary">Change</button>
+                        </div>
+                    </c:if>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" action="/deleteCategory">
+                        <c:forEach items="${accounts}" var="accounts">
+                            <input type="hidden" name="id" value="${accounts.getId()}">
+                        </c:forEach>
+                        <c:if test="${categories.id > 5}">
                             <div class="mb-3">
-                                <label>
-                                    <input type="number" min="0.01" step=".01" name="amount" class="form-control"
-                                           required/>
-                                </label>
-                                <input type="hidden" name="id" value="${accounts.getId()}">
-                                <button type="submit" class="btn btn-outline-primary">Add</button>
+                                <input type="hidden" name="category_id" value="${categories.getId()}">
+                                <button type="submit" class="btn btn-outline-primary"
+                                        onclick="return confirm('Are you sure you want to delete this item?');">Delete
+                                </button>
                             </div>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <br>
-    </c:if>
-</c:forEach>
+                        </c:if>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 
 
 <div class="container mt-3">
-    <h2>Add new account</h2>
-    <form method="POST" action="/accounts">
-        <div class="mb-3">
-            <label>Account balance:
-                <input type="number" min="0.01" step=".01" name="amount" placeholder="Enter price" class="form-control"
-                       required/>
+    <h2>Add new category</h2>
+    <form method="POST" action="/category">
+        <div class="mb-3 mt-3">
+            <c:forEach items="${accounts}" var="accounts">
+                <input type="hidden" name="id" value="${accounts.getId()}">
+            </c:forEach>
+            <label>Category name:
+                <input name="category_name" placeholder="Enter name" class="form-control" required/>
             </label>
         </div>
-
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio1" name="currency_id" value="1" checked>
-            <label class="form-check-label" for="radio1">BYN</label>
-        </div>
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio2" name="currency_id" value="2">
-            <label class="form-check-label" for="radio2">EUR</label>
-        </div>
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio3" name="currency_id" value="3">
-            <label class="form-check-label" for="radio3">USD</label>
-        </div>
-
         <div class="mb-3">
             <input type="hidden" name="actionType" value="create">
         </div>
@@ -138,6 +123,9 @@
         </div>
     </form>
 </div>
+
+
+
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section
@@ -188,4 +176,3 @@
 
 </body>
 </html>
-

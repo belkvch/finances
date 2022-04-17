@@ -1,7 +1,9 @@
 package com.belkvch.finances.financesApp.servlet;
 
+import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
+import com.belkvch.finances.financesApp.entyti.Accounts;
 import com.belkvch.finances.financesApp.entyti.Operations;
 import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
@@ -27,6 +29,9 @@ public class DeleteServlet extends HttpServlet {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
+                Accounts account = DefaultAccountDAO.getInstance().getAccountById(operation.getAccountId());
+                account.setAmount(operation.getPriceOfOperation().add(account.getAmount()));
+                DefaultAccountDAO.getInstance().changeOperationAmount(account);
                 DefaultOperationsDAO.getInstance().deleteOperation(operation);
                 response.sendRedirect(request.getContextPath() + "/operations?id=" + operation.getAccountId());
             } catch (Exception ex) {

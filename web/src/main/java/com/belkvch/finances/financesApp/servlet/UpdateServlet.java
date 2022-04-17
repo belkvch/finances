@@ -1,10 +1,10 @@
 package com.belkvch.finances.financesApp.servlet;
 
+import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
+import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
-import com.belkvch.finances.financesApp.entyti.Operations;
-import com.belkvch.finances.financesApp.entyti.Role;
-import com.belkvch.finances.financesApp.entyti.User;
+import com.belkvch.finances.financesApp.entyti.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,6 +35,9 @@ public class UpdateServlet extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
                 if (operation != null) {
+                    List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(operation.getAccountId());
+                    request.setAttribute("categories", categories);
+
                     List<Operations> operations = new ArrayList<>();
                     operations.add(operation);
                     request.setAttribute("operations", operations);
@@ -78,14 +81,36 @@ public class UpdateServlet extends HttpServlet {
                 try {
                     BigDecimal bigDecimal = new BigDecimal(request.getParameter("salary"));
                     if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
-                        operation.setPriceOfOperation(bigDecimal);
-                        DefaultOperationsDAO.getInstance().changeOperationSalary(operation);
+                        if (bigDecimal.compareTo(operation.getPriceOfOperation())>0) {
+                            BigDecimal difference = bigDecimal.subtract(operation.getPriceOfOperation());
+                            Accounts account = DefaultAccountDAO.getInstance().getAccountById(operation.getAccountId());
+                            BigDecimal differenceAccount = account.getAmount().subtract(difference);
+                            account.setAmount(differenceAccount);
+                            DefaultAccountDAO.getInstance().changeOperationAmount(account);
+                            operation.setPriceOfOperation(bigDecimal);
+                            DefaultOperationsDAO.getInstance().changeOperationSalary(operation);
+                        } else if (bigDecimal.compareTo(operation.getPriceOfOperation())<0) {
+                            BigDecimal difference = operation.getPriceOfOperation().subtract(bigDecimal);
+                            Accounts account = DefaultAccountDAO.getInstance().getAccountById(operation.getAccountId());
+                            BigDecimal differenceAccount = account.getAmount().add(difference);
+                            account.setAmount(differenceAccount);
+                            DefaultAccountDAO.getInstance().changeOperationAmount(account);
+                            operation.setPriceOfOperation(bigDecimal);
+                            DefaultOperationsDAO.getInstance().changeOperationSalary(operation);
+                        } else {
+                            operation.setPriceOfOperation(bigDecimal);
+                            DefaultOperationsDAO.getInstance().changeOperationSalary(operation);
+                        }
                     } else {
                         response.sendRedirect("/error");
                     }
                 } catch (NumberFormatException e) {
                     response.sendRedirect("/error");
                 }
+
+                int categoryId = Integer.parseInt(request.getParameter("category_id"));
+                operation.setCategoryId(new Category(categoryId));
+                DefaultOperationsDAO.getInstance().changeOperationCategory(operation);
             }
             response.sendRedirect("/operations?id=" + operation.getAccountId());
         } else {

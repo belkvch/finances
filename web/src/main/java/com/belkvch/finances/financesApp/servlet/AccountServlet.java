@@ -1,6 +1,7 @@
 package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
+import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
@@ -60,6 +61,8 @@ public class AccountServlet extends HttpServlet {
                 resp.sendRedirect("/error");
             }
             DefaultAccountDAO.getInstance().addNewAccount(account);
+            Accounts newAccount = DefaultAccountDAO.getInstance().getLastAccount();
+            DefaultAccountDAO.getInstance().getAccountCategoryConn(newAccount);
         } else {
             resp.sendRedirect("/error");
         }
