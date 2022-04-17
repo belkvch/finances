@@ -49,73 +49,62 @@
 <center>
     <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
 </center>
-<br>
-
-<div class="container mt-3">
-    <h2>Your operations:</h2>
-    <table class="table table-borderless">
-        <thead>
-        <tr>
-            <th><b>Name</b></th>
-            <th><b>Id</b></th>
-            <th><b>Date</b></th>
-            <th><b>Price</b></th>
-            <th><b>Edit</b></th>
-            <th><b>Delete</b></th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${operations}" var="operation">
-            <tr>
-                <td><c:out value="${operation.getNameOfOperation()}"/>
-                </td>
-                <td><c:out value="${operation.getId()}"/>
-                </td>
-                <td><c:out value="${operation.getDateOfOperation()}"/>
-                </td>
-                <td><c:out value="${operation.getPriceOfOperation()}"/>
-                </td>
-                <td><a href="/update?id=${operation.id}">Edit</a></td>
-                <td>
-                    <form method="post" action="/delete" style="display:inline;">
-                        <input type="hidden" name="id" value="${operation.getId()}">
-                        <button type="submit" class="btn btn-outline-primary"
-                                onclick="return confirm('Are you sure you want to delete this item?');">Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-</div>
 
 <br>
+
+<c:forEach items="${accounts}" var="accounts">
+    <c:if test="${accounts != null}">
+        <div class="container mt-3">
+            <h2>You're accounts:</h2>
+            <table class="table table-borderless">
+                <thead>
+                <tr>
+                    <th><b>Balance</b></th>
+                    <th><b>Currency</b></th>
+                    <th><b>Operations</b></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><c:out value="${accounts.getAmount()}"/>
+                    <td><c:out value="${accounts.getCurrencyId().getName()}"/>
+                    <td><a href="/operations?id=${accounts.id}">Show</a>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+    </c:if>
+</c:forEach>
+
 
 <div class="container mt-3">
     <h2>Add new operation</h2>
-    <form method="POST" action="/operations">
-        <div class="mb-3 mt-3">
-            <c:forEach items="${operationsList}" var="operationsList">
-            <input type="hidden" name="id" value="${operationsList.getAccountId()}">
-            </c:forEach>
-            <label>Operation name:
-                <input name="name" placeholder="Enter name" class="form-control" required/>
-            </label>
-        </div>
+    <form method="POST" action="/accounts">
+<%--        <div class="mb-3 mt-3">--%>
+<%--            <input type="hidden" value="<c:out value="${account.getUserId.getId()}"/>" name="user_id"/>--%>
+<%--        </div>--%>
+
         <div class="mb-3">
-            <div class="form-group">
-                <label>Operation date:
-                    <input type="date" name="date" data-date-format='yyyy-mm-dd' class="form-control" required>
-                </label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label>Operation salary:
-                <input type="number" min="0.01" step=".01" name="salary" placeholder="Enter price" class="form-control"
+            <label>Account balance:
+                <input type="number" min="0.01" step=".01" name="amount" placeholder="Enter price" class="form-control"
                        required/>
             </label>
         </div>
+
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio1" name="currency_id" value="1" checked>
+            <label class="form-check-label" for="radio1">BYN</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio2" name="currency_id" value="2">
+            <label class="form-check-label" for="radio2">EUR</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio3" name="currency_id" value="3">
+            <label class="form-check-label" for="radio3">USD</label>
+        </div>
+
         <div class="mb-3">
             <input type="hidden" name="actionType" value="create">
         </div>
@@ -174,3 +163,4 @@
 
 </body>
 </html>
+

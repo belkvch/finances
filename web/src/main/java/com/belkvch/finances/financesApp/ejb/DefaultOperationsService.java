@@ -1,13 +1,15 @@
-package com.belkvch.finances.financesApp.service;
+package com.belkvch.finances.financesApp.ejb;
 
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.OperationsDAO;
 import com.belkvch.finances.financesApp.entyti.Operations;
+import com.belkvch.finances.financesApp.service.OperationsService;
 
 
+import javax.ejb.Stateful;
 import java.util.List;
 
-
+@Stateful
 public class DefaultOperationsService implements OperationsService {
     private OperationsDAO operationsDAO = DefaultOperationsDAO.getInstance();
 

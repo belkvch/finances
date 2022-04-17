@@ -52,38 +52,26 @@
 <br>
 
 <div class="container mt-3">
-    <h2>Your operations:</h2>
+    <h2>Users: </h2>
     <table class="table table-borderless">
         <thead>
         <tr>
-            <th><b>Name</b></th>
             <th><b>Id</b></th>
-            <th><b>Date</b></th>
-            <th><b>Price</b></th>
+            <th><b>Username</b></th>
+            <th><b>Role</b></th>
             <th><b>Edit</b></th>
-            <th><b>Delete</b></th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${operations}" var="operation">
+        <c:forEach items="${users}" var="user">
             <tr>
-                <td><c:out value="${operation.getNameOfOperation()}"/>
+                <td><c:out value="${user.getId()}"/>
                 </td>
-                <td><c:out value="${operation.getId()}"/>
+                <td><c:out value="${user.getLogin()}"/>
                 </td>
-                <td><c:out value="${operation.getDateOfOperation()}"/>
+                <td><c:out value="${user.getRoleId().getName()}"/>
                 </td>
-                <td><c:out value="${operation.getPriceOfOperation()}"/>
-                </td>
-                <td><a href="/update?id=${operation.id}">Edit</a></td>
-                <td>
-                    <form method="post" action="/delete" style="display:inline;">
-                        <input type="hidden" name="id" value="${operation.getId()}">
-                        <button type="submit" class="btn btn-outline-primary"
-                                onclick="return confirm('Are you sure you want to delete this item?');">Delete
-                        </button>
-                    </form>
-                </td>
+                <td><a href="/update-user?id=${user.id}">Edit</a></td>
             </tr>
         </c:forEach>
         </tbody>
@@ -92,38 +80,6 @@
 
 <br>
 
-<div class="container mt-3">
-    <h2>Add new operation</h2>
-    <form method="POST" action="/operations">
-        <div class="mb-3 mt-3">
-            <c:forEach items="${operationsList}" var="operationsList">
-            <input type="hidden" name="id" value="${operationsList.getAccountId()}">
-            </c:forEach>
-            <label>Operation name:
-                <input name="name" placeholder="Enter name" class="form-control" required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <div class="form-group">
-                <label>Operation date:
-                    <input type="date" name="date" data-date-format='yyyy-mm-dd' class="form-control" required>
-                </label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label>Operation salary:
-                <input type="number" min="0.01" step=".01" name="salary" placeholder="Enter price" class="form-control"
-                       required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <input type="hidden" name="actionType" value="create">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Add</button>
-        </div>
-    </form>
-</div>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section

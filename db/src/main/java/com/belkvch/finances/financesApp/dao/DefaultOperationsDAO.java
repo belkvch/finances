@@ -9,14 +9,15 @@ import java.util.List;
 
 public class DefaultOperationsDAO implements OperationsDAO {
     private static volatile DefaultOperationsDAO instance;
-    private static final String SELECT_ALL = "select * from finances_bd";
-    private static final String SELECT_OPERATION_BY_ID = "select * from finances_bd where id = ?";
-    private static final String INSERT_OPERATION = "insert into finances_bd(name,date_op,salary)  VALUES(?,?,?)";
-    private static final String UPDATE_OPERATION_NAME = "update finances_bd set name = ? where id = ?";
-    private static final String UPDATE_OPERATION_DATE = "update finances_bd set date_op = ? where id = ?";
-    private static final String UPDATE_OPERATION_SALARY = "update finances_bd set salary = ? where id = ?";
-    private static final String DELETE_OPERATION = "delete from finances_bd where id = ?";
-    private static final String SELECT_OPERATION_BY_NAME = "select * from finances_bd where name = ?";
+    private static final String SELECT_ALL = "select * from operations";
+    private static final String SELECT_ALL_FOR_ACCOUNT = "select * from operations where account_id=?";
+    private static final String SELECT_OPERATION_BY_ID = "select * from operations where id = ?";
+    private static final String INSERT_OPERATION = "insert into operations(name,date_op,salary,account_id)  VALUES(?,?,?,?)";
+    private static final String UPDATE_OPERATION_NAME = "update operations set name = ? where id = ?";
+    private static final String UPDATE_OPERATION_DATE = "update operations set date_op = ? where id = ?";
+    private static final String UPDATE_OPERATION_SALARY = "update operations set salary = ? where id = ?";
+    private static final String DELETE_OPERATION = "delete from operations where id = ?";
+    private static final String SELECT_OPERATION_BY_NAME = "select * from operations where name = ?";
 
     private DefaultOperationsDAO() {
     }
@@ -38,6 +39,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
         operation.setNameOfOperation(resultSet.getString("name"));
         operation.setDateOfOperation(resultSet.getDate("date_op"));
         operation.setPriceOfOperation(resultSet.getBigDecimal("salary"));
+        operation.setAccountId(resultSet.getInt("account_id"));
         return operation;
     }
 
@@ -99,6 +101,25 @@ public class DefaultOperationsDAO implements OperationsDAO {
     }
 
     @Override
+    public List<Operations> showAllOperationsForAccount(int id) {
+        List<Operations> operations = new ArrayList<>();
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FOR_ACCOUNT);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+            operations.add(initOperation(resultSet));
+        }
+    } catch(
+    SQLException throwables)
+
+    {
+        throwables.printStackTrace();
+    }
+        return operations;
+    }
+
+    @Override
     public Operations addNewOperation(Operations operation) {
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_OPERATION);
@@ -107,6 +128,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
             java.sql.Date date = new java.sql.Date(utilDate.getTime());
             preparedStatement.setDate(2, date);
             preparedStatement.setBigDecimal(3, operation.getPriceOfOperation());
+            preparedStatement.setInt(4, operation.getAccountId());
             preparedStatement.executeUpdate();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {
@@ -116,13 +138,11 @@ public class DefaultOperationsDAO implements OperationsDAO {
             return operation;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println(e);
         }
         return null;
     }
-
-//    HELP ME, IDK, MAYBE WRONG SQL UPDATE, I TRIED WITH COMMAS, BUT IT DIDN'T WORK TOO :(((
 
     @Override
     public Operations changeOperationName(Operations operation) {

@@ -5,23 +5,44 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.Properties;
 import java.util.Scanner;
 
+import com.belkvch.finances.financesApp.ejb.DefaultOperationsService;
 import com.belkvch.finances.financesApp.entyti.Operations;
-import com.belkvch.finances.financesApp.service.DefaultOperationsService;
 import com.belkvch.finances.financesApp.service.OperationsService;
 import com.belkvch.finances.financesApp.view.OperationsView;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 public class OperationsController {
-    private final DefaultOperationsService defaultOperationsService;
     private final OperationsView operationsView;
+    private OperationsService operationsService;
 
-    public OperationsController(DefaultOperationsService defaultOperationsService, OperationsView operationsView) {
-        this.defaultOperationsService = defaultOperationsService;
-        this.operationsView = operationsView;
+//    public OperationsController(OperationsService operationsService, OperationsView operationsView) {
+//        this.operationsService = operationsService;
+//        this.operationsView = operationsView;
+//    }
+
+        public OperationsController(OperationsView operationsView) {
+            this.operationsView = operationsView;
+            this.operationsService = DefaultOperationsService.getInstance();
+
+        Properties p = new Properties();
+        p.setProperty("java.naming.factory.initial", "org.wildfly.naming.client.WildFlyInitialContextFactory");
+        p.setProperty("java.naming.provider.url", "remote+http://localhost:8080");
+        p.setProperty("java.naming.security.principal", "jndiuser");
+        p.setProperty("java.naming.security.credentials", "user");
+
+        try {
+            InitialContext ctx = new InitialContext(p);
+            System.out.println("checking on remote");
+            this.operationsService = (OperationsService) ctx.lookup("web-1.0-SNAPSHOT/web-1.0-SNAPSHOT/DefaultOperationsService!com.belkvch.finances.financesApp.service.OperationsService");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
     }
-
-    private OperationsService operationsService = DefaultOperationsService.getInstance();
 
     public void controllerRun() throws NullPointerException, InputMismatchException, ParseException {
         System.out.println("Welcome, user!");
@@ -98,7 +119,7 @@ public class OperationsController {
                     System.out.println("Enter the price of operation: ");
                     BigDecimal newPriceOfOperation = scannerSalary.nextBigDecimal();
                     operation.setPriceOfOperation(newPriceOfOperation.abs());
-                    operationsService.addNewOperation(operation);
+//                    operationsService.addNewOperation(operation);
                     System.out.print("Operation was added.");
 
                     System.out.println();
@@ -195,7 +216,7 @@ public class OperationsController {
 //        Task 9 (Show all operations)
                 case "6":
                     System.out.println("All operations:");
-                    operationsView.showAllOperationsDetails(defaultOperationsService.showAllOperations());
+                    operationsView.showAllOperationsDetails(operationsService.showAllOperations());
                     break;
 
                 case "7":

@@ -46,84 +46,52 @@
     </div>
 </nav>
 
-<center>
-    <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
-</center>
-<br>
-
 <div class="container mt-3">
-    <h2>Your operations:</h2>
-    <table class="table table-borderless">
-        <thead>
-        <tr>
-            <th><b>Name</b></th>
-            <th><b>Id</b></th>
-            <th><b>Date</b></th>
-            <th><b>Price</b></th>
-            <th><b>Edit</b></th>
-            <th><b>Delete</b></th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${operations}" var="operation">
-            <tr>
-                <td><c:out value="${operation.getNameOfOperation()}"/>
-                </td>
-                <td><c:out value="${operation.getId()}"/>
-                </td>
-                <td><c:out value="${operation.getDateOfOperation()}"/>
-                </td>
-                <td><c:out value="${operation.getPriceOfOperation()}"/>
-                </td>
-                <td><a href="/update?id=${operation.id}">Edit</a></td>
-                <td>
-                    <form method="post" action="/delete" style="display:inline;">
-                        <input type="hidden" name="id" value="${operation.getId()}">
-                        <button type="submit" class="btn btn-outline-primary"
-                                onclick="return confirm('Are you sure you want to delete this item?');">Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+    <c:forEach items="${users}" var="user">
+    <h2>Information about user ID#<c:out value="${user.getId()}"/>
+    </h2>
+    <ul class="list-group">
+        <li class="list-group-item"> Username: <c:out value="${user.getLogin()}"/>
+        </li>
+        <li class="list-group-item"> Role: <c:out value="${user.getRoleId().getName()}"/>
+        </li>
+    </ul>
 </div>
 
-<br>
-
 <div class="container mt-3">
-    <h2>Add new operation</h2>
-    <form method="POST" action="/operations">
+    <h2>Update the user</h2>
+    <form method="POST" action="/update-user">
         <div class="mb-3 mt-3">
-            <c:forEach items="${operationsList}" var="operationsList">
-            <input type="hidden" name="id" value="${operationsList.getAccountId()}">
-            </c:forEach>
-            <label>Operation name:
-                <input name="name" placeholder="Enter name" class="form-control" required/>
-            </label>
+            <input type="hidden" value="<c:out value="${user.getId()}"/>" name="id"/>
+        </div>
+
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio1" name="role_id" value="1" checked>
+            <label class="form-check-label" for="radio1">USER</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio2" name="role_id" value="2">
+            <label class="form-check-label" for="radio2">ADMIN</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio3" name="role_id" value="3">
+            <label class="form-check-label" for="radio3">BAN</label>
+        </div>
+
+        <div class="mb-3">
+            <input type="hidden" name="actionType" value="update">
         </div>
         <div class="mb-3">
-            <div class="form-group">
-                <label>Operation date:
-                    <input type="date" name="date" data-date-format='yyyy-mm-dd' class="form-control" required>
-                </label>
-            </div>
+            <button type="submit" class="btn btn-outline-primary">Update the user</button>
         </div>
         <div class="mb-3">
-            <label>Operation salary:
-                <input type="number" min="0.01" step=".01" name="salary" placeholder="Enter price" class="form-control"
-                       required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <input type="hidden" name="actionType" value="create">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Add</button>
+            <a href="/admin">Users</a>
         </div>
     </form>
 </div>
+</c:forEach>
+
+<br>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section

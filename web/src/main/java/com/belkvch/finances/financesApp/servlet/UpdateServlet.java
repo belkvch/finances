@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @WebServlet("/update")
 public class UpdateServlet extends HttpServlet {
@@ -22,7 +24,9 @@ public class UpdateServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
             if (operation != null) {
-                request.setAttribute("operation", operation);
+                List<Operations> operations = new ArrayList<>();
+                operations.add(operation);
+                request.setAttribute("operations", operations);
                 getServletContext().getRequestDispatcher("/update.jsp").forward(request, response);
             } else {
                 response.sendRedirect("/error");
@@ -71,10 +75,10 @@ public class UpdateServlet extends HttpServlet {
                     response.sendRedirect("/error");
                 }
             }
+            response.sendRedirect("/operations?id=" + operation.getAccountId());
         } else {
             response.sendRedirect("/error");
         }
-        response.sendRedirect("/operations");
     }
 }
 
