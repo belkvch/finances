@@ -32,6 +32,8 @@ public class AccountServlet extends HttpServlet {
         } else {
             List<Accounts> accounts = DefaultAccountDAO.getInstance().showAllAccountsForUser(userId);
             req.setAttribute("accounts", accounts);
+            List<Accounts> accountsList = DefaultAccountDAO.getInstance().showAllAccountsForUser(userId);
+            req.setAttribute("accountsList", accountsList);
             req.getRequestDispatcher("/accounts.jsp").forward(req, resp);
         }
     }

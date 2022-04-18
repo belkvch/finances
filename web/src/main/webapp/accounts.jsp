@@ -76,6 +76,7 @@
             <th><b>Operations</b></th>
             <th><b>Categories</b></th>
             <th><b>Add</b></th>
+            <th><b>Transfer</b></th>
         </tr>
         </thead>
         <c:forEach items="${accounts}" var="accounts">
@@ -94,6 +95,32 @@
                                            required/>
                                 </label>
                                 <input type="hidden" name="id" value="${accounts.getId()}">
+                                <button type="submit" class="btn btn-outline-primary">Add</button>
+                            </div>
+                        </form>
+                    </td>
+
+                    <td>
+                        <form method="POST" action="/transfer">
+                            <div class="mb-3">
+                                <label>
+                                    <input type="number" min="0.01" step=".01" name="transfer_amount" class="form-control"
+                                           required/>
+                                </label>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <select class="form-select" name="account_id">
+                                        <c:forEach items="${accountsList}" var="accountsList">
+                                            <c:if test="${accountsList.getId() != accounts.getId()}">
+                                            <option value="${accountsList.getId()}">
+                                                <c:out value="${accountsList.getCurrencyId().getName()}"/></option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                </label>
+                                <input type="hidden" name="id" value="${accounts.getId()}">
+                                <input type="hidden" name="actionType" value="transfer">
                                 <button type="submit" class="btn btn-outline-primary">Add</button>
                             </div>
                         </form>

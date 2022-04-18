@@ -39,7 +39,7 @@ public class DefaultAccountDAO implements AccountDAO {
         Accounts accounts = new Accounts();
         accounts.setId(resultSet.getInt("id"));
         accounts.setAmount(resultSet.getBigDecimal("amount"));
-        accounts.setCurrencyId(new Currency(resultSet.getInt("id"), resultSet.getString("name")));
+        accounts.setCurrencyId(new Currency(resultSet.getInt("currency_id"), resultSet.getString("name")));
         accounts.setUserId(new User(resultSet.getInt("user_id")));
         return accounts;
     }

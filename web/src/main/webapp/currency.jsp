@@ -57,12 +57,18 @@
         <thead>
         <tr>
             <th><b>Name</b></th>
+            <th><b>TO BYN</b></th>
+            <th><b>TO EUR</b></th>
+            <th><b>TO USD</b></th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${currencies}" var="currencies">
             <tr>
                 <td><c:out value="${currencies.getName()}"/>
+                <td><c:out value="${currencies.getToByn()}"/>
+                <td><c:out value="${currencies.getToEur()}"/>
+                <td><c:out value="${currencies.getToUsd()}"/>
             </tr>
         </c:forEach>
         </tbody>
