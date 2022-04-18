@@ -10,7 +10,7 @@
 
 <center>
     <div class="container mt-3">
-        <h2 class="display-5"> Registration to CatCash: </h2>
+        <h2 class="display-5"> Login to CatCash: </h2>
         <form method="POST" action="/login">
             <div class="container mt-3">
                 <label>Login <input name="login" class="form-control" required/></label>

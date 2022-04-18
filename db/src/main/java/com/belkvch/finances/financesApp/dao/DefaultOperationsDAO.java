@@ -3,7 +3,6 @@ package com.belkvch.finances.financesApp.dao;
 import com.belkvch.finances.financesApp.dao.DBManager.DBManager;
 import com.belkvch.finances.financesApp.entyti.Category;
 import com.belkvch.finances.financesApp.entyti.Operations;
-import com.belkvch.finances.financesApp.entyti.Role;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,8 +11,9 @@ import java.util.List;
 public class DefaultOperationsDAO implements OperationsDAO {
     private static volatile DefaultOperationsDAO instance;
     private static final String SELECT_ALL = "select * from operations, category where operations.category_id = category.id";
-    private static final String SELECT_ALL_FOR_ACCOUNT = "select * from operations, category where operations.account_id=? and operations.category_id = category.id";
+    private static final String SELECT_ALL_FOR_ACCOUNT = "select * from operations, category where operations.account_id=? and operations.date_op=? and operations.category_id = category.id";
     private static final String SELECT_OPERATION_BY_ID = "select * from operations, category where operations.id = ? and operations.category_id = category.id";
+    private static final String SELECT_OPERATION_FOR_HISTORY = "select * from operations, category where operations.account_id=? and operations.category_id = category.id";
     private static final String INSERT_OPERATION = "insert into operations(name,date_op,salary,account_id,category_id)  VALUES(?,?,?,?,?)";
     private static final String UPDATE_OPERATION_NAME = "update operations set name = ? where id = ?";
     private static final String UPDATE_OPERATION_DATE = "update operations set date_op = ? where id = ?";
@@ -119,18 +119,36 @@ public class DefaultOperationsDAO implements OperationsDAO {
     }
 
     @Override
-    public List<Operations> showAllOperationsForAccount(int id) {
+    public List<Operations> showAllOperationsForHistory(int id) {
+        List<Operations> operations = new ArrayList<>();
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_OPERATION_FOR_HISTORY);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                operations.add(initOperation(resultSet));
+            }
+        } catch(
+                SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+        return operations;
+    }
+
+    @Override
+    public List<Operations> showAllOperationsForAccount(int id, Date date) {
         List<Operations> operations = new ArrayList<>();
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FOR_ACCOUNT);
             preparedStatement.setInt(1, id);
+            preparedStatement.setDate(2, date);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
             operations.add(initOperation(resultSet));
         }
     } catch(
     SQLException throwables)
-
     {
         throwables.printStackTrace();
     }

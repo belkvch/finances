@@ -66,6 +66,7 @@ public class AccountServlet extends HttpServlet {
         } else {
             resp.sendRedirect("/error");
         }
+        resp.sendRedirect("/accounts");
     }
 }
 

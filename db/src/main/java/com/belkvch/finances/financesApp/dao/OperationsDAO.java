@@ -2,13 +2,14 @@ package com.belkvch.finances.financesApp.dao;
 
 import com.belkvch.finances.financesApp.entyti.Operations;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface OperationsDAO {
     Operations getOperationById(int id);
     List<Operations> showAllOperations();
-
-    List<Operations> showAllOperationsForAccount(int id);
+    List<Operations> showAllOperationsForHistory(int id);
+    List<Operations> showAllOperationsForAccount(int id, Date date);
 
     Operations addNewOperation(Operations operations);
     Operations deleteOperation(Operations operations);

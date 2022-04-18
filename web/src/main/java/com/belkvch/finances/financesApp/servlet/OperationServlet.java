@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,8 +40,14 @@ public class OperationServlet extends HttpServlet {
                     List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
                     req.setAttribute("categories", categories);
 
-                    List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id);
+                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date today = new Date();
+                    Date todayWithZeroTime = formatter.parse(formatter.format(today));
+                    java.sql.Date date = new java.sql.Date(todayWithZeroTime.getTime());
+
+                    List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id, date);
                     List<Operations> operationsList = new ArrayList<>();
+
                     req.setAttribute("operationsList", operationsList);
                     operationsList.add(new Operations(id));
                     req.setAttribute("operations", operations);
@@ -50,6 +57,8 @@ public class OperationServlet extends HttpServlet {
                 }
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
     }

@@ -93,15 +93,16 @@
     </table>
 </div>
 
-<br>
-
+<c:forEach items="${operationsList}" var="operationsList">
 <div class="container mt-3">
+    <div class="mb-3">
+        <a href="/history?id=${operationsList.accountId}&date=${null}">Operation's history</a>
+    </div>
+    <br>
     <h2>Add new operation</h2>
     <form method="POST" action="/operations">
         <div class="mb-3 mt-3">
-            <c:forEach items="${operationsList}" var="operationsList">
                 <input type="hidden" name="id" value="${operationsList.getAccountId()}">
-            </c:forEach>
             <label>Operation name:
                 <input name="name" placeholder="Enter name" class="form-control" required/>
             </label>
@@ -136,7 +137,7 @@
         </div>
     </form>
 </div>
-
+</c:forEach>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section
