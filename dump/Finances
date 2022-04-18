@@ -5,7 +5,7 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-04-17 04:12:54
+-- Started on 2022-04-19 00:22:08
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -120,7 +120,10 @@ ALTER SEQUENCE public.category_id_seq OWNED BY public.category.id;
 
 CREATE TABLE public.currency (
     id integer NOT NULL,
-    name character varying(250)
+    name character varying(250),
+    to_byn numeric(15,2),
+    to_eur numeric(15,2),
+    to_usd numeric(15,2)
 );
 
 
@@ -343,6 +346,17 @@ COPY public.account_category (account_id, category_id) FROM stdin;
 16	4
 16	5
 16	41
+5	5
+17	1
+17	2
+17	3
+17	4
+17	5
+18	1
+18	2
+18	3
+18	4
+18	5
 \.
 
 
@@ -355,9 +369,11 @@ COPY public.account_category (account_id, category_id) FROM stdin;
 COPY public.accounts (id, amount, currency_id, user_id) FROM stdin;
 7	100.00	1	7
 8	0.05	2	9
-5	1041.07	1	1
-6	560.00	2	1
-16	5.00	1	1
+5	100.00	1	1
+16	70.00	1	1
+6	100.60	2	1
+18	100.00	2	1
+17	108.40	3	1
 \.
 
 
@@ -385,10 +401,10 @@ COPY public.category (id, category_name) FROM stdin;
 -- Data for Name: currency; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.currency (id, name) FROM stdin;
-1	BYN
-2	EUR
-3	USD
+COPY public.currency (id, name, to_byn, to_eur, to_usd) FROM stdin;
+1	BYN	1.00	0.28	0.30
+2	EUR	3.60	1.00	1.08
+3	USD	3.35	0.93	1.00
 \.
 
 
@@ -399,6 +415,7 @@ COPY public.currency (id, name) FROM stdin;
 --
 
 COPY public.operations (id, name, date_op, salary, account_id, category_id) FROM stdin;
+84	Buy IPhone 11	2022-04-18	400.00	5	40
 76	Buy zoom	2022-04-21	23.00	5	40
 77	Skin for Aria	2022-04-17	100.00	5	6
 2	Taxi	2022-12-10	2.00	5	2
@@ -444,7 +461,7 @@ COPY public.users (id, username, password, role_id) FROM stdin;
 -- Name: accounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.accounts_id_seq', 16, true);
+SELECT pg_catalog.setval('public.accounts_id_seq', 18, true);
 
 
 --
@@ -471,7 +488,7 @@ SELECT pg_catalog.setval('public.currency_id_seq', 1, false);
 -- Name: finances_bd_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.finances_bd_id_seq', 80, true);
+SELECT pg_catalog.setval('public.finances_bd_id_seq', 84, true);
 
 
 --
@@ -609,7 +626,7 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.roles(id);
 
 
--- Completed on 2022-04-17 04:12:55
+-- Completed on 2022-04-19 00:22:08
 
 --
 -- PostgreSQL database dump complete
