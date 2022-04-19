@@ -18,4 +18,8 @@ public interface UserDAO {
     User getUserById(int id);
 
     User changeUserRole(User user);
+
+    User changeUserLogin(User user);
+
+    User changeUserPassword(User user);
 }

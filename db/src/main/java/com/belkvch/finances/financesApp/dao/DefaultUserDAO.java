@@ -19,6 +19,8 @@ public class DefaultUserDAO implements UserDAO {
     private static final String SELECT_PASSWORD = "select password from users where username = ?";
     private static final String SELECT_USER_BY_ID = "select * from users,roles where users.id = ? AND users.role_id = roles.id";
     private static final String UPDATE_USER_ROLE = "update users set role_id = ? from roles where users.id = ? AND users.role_id = roles.id";
+    private static final String UPDATE_USER_LOGIN = "update users set username = ? where id = ?";
+    private static final String UPDATE_USER_PASSWORD = "update users set password = ? where id = ?";
 
     public static DefaultUserDAO getInstance() {
         if (instance == null) {
@@ -61,7 +63,6 @@ public class DefaultUserDAO implements UserDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);
             String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
             preparedStatement.setString(1, user.getLogin());
-//            preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(2, passwordHash);
             user.setRoleId(new Role(1,"USER"));
             preparedStatement.setObject(3, user.getRoleId().getId());
@@ -152,6 +153,35 @@ public class DefaultUserDAO implements UserDAO {
 //            if (resultSet.next()) {
 //                return initUser(resultSet);
 //            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public User changeUserLogin(User user) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_LOGIN);
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setInt(2, user.getId());
+            preparedStatement.executeUpdate();
+            return user;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public User changeUserPassword(User user) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_PASSWORD);
+            String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
+            preparedStatement.setString(1, passwordHash);
+            preparedStatement.setInt(2, user.getId());
+            preparedStatement.executeUpdate();
+            return user;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

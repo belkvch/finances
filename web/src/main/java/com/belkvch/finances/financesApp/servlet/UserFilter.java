@@ -37,7 +37,7 @@ public class UserFilter implements Filter {
             httpServletResponse.sendRedirect("/main");
             }
         } else {
-            if ("/login".equals(url) || "/registration".equals(url)) {
+            if ("/login".equals(url) || "/registration".equals(url) || url.startsWith("/ws")) {
                 filterChain.doFilter(servletRequest, servletResponse);
             }
             httpServletRequest.getRequestDispatcher("/login.jsp").forward(httpServletRequest, httpServletResponse);

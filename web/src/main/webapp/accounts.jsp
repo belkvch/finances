@@ -47,6 +47,7 @@
             <ul class="dropdown-menu">
                 <li><span class="dropdown-item-text">Login: ${sessionScope.login} </span></li>
                 <li><span class="dropdown-item-text">ID: ${sessionScope.id} </span></li>
+                <li><span class="dropdown-item-text"><a href="/edit-user?id=${sessionScope.id}">Edit profile</a> </span></li>
             </ul>
         </div>
         <div class="d-flex">
