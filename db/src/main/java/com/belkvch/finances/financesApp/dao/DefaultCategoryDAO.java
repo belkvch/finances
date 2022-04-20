@@ -119,7 +119,7 @@ public class DefaultCategoryDAO implements CategoryDAO{
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
             preparedStatement.setString(1, category.getName());
-            preparedStatement.setBoolean(2, false);
+            preparedStatement.setBoolean(2, category.isNecessary());
             preparedStatement.executeUpdate();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {

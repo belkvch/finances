@@ -56,7 +56,6 @@
     <table class="table table-borderless">
         <thead>
         <tr>
-            <th><b>Id</b></th>
             <th><b>Name</b></th>
             <th><b>Edit</b></th>
             <th><b>Delete</b></th>
@@ -65,28 +64,30 @@
         <tbody>
         <c:forEach items="${categories}" var="categories">
             <tr>
-                <td><c:out value="${categories.getId()}"/>
-                </td>
                 <td><c:out value="${categories.getName()}"/>
                 </td>
                 <td>
                     <form method="POST" action="/updateCategoryAdmin">
                         <div class="mb-3">
+                            <c:if test="${categories.getId() != 47}">
                             <label>
                                 <input name="category_name" class="form-control" required/>
                             </label>
                             <input type="hidden" name="category_id" value="${categories.getId()}">
                             <button type="submit" class="btn btn-outline-primary">Change</button>
+                            </c:if>
                         </div>
                     </form>
                 </td>
                 <td>
                     <form method="POST" action="/deleteCategoryAdmin">
                             <div class="mb-3">
+                                <c:if test="${categories.getId() != 47}">
                                 <input type="hidden" name="category_id" value="${categories.getId()}">
                                 <button type="submit" class="btn btn-outline-primary"
                                         onclick="return confirm('Are you sure you want to delete this item?');">Delete
                                 </button>
+                                </c:if>
                             </div>
                     </form>
                 </td>
@@ -96,7 +97,22 @@
     </table>
 </div>
 
-<br>
+<div class="container mt-3">
+    <h2>Add new necessary category:</h2>
+    <form method="POST" action="/admin-category">
+        <div class="mb-3 mt-3">
+            <label>Category name:
+                <input name="categoryName" placeholder="Enter name" class="form-control" required/>
+            </label>
+        </div>
+        <div class="mb-3">
+            <input type="hidden" name="actionType" value="create">
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-outline-primary">Add</button>
+        </div>
+    </form>
+</div>
 
 
 <footer class="text-center text-lg-start bg-light text-muted">

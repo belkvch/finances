@@ -71,7 +71,7 @@
                         <c:forEach items="${accounts}" var="accounts">
                             <input type="hidden" name="id" value="${accounts.getId()}">
                         </c:forEach>
-                        <c:if test="${categories.id > 5}">
+                        <c:if test="${!categories.isNecessary()}">
                         <div class="mb-3">
                             <label>
                                 <input name="category_name" class="form-control" required/>
@@ -87,7 +87,7 @@
                         <c:forEach items="${accounts}" var="accounts">
                             <input type="hidden" name="id" value="${accounts.getId()}">
                         </c:forEach>
-                        <c:if test="${categories.id > 5}">
+                        <c:if test="${!categories.isNecessary()}">
                             <div class="mb-3">
                                 <input type="hidden" name="category_id" value="${categories.getId()}">
                                 <button type="submit" class="btn btn-outline-primary"

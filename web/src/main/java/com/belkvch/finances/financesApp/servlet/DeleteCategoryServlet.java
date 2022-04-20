@@ -53,7 +53,8 @@ public class DeleteCategoryServlet extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("id"));
                 int category_id = Integer.parseInt(request.getParameter("category_id"));
                 Category category = DefaultCategoryDAO.getInstance().getCategoryById(category_id);
-                if (category != null && category_id > 5) {
+                if (category != null && !category.isNecessary()) {
+                    DefaultOperationsDAO.getInstance().changeOperationCategoryToNull(category_id);
                     DefaultCategoryDAO.getInstance().deleteCategory(category);
                 }
                 response.sendRedirect("/category?id=" + id);

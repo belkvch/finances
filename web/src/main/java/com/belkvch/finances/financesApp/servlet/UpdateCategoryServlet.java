@@ -47,7 +47,7 @@ public class UpdateCategoryServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         int category_id = Integer.parseInt(req.getParameter("category_id"));
         Category category = DefaultCategoryDAO.getInstance().getCategoryById(category_id);
-        if (category != null && category_id > 5) {
+        if (category != null && !category.isNecessary()) {
             String name = req.getParameter("category_name");
             if (name == null || name.isEmpty() || name.trim().isEmpty()) {
                 resp.sendRedirect("/error");

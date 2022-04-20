@@ -5,6 +5,8 @@ import com.belkvch.finances.financesApp.entyti.Accounts;
 import java.util.List;
 
 public interface AccountDAO {
+    List<Accounts> showAllAccounts();
+
     List<Accounts> showAllAccountsForUser(int userId);
 
     Accounts addNewAccount(Accounts accounts);
@@ -15,5 +17,4 @@ public interface AccountDAO {
 
     Accounts getLastAccount();
 
-    Accounts getAccountCategoryConn(Accounts newAccount);
 }

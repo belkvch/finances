@@ -66,11 +66,11 @@ public class CategoryServlet extends HttpServlet {
                 resp.sendRedirect("/error");
             } else {
                 category.setName(name);
+                category.setNecessary(false);
+                DefaultCategoryDAO.getInstance().addNewCategory(category);
+                Category newCategory = DefaultCategoryDAO.getInstance().getLastCategory();
+                DefaultCategoryDAO.getInstance().addCategoryAccountConn(newCategory,account_id);
             }
-
-            DefaultCategoryDAO.getInstance().addNewCategory(category);
-            Category newCategory = DefaultCategoryDAO.getInstance().getLastCategory();
-            DefaultCategoryDAO.getInstance().addCategoryAccountConn(newCategory,account_id);
 
             resp.sendRedirect("/category?id=" + account_id);
         } else {
