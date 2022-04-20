@@ -103,6 +103,11 @@
             </label>
         </div>
         <div class="mb-3">
+            <label for="oldPsw">For edit enter you're current password:
+                <input type="password" id="oldPsw" name="oldPassword" class="form-control" required/>
+            </label>
+        </div>
+        <div class="mb-3">
             <input type="hidden" name="actionType" value="edit">
         </div>
         <div class="mb-3">

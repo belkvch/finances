@@ -1,6 +1,8 @@
 package com.belkvch.finances.financesApp.servlet;
+
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,24 +44,25 @@ public class EditUserServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             User user = DefaultUserDAO.getInstance().getUserById(id);
             if (user != null) {
+                String oldPassword = request.getParameter("oldPassword");
                 String newLogin = request.getParameter("loginNew");
-                if (newLogin == null || newLogin.isEmpty() || newLogin.trim().isEmpty()) {
-                    response.sendRedirect("/error");
-                } else {
-                    user.setLogin(newLogin);
-                    DefaultUserDAO.getInstance().changeUserLogin(user);
-                }
-
                 String newPassword = request.getParameter("password");
-                if (newPassword == null || newPassword.isEmpty() || newPassword.trim().isEmpty()) {
-                    response.sendRedirect("/error");
-                } else {
-                    user.setPassword(newPassword);
-                    DefaultUserDAO.getInstance().changeUserPassword(user);
+                if (BCrypt.checkpw(oldPassword, user.getPassword())) {
+                    if (newLogin == null || newLogin.isEmpty() || newLogin.trim().isEmpty()) {
+                        response.sendRedirect("/error");
+                    } else {
+                        user.setLogin(newLogin);
+                        DefaultUserDAO.getInstance().changeUserLogin(user);
+                    }
+
+                    if (newPassword == null || newPassword.isEmpty() || newPassword.trim().isEmpty()) {
+                        response.sendRedirect("/error");
+                    } else {
+                        user.setPassword(newPassword);
+                        DefaultUserDAO.getInstance().changeUserPassword(user);
+                    }
                 }
-            }
-            if (user != null) {
-                response.sendRedirect("/edit-user?id=" + user.getId());
+                    response.sendRedirect("/edit-user?id=" + user.getId());
             }
         } else {
             response.sendRedirect("/error");

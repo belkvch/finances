@@ -3,6 +3,22 @@ package com.belkvch.finances.financesApp.entyti;
 public class Category {
     private int id;
     private String name;
+    private boolean isNecessary;
+
+    public Category(boolean isNecessary) {
+        this.isNecessary = isNecessary;
+    }
+
+    public Category(int id, String name, boolean isNecessary) {
+        this.id = id;
+        this.name = name;
+        this.isNecessary = isNecessary;
+    }
+
+    public Category(String name, boolean isNecessary) {
+        this.name = name;
+        this.isNecessary = isNecessary;
+    }
 
     public Category() {
     }
@@ -34,5 +50,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isNecessary() {
+        return isNecessary;
+    }
+
+    public void setNecessary(boolean necessary) {
+        isNecessary = necessary;
     }
 }

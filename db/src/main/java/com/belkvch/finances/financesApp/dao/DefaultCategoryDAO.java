@@ -54,6 +54,7 @@ public class DefaultCategoryDAO implements CategoryDAO{
         Category category = new Category();
         category.setId(resultSet.getInt("id"));
         category.setName(resultSet.getString("category_name"));
+        category.setNecessary(resultSet.getBoolean("is_necessary"));
         return category;
     }
 
