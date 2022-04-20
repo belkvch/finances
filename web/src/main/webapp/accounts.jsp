@@ -75,6 +75,7 @@
     <table class="table table-borderless">
         <thead>
         <tr>
+            <th><b>Id</b></th>
             <th><b>Balance</b></th>
             <th><b>Currency</b></th>
             <th><b>Operations</b></th>
@@ -87,6 +88,7 @@
             <c:if test="${accounts != null}">
                 <tbody>
                 <tr>
+                    <td><c:out value="${accounts.getId()}"/>
                     <td><c:out value="${accounts.getAmount()}"/>
                     <td><c:out value="${accounts.getCurrencyId().getName()}"/>
                     <td><a href="/operations?id=${accounts.id}">Show</a>
@@ -118,7 +120,7 @@
                                         <c:forEach items="${accountsList}" var="accountsList">
                                             <c:if test="${accountsList.getId() != accounts.getId()}">
                                             <option value="${accountsList.getId()}">
-                                                <c:out value="${accountsList.getCurrencyId().getName()}"/></option>
+                                                <c:out value="${accountsList.getId()}"/></option>
                                             </c:if>
                                         </c:forEach>
                                     </select>
