@@ -8,6 +8,8 @@ public interface CategoryDAO {
 
     List<Category> showAllCategories();
 
+    List<Category> showAllCategoriesForAdmin();
+
     List<Category> showCategoriesById(int id);
 
     Category addNewCategory(Category category);

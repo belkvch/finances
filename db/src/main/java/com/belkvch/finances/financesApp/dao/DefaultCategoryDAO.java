@@ -23,7 +23,9 @@ public class DefaultCategoryDAO implements CategoryDAO{
             "    join account_category on category.id = account_category.category_id" +
             "    join accounts on accounts.id = account_category.account_id";
 
-    private static final String INSERT_CATEGORY = "insert into category(category_name)  VALUES(?)";
+    private static final String SELECT_ALL_CAT_FOR_ADMIN = "SELECT * FROM category WHERE is_necessary=?";
+
+    private static final String INSERT_CATEGORY = "insert into category(category_name, is_necessary)  VALUES(?,?)";
     private static final String INSERT_CATEGORY_ACCOUNT = "insert into account_category(account_id, category_id)  VALUES(?,?)";
 
     private static final String SELECT_MAX_CATEGORY = " SELECT * FROM category" +
@@ -76,6 +78,24 @@ public class DefaultCategoryDAO implements CategoryDAO{
     }
 
     @Override
+    public List<Category> showAllCategoriesForAdmin() {
+        List<Category> categories = new ArrayList<>();
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CAT_FOR_ADMIN);
+            preparedStatement.setBoolean(1, true);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                categories.add(initCategory(resultSet));
+            }
+        } catch(
+                SQLException throwables)
+        {
+            throwables.printStackTrace();
+        }
+        return categories;
+    }
+
+    @Override
     public List<Category> showCategoriesById(int id) {
         List<Category> categories = new ArrayList<>();
         try (Connection connection = DBManager.getConnection()) {
@@ -99,6 +119,7 @@ public class DefaultCategoryDAO implements CategoryDAO{
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
             preparedStatement.setString(1, category.getName());
+            preparedStatement.setBoolean(2, false);
             preparedStatement.executeUpdate();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {

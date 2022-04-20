@@ -21,6 +21,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
     private static final String DELETE_OPERATION = "delete from operations where id = ?";
     private static final String SELECT_OPERATION_BY_NAME = "select * from operations where name = ?";
     private static final String UPDATE_OPERATION_CATEGORY = "update operations set category_id = ? where id = ?";
+    private static final String UPDATE_OPERATION_CATEGORY_FOR_DELETE = "update operations set category_id = null where category_id = ?";
 
     private DefaultOperationsDAO() {
     }
@@ -89,6 +90,17 @@ public class DefaultOperationsDAO implements OperationsDAO {
             throwables.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void changeOperationCategoryToNull(int category_id) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_OPERATION_CATEGORY_FOR_DELETE);
+            preparedStatement.setInt(1, category_id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override

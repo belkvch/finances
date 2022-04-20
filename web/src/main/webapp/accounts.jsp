@@ -38,6 +38,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">Users</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-category">Categories</a>
+                </li>
             </ul>
         </div>
         <div class="dropdown">

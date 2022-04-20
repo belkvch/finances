@@ -12,6 +12,9 @@ public interface OperationsDAO {
     List<Operations> showAllOperationsForAccount(int id, Date date);
 
     Operations addNewOperation(Operations operations);
+
+    void changeOperationCategoryToNull(int category_id);
+
     Operations deleteOperation(Operations operations);
 
 //    Operations addNewOperation(Operations operation, int id);
