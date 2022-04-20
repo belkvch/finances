@@ -16,7 +16,7 @@ public class UpdateCategoryForAdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int category_id = Integer.parseInt(req.getParameter("category_id"));
         Category category = DefaultCategoryDAO.getInstance().getCategoryById(category_id);
-        if (category != null && category.isNecessary() && category.getId()!=47) {
+        if (category != null && category.isNecessary() && category.getId()!=47 && category.getId()!=52) {
             String name = req.getParameter("category_name");
             if (name == null || name.isEmpty() || name.trim().isEmpty()) {
                 resp.sendRedirect("/error");

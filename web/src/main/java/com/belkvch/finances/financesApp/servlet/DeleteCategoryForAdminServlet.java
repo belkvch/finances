@@ -17,7 +17,7 @@ public class DeleteCategoryForAdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int category_id = Integer.parseInt(request.getParameter("category_id"));
         Category category = DefaultCategoryDAO.getInstance().getCategoryById(category_id);
-        if (category != null && category.isNecessary() && category.getId()!=47) {
+        if (category != null && category.isNecessary() && category.getId()!=47 && category.getId()!=52) {
             DefaultOperationsDAO.getInstance().changeOperationCategoryToNull(category_id);
             DefaultCategoryDAO.getInstance().deleteCategory(category);
         } else {
