@@ -5,7 +5,7 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-04-20 23:17:02
+-- Started on 2022-04-21 00:11:18
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -338,6 +338,11 @@ COPY public.account_category (account_id, category_id) FROM stdin;
 6	2
 6	3
 6	4
+8	52
+7	52
+17	52
+6	52
+5	52
 17	1
 17	2
 17	3
@@ -366,9 +371,9 @@ COPY public.account_category (account_id, category_id) FROM stdin;
 COPY public.accounts (id, amount, currency_id, user_id) FROM stdin;
 7	100.00	1	7
 8	0.05	2	9
-5	100.00	1	1
-6	99.60	2	1
-17	101.48	3	1
+5	98.00	1	1
+6	90.16	2	1
+17	112.28	3	1
 \.
 
 
@@ -382,8 +387,9 @@ COPY public.category (id, category_name, is_necessary) FROM stdin;
 42	Vape	f
 1	Food	t
 45	Gift	t
-47	none	t
 49	Personal	f
+52	Transfer	t
+47	None	t
 2	Transportation	t
 3	House	t
 4	Medical	t
@@ -417,6 +423,9 @@ COPY public.operations (id, name, date_op, salary, account_id, category_id) FROM
 2	Taxi	2022-12-10	2.00	5	2
 76	Buy zoom	2022-04-21	23.00	5	49
 77	Skin for Aria	2022-04-17	100.00	5	47
+85	Buy IPhone 12	2022-04-20	600.00	21	47
+87	Transfer	2022-04-21	1.00	5	52
+88	Transfer	2022-04-21	10.00	6	52
 \.
 
 
@@ -457,7 +466,7 @@ COPY public.users (id, username, password, role_id) FROM stdin;
 -- Name: accounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.accounts_id_seq', 20, true);
+SELECT pg_catalog.setval('public.accounts_id_seq', 22, true);
 
 
 --
@@ -466,7 +475,7 @@ SELECT pg_catalog.setval('public.accounts_id_seq', 20, true);
 -- Name: category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.category_id_seq', 49, true);
+SELECT pg_catalog.setval('public.category_id_seq', 52, true);
 
 
 --
@@ -484,7 +493,7 @@ SELECT pg_catalog.setval('public.currency_id_seq', 1, false);
 -- Name: finances_bd_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.finances_bd_id_seq', 84, true);
+SELECT pg_catalog.setval('public.finances_bd_id_seq', 88, true);
 
 
 --
@@ -622,7 +631,7 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.roles(id);
 
 
--- Completed on 2022-04-20 23:17:02
+-- Completed on 2022-04-21 00:11:18
 
 --
 -- PostgreSQL database dump complete
