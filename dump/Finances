@@ -5,7 +5,7 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-04-19 00:22:08
+-- Started on 2022-04-20 23:17:02
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -82,7 +82,8 @@ ALTER SEQUENCE public.accounts_id_seq OWNED BY public.accounts.id;
 
 CREATE TABLE public.category (
     id integer NOT NULL,
-    category_name character varying(255) NOT NULL
+    category_name character varying(255) NOT NULL,
+    is_necessary boolean
 );
 
 
@@ -333,30 +334,26 @@ COPY public.account_category (account_id, category_id) FROM stdin;
 5	2
 5	3
 5	4
-5	6
 6	1
 6	2
 6	3
 6	4
-6	5
-5	40
-16	1
-16	2
-16	3
-16	4
-16	5
-16	41
-5	5
 17	1
 17	2
 17	3
 17	4
-17	5
-18	1
-18	2
-18	3
-18	4
-18	5
+17	42
+8	45
+7	45
+17	45
+6	45
+5	45
+8	47
+7	47
+17	47
+6	47
+5	47
+5	49
 \.
 
 
@@ -370,10 +367,8 @@ COPY public.accounts (id, amount, currency_id, user_id) FROM stdin;
 7	100.00	1	7
 8	0.05	2	9
 5	100.00	1	1
-16	70.00	1	1
-6	100.60	2	1
-18	100.00	2	1
-17	108.40	3	1
+6	99.60	2	1
+17	101.48	3	1
 \.
 
 
@@ -383,15 +378,16 @@ COPY public.accounts (id, amount, currency_id, user_id) FROM stdin;
 -- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.category (id, category_name) FROM stdin;
-1	Food
-2	Transportation
-3	House
-4	Medical
-5	Gifts
-6	LoL
-40	Personal
-41	Vape
+COPY public.category (id, category_name, is_necessary) FROM stdin;
+42	Vape	f
+1	Food	t
+45	Gift	t
+47	none	t
+49	Personal	f
+2	Transportation	t
+3	House	t
+4	Medical	t
+41	Vape	f
 \.
 
 
@@ -415,12 +411,12 @@ COPY public.currency (id, name, to_byn, to_eur, to_usd) FROM stdin;
 --
 
 COPY public.operations (id, name, date_op, salary, account_id, category_id) FROM stdin;
-84	Buy IPhone 11	2022-04-18	400.00	5	40
-76	Buy zoom	2022-04-21	23.00	5	40
-77	Skin for Aria	2022-04-17	100.00	5	6
-2	Taxi	2022-12-10	2.00	5	2
+3	Subscription WoW	2022-03-25	10.29	6	2
 60	Buy IPhone 12	2022-04-20	400.00	6	1
-3	Subscription WoW	2022-03-25	10.29	6	5
+84	Buy IPhone 11	2022-04-18	400.00	5	49
+2	Taxi	2022-12-10	2.00	5	2
+76	Buy zoom	2022-04-21	23.00	5	49
+77	Skin for Aria	2022-04-17	100.00	5	47
 \.
 
 
@@ -449,9 +445,9 @@ COPY public.users (id, username, password, role_id) FROM stdin;
 6	net	$2a$12$Fjd6a2.H5h2apwGE/qjMfOXMvKxGrB.qsgS6xNHrGTpDDgIQPy9W.	1
 9	user2	$2a$12$hDaqAGSEJmd4Vlvq78UWoOC76ekO8HqrS908m5Z/O0/XKqARhyoOm	1
 7	Soneika	$2a$12$90WXiqGenmUOpJM.38Fwh.pN3Tfkqh3840ZTpdIEskHB2qUaBzPxy	1
-8	admin	$2a$12$yd0YIRapyW06p1rZWsRVHug1qwNlcmwZ3CE8WGO60L5uXrBmlDbcS	2
 10	user3	$2a$12$W.oNon/A6Mczg5DU7t4nmOUG9iZ/1kqew990ANjItsRuLj2viPk3i	1
-1	user	$2a$12$XPTJfbt1c76MzEZJtO6IVelB/Fy290qv9vSRXrvtzgz18Mh7BhS6e	1
+1	user	$2a$12$6E8ZRng3g5SzF8H6CmarxurGcjw53u4Z/xSMFJ.L2c3rO3vIFh5/K	1
+8	admin	$2a$12$y4TO9j4URMPEdFSl1IVNF.G6cBuZg4mpFfHx7cMWx.hpYk2HvzHb6	2
 \.
 
 
@@ -461,7 +457,7 @@ COPY public.users (id, username, password, role_id) FROM stdin;
 -- Name: accounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.accounts_id_seq', 18, true);
+SELECT pg_catalog.setval('public.accounts_id_seq', 20, true);
 
 
 --
@@ -470,7 +466,7 @@ SELECT pg_catalog.setval('public.accounts_id_seq', 18, true);
 -- Name: category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.category_id_seq', 41, true);
+SELECT pg_catalog.setval('public.category_id_seq', 49, true);
 
 
 --
@@ -591,16 +587,16 @@ ALTER TABLE ONLY public.accounts
 
 
 --
--- TOC entry 3217 (class 2606 OID 17101)
+-- TOC entry 3218 (class 2606 OID 17116)
 -- Name: account_category fk_accounts; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.account_category
-    ADD CONSTRAINT fk_accounts FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+    ADD CONSTRAINT fk_accounts FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
--- TOC entry 3218 (class 2606 OID 17111)
+-- TOC entry 3217 (class 2606 OID 17111)
 -- Name: account_category fk_category; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -626,7 +622,7 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.roles(id);
 
 
--- Completed on 2022-04-19 00:22:08
+-- Completed on 2022-04-20 23:17:02
 
 --
 -- PostgreSQL database dump complete
