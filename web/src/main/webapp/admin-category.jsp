@@ -69,8 +69,8 @@
                 <td>
                     <form method="POST" action="/updateCategoryAdmin">
                         <div class="mb-3">
-                            <c:if test="${categories.getId() != 47}">
-                            <c:if test="${categories.getId() != 52}">
+                            <c:if test="${categories.getId() != 1}">
+                            <c:if test="${categories.getId() != 2}">
                             <label>
                                 <input name="category_name" class="form-control" required/>
                             </label>
@@ -84,8 +84,8 @@
                 <td>
                     <form method="POST" action="/deleteCategoryAdmin">
                             <div class="mb-3">
-                                <c:if test="${categories.getId() != 47}">
-                                <c:if test="${categories.getId() != 52}">
+                                <c:if test="${categories.getId() != 1}">
+                                <c:if test="${categories.getId() != 2}">
                                 <input type="hidden" name="category_id" value="${categories.getId()}">
                                 <button type="submit" class="btn btn-outline-primary"
                                         onclick="return confirm('Are you sure you want to delete this item?');">Delete

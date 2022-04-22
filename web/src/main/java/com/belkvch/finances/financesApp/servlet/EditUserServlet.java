@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @WebServlet("/edit-user")
 public class EditUserServlet extends HttpServlet {
     @Override
@@ -53,6 +54,7 @@ public class EditUserServlet extends HttpServlet {
                     } else {
                         user.setLogin(newLogin);
                         DefaultUserDAO.getInstance().changeUserLogin(user);
+                        request.setAttribute("alert",true);
                     }
 
                     if (newPassword == null || newPassword.isEmpty() || newPassword.trim().isEmpty()) {
@@ -60,7 +62,10 @@ public class EditUserServlet extends HttpServlet {
                     } else {
                         user.setPassword(newPassword);
                         DefaultUserDAO.getInstance().changeUserPassword(user);
+                        request.setAttribute("alert",true);
                     }
+                } else {
+                    request.setAttribute("alert",false);
                 }
                     response.sendRedirect("/edit-user?id=" + user.getId());
             }

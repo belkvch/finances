@@ -21,7 +21,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
     private static final String DELETE_OPERATION = "delete from operations where id = ?";
     private static final String SELECT_OPERATION_BY_NAME = "select * from operations where name = ?";
     private static final String UPDATE_OPERATION_CATEGORY = "update operations set category_id = ? where id = ?";
-    private static final String UPDATE_OPERATION_CATEGORY_FOR_DELETE = "update operations set category_id = 47 where category_id = ?";
+    private static final String UPDATE_OPERATION_CATEGORY_FOR_DELETE = "update operations set category_id = 1 where category_id = ?";
 
     private DefaultOperationsDAO() {
     }

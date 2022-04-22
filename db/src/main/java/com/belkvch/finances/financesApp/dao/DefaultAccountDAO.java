@@ -12,7 +12,7 @@ import java.util.List;
 public class DefaultAccountDAO implements AccountDAO {
     private static volatile DefaultAccountDAO instance;
     private static final String SELECT_ALL_FOR_USER = "select * from accounts,users,currency where accounts.user_id = ? " +
-            "and accounts.currency_id=currency.id and accounts.user_id=users.id";
+            "and accounts.currency_id=currency.id and accounts.user_id=users.id ORDER BY accounts.id";
     private static final String INSERT_ACCOUNT = "insert into accounts(currency_id,user_id,amount)  VALUES(?,?,?)";
     private static final String SELECT_ACCOUNT_BY_ID = "select * from accounts,users,currency where accounts.id = ?";
     private static final String UPDATE_ACCOUNT_AMOUNT = "update accounts set amount = ? where id = ?";

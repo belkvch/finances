@@ -16,14 +16,14 @@ public class DefaultCategoryDAO implements CategoryDAO{
             "FROM category" +
             "    join account_category on category.id = account_category.category_id" +
             "    join accounts on accounts.id = account_category.account_id\n" +
-            "WHERE accounts.id=?";
+            "WHERE accounts.id=? ORDER BY category.id";
 
     private static final String SELECT_ALL = "SELECT *" +
             "FROM category" +
             "    join account_category on category.id = account_category.category_id" +
-            "    join accounts on accounts.id = account_category.account_id";
+            "    join accounts on accounts.id = account_category.account_id ORDER BY category.id";
 
-    private static final String SELECT_ALL_CAT_FOR_ADMIN = "SELECT * FROM category WHERE is_necessary=?";
+    private static final String SELECT_ALL_CAT_FOR_ADMIN = "SELECT * FROM category WHERE is_necessary=? ORDER BY id";
 
     private static final String INSERT_CATEGORY = "insert into category(category_name, is_necessary)  VALUES(?,?)";
     private static final String INSERT_CATEGORY_ACCOUNT = "insert into account_category(account_id, category_id)  VALUES(?,?)";
