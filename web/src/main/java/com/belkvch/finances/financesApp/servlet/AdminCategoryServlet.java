@@ -43,9 +43,8 @@ public class AdminCategoryServlet extends HttpServlet {
             } else {
                 category.setName(name);
                 category.setNecessary(true);
-                DefaultCategoryDAO.getInstance().addNewCategory(category);
+                Category newCategory = DefaultCategoryDAO.getInstance().addNewCategory(category);
                 List<Accounts> accounts = DefaultAccountDAO.getInstance().showAllAccounts();
-                Category newCategory = DefaultCategoryDAO.getInstance().getLastCategory();
                 for (Accounts account:accounts) {
                     DefaultCategoryDAO.getInstance().addCategoryAccountConn(newCategory,account.getId());
                 }

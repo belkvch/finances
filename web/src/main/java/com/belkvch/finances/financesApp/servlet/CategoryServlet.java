@@ -67,8 +67,7 @@ public class CategoryServlet extends HttpServlet {
             } else {
                 category.setName(name);
                 category.setNecessary(false);
-                DefaultCategoryDAO.getInstance().addNewCategory(category);
-                Category newCategory = DefaultCategoryDAO.getInstance().getLastCategory();
+                Category newCategory = DefaultCategoryDAO.getInstance().addNewCategory(category);
                 DefaultCategoryDAO.getInstance().addCategoryAccountConn(newCategory,account_id);
             }
 

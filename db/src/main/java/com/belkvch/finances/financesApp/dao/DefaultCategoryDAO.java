@@ -3,10 +3,7 @@ package com.belkvch.finances.financesApp.dao;
 import com.belkvch.finances.financesApp.dao.DBManager.DBManager;
 import com.belkvch.finances.financesApp.entyti.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +114,7 @@ public class DefaultCategoryDAO implements CategoryDAO{
     @Override
     public Category addNewCategory(Category category) {
         try (Connection connection = DBManager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY);
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CATEGORY, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, category.getName());
             preparedStatement.setBoolean(2, category.isNecessary());
             preparedStatement.executeUpdate();
