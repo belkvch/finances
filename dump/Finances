@@ -5,7 +5,7 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-04-21 00:11:18
+-- Started on 2022-04-22 03:12:35
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -330,35 +330,38 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 COPY public.account_category (account_id, category_id) FROM stdin;
-5	1
-5	2
-5	3
-5	4
-6	1
-6	2
-6	3
-6	4
-8	52
-7	52
-17	52
-6	52
-5	52
+8	1
+7	1
 17	1
+6	1
+5	1
+8	2
+7	2
 17	2
-17	3
-17	4
-17	42
-8	45
-7	45
-17	45
-6	45
-5	45
-8	47
-7	47
-17	47
-6	47
-5	47
-5	49
+6	2
+5	2
+8	59
+7	59
+17	59
+6	59
+5	59
+8	60
+7	60
+17	60
+6	60
+5	60
+8	61
+7	61
+17	61
+6	61
+5	61
+8	62
+7	62
+17	62
+6	62
+5	62
+5	63
+5	64
 \.
 
 
@@ -369,10 +372,10 @@ COPY public.account_category (account_id, category_id) FROM stdin;
 --
 
 COPY public.accounts (id, amount, currency_id, user_id) FROM stdin;
+5	9998191.60	1	1
+6	369.16	2	1
 7	100.00	1	7
 8	0.05	2	9
-5	98.00	1	1
-6	90.16	2	1
 17	112.28	3	1
 \.
 
@@ -384,16 +387,14 @@ COPY public.accounts (id, amount, currency_id, user_id) FROM stdin;
 --
 
 COPY public.category (id, category_name, is_necessary) FROM stdin;
-42	Vape	f
-1	Food	t
-45	Gift	t
-49	Personal	f
-52	Transfer	t
-47	None	t
-2	Transportation	t
-3	House	t
-4	Medical	t
-41	Vape	f
+61	Food	t
+62	Medical	t
+63	LoL	f
+64	Vape	f
+1	None	t
+2	Transfer	t
+60	Transportation	t
+59	Home	t
 \.
 
 
@@ -417,15 +418,10 @@ COPY public.currency (id, name, to_byn, to_eur, to_usd) FROM stdin;
 --
 
 COPY public.operations (id, name, date_op, salary, account_id, category_id) FROM stdin;
-3	Subscription WoW	2022-03-25	10.29	6	2
-60	Buy IPhone 12	2022-04-20	400.00	6	1
-84	Buy IPhone 11	2022-04-18	400.00	5	49
-2	Taxi	2022-12-10	2.00	5	2
-76	Buy zoom	2022-04-21	23.00	5	49
-77	Skin for Aria	2022-04-17	100.00	5	47
-85	Buy IPhone 12	2022-04-20	600.00	21	47
-87	Transfer	2022-04-21	1.00	5	52
-88	Transfer	2022-04-21	10.00	6	52
+91	buy zoom	2022-04-12	400.00	5	59
+92	vape	2022-04-22	10.00	5	64
+93	Skin for Aria	2022-04-23	600.00	5	63
+94	Transfer	2022-04-22	1000.00	5	2
 \.
 
 
@@ -455,8 +451,8 @@ COPY public.users (id, username, password, role_id) FROM stdin;
 9	user2	$2a$12$hDaqAGSEJmd4Vlvq78UWoOC76ekO8HqrS908m5Z/O0/XKqARhyoOm	1
 7	Soneika	$2a$12$90WXiqGenmUOpJM.38Fwh.pN3Tfkqh3840ZTpdIEskHB2qUaBzPxy	1
 10	user3	$2a$12$W.oNon/A6Mczg5DU7t4nmOUG9iZ/1kqew990ANjItsRuLj2viPk3i	1
-1	user	$2a$12$6E8ZRng3g5SzF8H6CmarxurGcjw53u4Z/xSMFJ.L2c3rO3vIFh5/K	1
 8	admin	$2a$12$y4TO9j4URMPEdFSl1IVNF.G6cBuZg4mpFfHx7cMWx.hpYk2HvzHb6	2
+1	user	$2a$12$yZ5dJU1k7kWc8cKSojnPF.JHI9H457/bYrNirPUE3MWCfjwFPRFte	1
 \.
 
 
@@ -466,7 +462,7 @@ COPY public.users (id, username, password, role_id) FROM stdin;
 -- Name: accounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.accounts_id_seq', 22, true);
+SELECT pg_catalog.setval('public.accounts_id_seq', 23, true);
 
 
 --
@@ -475,7 +471,7 @@ SELECT pg_catalog.setval('public.accounts_id_seq', 22, true);
 -- Name: category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.category_id_seq', 52, true);
+SELECT pg_catalog.setval('public.category_id_seq', 64, true);
 
 
 --
@@ -493,7 +489,7 @@ SELECT pg_catalog.setval('public.currency_id_seq', 1, false);
 -- Name: finances_bd_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.finances_bd_id_seq', 88, true);
+SELECT pg_catalog.setval('public.finances_bd_id_seq', 94, true);
 
 
 --
@@ -596,7 +592,7 @@ ALTER TABLE ONLY public.accounts
 
 
 --
--- TOC entry 3218 (class 2606 OID 17116)
+-- TOC entry 3217 (class 2606 OID 17116)
 -- Name: account_category fk_accounts; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -605,21 +601,21 @@ ALTER TABLE ONLY public.account_category
 
 
 --
--- TOC entry 3217 (class 2606 OID 17111)
+-- TOC entry 3218 (class 2606 OID 17126)
 -- Name: account_category fk_category; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.account_category
-    ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES public.category(id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES public.category(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 3213 (class 2606 OID 17086)
+-- TOC entry 3213 (class 2606 OID 17121)
 -- Name: operations operations_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.operations
-    ADD CONSTRAINT operations_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.category(id);
+    ADD CONSTRAINT operations_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.category(id) ON DELETE CASCADE;
 
 
 --
@@ -631,7 +627,7 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.roles(id);
 
 
--- Completed on 2022-04-21 00:11:18
+-- Completed on 2022-04-22 03:12:36
 
 --
 -- PostgreSQL database dump complete
