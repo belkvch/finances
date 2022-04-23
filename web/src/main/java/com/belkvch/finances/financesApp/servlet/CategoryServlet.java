@@ -1,6 +1,5 @@
 package com.belkvch.finances.financesApp.servlet;
 
-import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
 import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
@@ -28,23 +27,25 @@ public class CategoryServlet extends HttpServlet {
         } else {
             try {
                 int id = Integer.parseInt(req.getParameter("id"));
+                User user = DefaultUserDAO.getInstance().getUserByAccountId(id, userId);
+                if (user.getId() == userId) {
 
-                Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
+                    List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
 
-                List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
+                    List<Category> categoryList = new ArrayList<>();
+                    req.setAttribute("categoryList", categoryList);
+                    categoryList.add(new Category());
 
-                List<Category> categoryList = new ArrayList<>();
-                req.setAttribute("categoryList", categoryList);
-                categoryList.add(new Category());
+                    List<Accounts> accounts = new ArrayList<>();
+                    accounts.add(new Accounts(id));
+                    req.setAttribute("accounts", accounts);
 
-                List<Accounts> accounts = new ArrayList<>();
-                accounts.add(new Accounts(id));
-                req.setAttribute("accounts", accounts);
-
-                req.setAttribute("categories", categories);
-                getServletContext().getRequestDispatcher("/category.jsp").forward(req, resp);
-
+                    req.setAttribute("categories", categories);
+                    getServletContext().getRequestDispatcher("/category.jsp").forward(req, resp);
+                }
             } catch (NumberFormatException e) {
+                resp.sendRedirect("/error");
+            } catch (NullPointerException e) {
                 resp.sendRedirect("/error");
             }
         }

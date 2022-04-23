@@ -32,33 +32,37 @@ public class HistoryOperationsServlet extends HttpServlet {
         } else {
             int id = Integer.parseInt(req.getParameter("id"));
             String dateFind = req.getParameter("date");
+            User user = DefaultUserDAO.getInstance().getUserByAccountId(id, userId);
+            try {
+                if (user.getId() == userId) {
 
-            Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
+                    List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
+                    req.setAttribute("categories", categories);
 
-                List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
-                req.setAttribute("categories", categories);
-
-                List<Operations> operationsList = new ArrayList<>();
-                req.setAttribute("operationsList", operationsList);
-                operationsList.add(new Operations(id));
-                if (dateFind == null || dateFind.equals(" ") || dateFind.isEmpty()) {
-                    List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForHistory(id);
-                    req.setAttribute("operations", operations);
-                    getServletContext().getRequestDispatcher("/history.jsp").forward(req, resp);
-                } else {
-                    try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        sdf.setLenient(false);
-                        Date submitDate = sdf.parse(dateFind);
-                        java.sql.Date dateSQL = new java.sql.Date(submitDate.getTime());
-                        List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id, dateSQL);
+                    List<Operations> operationsList = new ArrayList<>();
+                    req.setAttribute("operationsList", operationsList);
+                    operationsList.add(new Operations(id));
+                    if (dateFind == null || dateFind.equals(" ") || dateFind.isEmpty()) {
+                        List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForHistory(id);
                         req.setAttribute("operations", operations);
                         getServletContext().getRequestDispatcher("/history.jsp").forward(req, resp);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                    } else {
+                        try {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            sdf.setLenient(false);
+                            Date submitDate = sdf.parse(dateFind);
+                            java.sql.Date dateSQL = new java.sql.Date(submitDate.getTime());
+                            List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id, dateSQL);
+                            req.setAttribute("operations", operations);
+                            getServletContext().getRequestDispatcher("/history.jsp").forward(req, resp);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-
+            } catch (NullPointerException e) {
+                resp.sendRedirect("/error");
+            }
         }
     }
 

@@ -31,21 +31,24 @@ public class SubscriptionServlet extends HttpServlet {
         } else {
             try {
                 int id = Integer.parseInt(req.getParameter("id"));
-                Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
+                User user = DefaultUserDAO.getInstance().getUserByAccountId(id, userId);
+                if (user.getId() == userId) {
 
-                List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
-                req.setAttribute("categories", categories);
+                    List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
+                    req.setAttribute("categories", categories);
 
-                List<Subscription> subscriptions = DefaultSubscriptionDAO.getInstance().showAllSubscriptionsForAccount(id);
-                req.setAttribute("subscriptions", subscriptions);
+                    List<Subscription> subscriptions = DefaultSubscriptionDAO.getInstance().showAllSubscriptionsForAccount(id);
+                    req.setAttribute("subscriptions", subscriptions);
 
-                List<Operations> operationsList = new ArrayList<>();
-                req.setAttribute("operationsList", operationsList);
-                operationsList.add(new Operations(id));
+                    List<Operations> operationsList = new ArrayList<>();
+                    req.setAttribute("operationsList", operationsList);
+                    operationsList.add(new Operations(id));
 
-                getServletContext().getRequestDispatcher("/subscription.jsp").forward(req, resp);
-
+                    getServletContext().getRequestDispatcher("/subscription.jsp").forward(req, resp);
+                }
             } catch (NumberFormatException e) {
+                resp.sendRedirect("/error");
+            } catch (NullPointerException e) {
                 resp.sendRedirect("/error");
             }
         }

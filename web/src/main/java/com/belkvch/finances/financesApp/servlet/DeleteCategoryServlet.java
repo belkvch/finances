@@ -27,14 +27,18 @@ public class DeleteCategoryServlet extends HttpServlet {
         if (currenUser.getRoleId().getName().equals(roleBan.getName())) {
             req.getRequestDispatcher("/ban.jsp").forward(req, resp);
         } else {
-            int id = Integer.parseInt(req.getParameter("id"));
-            Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
-
-                List<Accounts> accounts = new ArrayList<>();
-                accounts.add(new Accounts(id));
-                req.setAttribute("accounts", accounts);
-                resp.sendRedirect("/category?id=" + id);
-
+            try {
+                int id = Integer.parseInt(req.getParameter("id"));
+                User user = DefaultUserDAO.getInstance().getUserByAccountId(id, userId);
+                if (user.getId() == userId) {
+                    List<Accounts> accounts = new ArrayList<>();
+                    accounts.add(new Accounts(id));
+                    req.setAttribute("accounts", accounts);
+                    resp.sendRedirect("/category?id=" + id);
+                }
+            } catch (NumberFormatException e) {
+                resp.sendRedirect("/error");
+            }
         }
     }
 

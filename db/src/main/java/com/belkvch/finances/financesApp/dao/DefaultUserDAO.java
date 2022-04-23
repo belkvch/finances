@@ -21,6 +21,7 @@ public class DefaultUserDAO implements UserDAO {
     private static final String UPDATE_USER_ROLE = "update users set role_id = ? from roles where users.id = ? AND users.role_id = roles.id";
     private static final String UPDATE_USER_LOGIN = "update users set username = ? where id = ?";
     private static final String UPDATE_USER_PASSWORD = "update users set password = ? where id = ?";
+    private static final String SELECT_USER_BY_ACCOUNT_ID = "select * from users,accounts,account_user,roles where accounts.id = ? and users.id = ? and account_user.user_id=users.id and account_user.account_id = accounts.id and users.role_id = roles.id";
 
     public static DefaultUserDAO getInstance() {
         if (instance == null) {
@@ -149,10 +150,6 @@ public class DefaultUserDAO implements UserDAO {
             preparedStatement.setInt(2, user.getId());
             preparedStatement.executeUpdate();
             return user;
-//            ResultSet resultSet = preparedStatement.executeUpdate();
-//            if (resultSet.next()) {
-//                return initUser(resultSet);
-//            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -182,6 +179,22 @@ public class DefaultUserDAO implements UserDAO {
             preparedStatement.setInt(2, user.getId());
             preparedStatement.executeUpdate();
             return user;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public User getUserByAccountId(int id, int UserId) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ACCOUNT_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, UserId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return initUser(resultSet);
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

@@ -34,29 +34,30 @@ public class OperationServlet extends HttpServlet {
         } else {
             try {
                 int id = Integer.parseInt(req.getParameter("id"));
+                User user = DefaultUserDAO.getInstance().getUserByAccountId(id, userId);
+                if (user.getId() == userId) {
+                    List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
+                    req.setAttribute("categories", categories);
 
-                Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
+                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date today = new Date();
+                    Date todayWithZeroTime = formatter.parse(formatter.format(today));
+                    java.sql.Date date = new java.sql.Date(todayWithZeroTime.getTime());
 
-                List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
-                req.setAttribute("categories", categories);
+                    List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id, date);
+                    List<Operations> operationsList = new ArrayList<>();
 
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                Date today = new Date();
-                Date todayWithZeroTime = formatter.parse(formatter.format(today));
-                java.sql.Date date = new java.sql.Date(todayWithZeroTime.getTime());
-
-                List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id, date);
-                List<Operations> operationsList = new ArrayList<>();
-
-                req.setAttribute("operationsList", operationsList);
-                operationsList.add(new Operations(id));
-                req.setAttribute("operations", operations);
-                getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
-
+                    req.setAttribute("operationsList", operationsList);
+                    operationsList.add(new Operations(id));
+                    req.setAttribute("operations", operations);
+                    getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
+                }
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             } catch (ParseException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e) {
+                resp.sendRedirect("/error");
             }
         }
     }
