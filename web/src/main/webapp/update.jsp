@@ -62,6 +62,7 @@
     </ul>
 </div>
 
+<c:if test="${operation.getCategoryId().getId() != 2}">
 <div class="container mt-3">
     <h2>Update the operation</h2>
     <form method="POST" action="/update">
@@ -109,8 +110,9 @@
         </div>
     </form>
 </div>
+</c:if>
 </c:forEach>
-
+<br>
 
 <footer class="text-center text-lg-start bg-light text-muted">
     <section

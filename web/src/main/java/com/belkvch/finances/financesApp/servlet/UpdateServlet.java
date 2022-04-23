@@ -55,7 +55,7 @@ public class UpdateServlet extends HttpServlet {
         if ("update".equals(request.getParameter("actionType"))) {
             int id = Integer.parseInt(request.getParameter("id"));
             Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
-            if (operation != null) {
+            if (operation != null && operation.getCategoryId().getId() != 2) {
                 String name = request.getParameter("name");
                 if (name == null || name.isEmpty() || name.trim().isEmpty()) {
                     response.sendRedirect("/error");

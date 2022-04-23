@@ -44,7 +44,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
         operation.setDateOfOperation(resultSet.getDate("date_op"));
         operation.setPriceOfOperation(resultSet.getBigDecimal("salary"));
         operation.setAccountId(resultSet.getInt("account_id"));
-        operation.setCategoryId(new Category(resultSet.getInt("id"), resultSet.getString("category_name")));
+        operation.setCategoryId(new Category(resultSet.getInt("category_id"), resultSet.getString("category_name")));
         return operation;
     }
 

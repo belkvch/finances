@@ -80,12 +80,14 @@
                 </td>
                 <td><a href="/update?id=${operation.id}">Edit</a></td>
                 <td>
+                    <c:if test="${operation.getCategoryId().getId() != 2}">
                     <form method="post" action="/delete" style="display:inline;">
                         <input type="hidden" name="id" value="${operation.getId()}">
                         <button type="submit" class="btn btn-outline-primary"
                                 onclick="return confirm('Are you sure you want to delete this item?');">Delete
                         </button>
                     </form>
+                    </c:if>
                 </td>
             </tr>
         </c:forEach>
