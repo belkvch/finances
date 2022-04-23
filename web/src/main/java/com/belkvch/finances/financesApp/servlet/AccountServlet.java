@@ -40,8 +40,8 @@ public class AccountServlet extends HttpServlet {
             Accounts account = new Accounts();
             HttpSession httpSession = req.getSession(true);
             int userId = (int) httpSession.getAttribute("id");
-            account.setUserId(new User(userId));
 
+            int withUserId = Integer.parseInt(req.getParameter("with_user_id"));
             int currencyId = Integer.parseInt(req.getParameter("currency_id"));
             if (currencyId == 0) {
                 resp.sendRedirect("/error");
@@ -58,16 +58,29 @@ public class AccountServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             }
-            DefaultAccountDAO.getInstance().addNewAccount(account);
-            Accounts newAccount = DefaultAccountDAO.getInstance().getLastAccount();
-            List<Category> categories = DefaultCategoryDAO.getInstance().showAllCategories();
-            for (Category category:categories) {
-                if (category.isNecessary()) {
-                    DefaultCategoryDAO.getInstance().addCategoryAccountConn(category,newAccount.getId());
+
+            if (withUserId == 0) {
+                Accounts newAccount = DefaultAccountDAO.getInstance().addNewAccount(account);
+                DefaultAccountDAO.getInstance().addUserAccountConn(newAccount, userId);
+                List<Category> categories = DefaultCategoryDAO.getInstance().showAllCategories();
+                for (Category category : categories) {
+                    if (category.isNecessary()) {
+                        DefaultCategoryDAO.getInstance().addCategoryAccountConn(category, newAccount.getId());
+                    }
                 }
+            } else {
+                if (DefaultUserDAO.getInstance().getUserById(withUserId) != null && withUserId != userId) {
+                    Accounts newAccount = DefaultAccountDAO.getInstance().addNewAccount(account);
+                    DefaultAccountDAO.getInstance().addUserAccountConn(newAccount, userId);
+                    DefaultAccountDAO.getInstance().addUserAccountConn(newAccount, withUserId);
+                    List<Category> categories = DefaultCategoryDAO.getInstance().showAllCategories();
+                    for (Category category : categories) {
+                        if (category.isNecessary()) {
+                            DefaultCategoryDAO.getInstance().addCategoryAccountConn(category, newAccount.getId());
+                        }
+                    }
+                } else resp.sendRedirect("/error");
             }
-        } else {
-            resp.sendRedirect("/error");
         }
         resp.sendRedirect("/accounts");
     }

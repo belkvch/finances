@@ -30,22 +30,20 @@ public class CategoryServlet extends HttpServlet {
                 int id = Integer.parseInt(req.getParameter("id"));
 
                 Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
-                if (account.getUserId().getId() == userId) {
-                    List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
 
-                    List<Category> categoryList = new ArrayList<>();
-                    req.setAttribute("categoryList", categoryList);
-                    categoryList.add(new Category());
+                List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
 
-                    List<Accounts> accounts = new ArrayList<>();
-                    accounts.add(new Accounts(id));
-                    req.setAttribute("accounts", accounts);
+                List<Category> categoryList = new ArrayList<>();
+                req.setAttribute("categoryList", categoryList);
+                categoryList.add(new Category());
 
-                    req.setAttribute("categories", categories);
-                    getServletContext().getRequestDispatcher("/category.jsp").forward(req, resp);
-                } else {
-                    resp.sendRedirect("/error");
-                }
+                List<Accounts> accounts = new ArrayList<>();
+                accounts.add(new Accounts(id));
+                req.setAttribute("accounts", accounts);
+
+                req.setAttribute("categories", categories);
+                getServletContext().getRequestDispatcher("/category.jsp").forward(req, resp);
+
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
             }
@@ -68,7 +66,7 @@ public class CategoryServlet extends HttpServlet {
                 category.setName(name);
                 category.setNecessary(false);
                 Category newCategory = DefaultCategoryDAO.getInstance().addNewCategory(category);
-                DefaultCategoryDAO.getInstance().addCategoryAccountConn(newCategory,account_id);
+                DefaultCategoryDAO.getInstance().addCategoryAccountConn(newCategory, account_id);
             }
 
             resp.sendRedirect("/category?id=" + account_id);

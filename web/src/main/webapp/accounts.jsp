@@ -137,8 +137,6 @@
         </c:forEach>
     </table>
 </div>
-<br>
-
 
 <div class="container mt-3">
     <h2>Add new account</h2>
@@ -161,6 +159,17 @@
         <div class="form-check">
             <input type="radio" class="form-check-input" id="radio3" name="currency_id" value="3">
             <label class="form-check-label" for="radio3">USD</label>
+        </div>
+
+        <div class="container mt-3">
+            <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#demo">Add account with other user</button>
+            <div id="demo" class="collapse">
+                <div class="mb-3">
+                <label>Enter the user's id:
+                    <input type="number" min="0" step="1" name="with_user_id" value="0" placeholder="Enter id" class="form-control" required/>
+                </label>
+                </div>
+            </div>
         </div>
 
         <div class="mb-3">

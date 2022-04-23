@@ -12,7 +12,7 @@ public class DefaultCategoryDAO implements CategoryDAO{
     private static final String SELECT_ALL_CAT_FOR_ACCOUNT = "SELECT *" +
             "FROM category" +
             "    join account_category on category.id = account_category.category_id" +
-            "    join accounts on accounts.id = account_category.account_id\n" +
+            "    join accounts on accounts.id = account_category.account_id " +
             "WHERE accounts.id=? ORDER BY category.id";
 
     private static final String SELECT_ALL = "SELECT *" +

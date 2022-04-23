@@ -1,9 +1,6 @@
 package com.belkvch.finances.financesApp.servlet;
 
-import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
-import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
-import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
-import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
+import com.belkvch.finances.financesApp.dao.*;
 import com.belkvch.finances.financesApp.entyti.*;
 
 import javax.servlet.ServletException;
@@ -21,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@WebServlet("/operations")
-public class OperationServlet extends HttpServlet {
+@WebServlet("/subscription")
+public class SubscriptionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession(true);
@@ -34,65 +31,57 @@ public class OperationServlet extends HttpServlet {
         } else {
             try {
                 int id = Integer.parseInt(req.getParameter("id"));
-
                 Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
 
                 List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
                 req.setAttribute("categories", categories);
 
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                Date today = new Date();
-                Date todayWithZeroTime = formatter.parse(formatter.format(today));
-                java.sql.Date date = new java.sql.Date(todayWithZeroTime.getTime());
+                List<Subscription> subscriptions = DefaultSubscriptionDAO.getInstance().showAllSubscriptionsForAccount(id);
+                req.setAttribute("subscriptions", subscriptions);
 
-                List<Operations> operations = DefaultOperationsDAO.getInstance().showAllOperationsForAccount(id, date);
                 List<Operations> operationsList = new ArrayList<>();
-
                 req.setAttribute("operationsList", operationsList);
                 operationsList.add(new Operations(id));
-                req.setAttribute("operations", operations);
-                getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
+
+                getServletContext().getRequestDispatcher("/subscription.jsp").forward(req, resp);
 
             } catch (NumberFormatException e) {
                 resp.sendRedirect("/error");
-            } catch (ParseException e) {
-                e.printStackTrace();
             }
         }
     }
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws
             ServletException, IOException {
         if ("create".equals(req.getParameter("actionType"))) {
-            Operations operation = new Operations();
-
+            Subscription subscription = new Subscription();
             int account_id = Integer.parseInt(req.getParameter("id"));
-            operation.setAccountId(account_id);
-
+            subscription.setAccountId(account_id);
             String name = req.getParameter("name");
             if (name == null || name.isEmpty() || name.trim().isEmpty()) {
                 resp.sendRedirect("/error");
             } else {
-                operation.setNameOfOperation(name);
+                subscription.setName(name);
             }
+            subscription.setActive(true);
+            DefaultSubscriptionDAO.getInstance().addNewSubscription(subscription);
 
+
+            Operations operation = new Operations();
+            operation.setAccountId(account_id);
+            operation.setNameOfOperation(name);
             try {
-                String date = req.getParameter("date");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                sdf.setLenient(false);
-                Date submitDate = sdf.parse(date);
-                operation.setDateOfOperation(submitDate);
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date today = new Date();
+                Date todayWithZeroTime = formatter.parse(formatter.format(today));
+                java.sql.Date date = new java.sql.Date(todayWithZeroTime.getTime());
+                operation.setDateOfOperation(date);
             } catch (ParseException e) {
-                resp.sendRedirect("/error");
-            } catch (NumberFormatException e) {
-                resp.sendRedirect("/error");
+                e.printStackTrace();
             }
-
             int categoryId = Integer.parseInt(req.getParameter("category_id"));
             operation.setCategoryId(new Category(categoryId));
-
             try {
                 BigDecimal bigDecimal = new BigDecimal(req.getParameter("salary"));
                 if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
@@ -113,7 +102,8 @@ public class OperationServlet extends HttpServlet {
                 resp.sendRedirect("/error");
             }
 
-            resp.sendRedirect("/operations?id=" + operation.getAccountId());
+
+            resp.sendRedirect("/subscription?id=" + subscription.getAccountId());
         } else {
             resp.sendRedirect("/error");
         }

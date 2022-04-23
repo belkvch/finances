@@ -34,7 +34,7 @@ public class HistoryOperationsServlet extends HttpServlet {
             String dateFind = req.getParameter("date");
 
             Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
-            if (account.getUserId().getId() == userId) {
+
                 List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
                 req.setAttribute("categories", categories);
 
@@ -58,9 +58,7 @@ public class HistoryOperationsServlet extends HttpServlet {
                         e.printStackTrace();
                     }
                 }
-            } else {
-                resp.sendRedirect("/error");
-            }
+
         }
     }
 

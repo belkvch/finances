@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>Operations</title>
+    <title>Subscriptions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,36 +52,32 @@
 <br>
 
 <div class="container mt-3">
-    <h2>Your operations:</h2>
+    <h2>Your subscriptions:</h2>
     <table class="table table-borderless">
         <thead>
         <tr>
             <th><b>Name</b></th>
-            <th><b>Id</b></th>
-            <th><b>Date</b></th>
-            <th><b>Price</b></th>
-            <th><b>Category</b></th>
-            <th><b>Edit</b></th>
-            <th><b>Delete</b></th>
+            <th><b>Status</b></th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${operations}" var="operation">
+        <c:forEach items="${subscriptions}" var="subscriptions">
             <tr>
-                <td><c:out value="${operation.getNameOfOperation()}"/>
+                <td><c:out value="${subscriptions.getName()}"/>
                 </td>
-                <td><c:out value="${operation.getId()}"/>
+                <td><c:out value="${subscriptions.isActive()}"/>
                 </td>
-                <td><c:out value="${operation.getDateOfOperation()}"/>
-                </td>
-                <td><c:out value="${operation.getPriceOfOperation()}"/>
-                </td>
-                <td><c:out value="${operation.getCategoryId().getName()}"/>
-                </td>
-                <td><a href="/update?id=${operation.id}">Edit</a></td>
                 <td>
-                    <form method="post" action="/delete" style="display:inline;">
-                        <input type="hidden" name="id" value="${operation.getId()}">
+                <c:if test="${subscriptions.isActive()}">
+                        <form method="post" action="/stop-timer" style="display:inline;">
+                            <input type="hidden" name="id" value="${subscriptions.getId()}">
+                            <button type="submit" class="btn btn-outline-primary"
+                                    onclick="return confirm('Are you sure you want to stop this subscription?');">Stop
+                            </button>
+                        </form>
+                </c:if>
+                    <form method="post" action="/delete-timer" style="display:inline;">
+                        <input type="hidden" name="id" value="${subscriptions.getId()}">
                         <button type="submit" class="btn btn-outline-primary"
                                 onclick="return confirm('Are you sure you want to delete this item?');">Delete
                         </button>
@@ -94,52 +90,39 @@
 </div>
 
 <c:forEach items="${operationsList}" var="operationsList">
-<div class="container mt-3">
-    <div class="mb-3">
-        <a href="/history?id=${operationsList.accountId}&date=${null}">Operation's history</a>
-    </div>
-    <div class="mb-3">
-        <a href="/subscription?id=${operationsList.accountId}">Account's subscriptions</a>
-    </div>
-    <br>
-    <h2>Add new operation</h2>
-    <form method="POST" action="/operations">
-        <div class="mb-3 mt-3">
+    <div class="container mt-3">
+        <h2>Add new Subscription</h2>
+        <form method="POST" action="/subscription">
+            <div class="mb-3 mt-3">
                 <input type="hidden" name="id" value="${operationsList.getAccountId()}">
-            <label>Operation name:
-                <input name="name" placeholder="Enter name" class="form-control" required/>
-            </label>
-        </div>
-        <div class="mb-3">
-            <div class="form-group">
-                <label>Operation date:
-                    <input type="date" name="date" data-date-format='yyyy-mm-dd' class="form-control" required>
+                <label>Subscription and operation name:
+                    <input name="name" placeholder="Enter name" class="form-control" required/>
                 </label>
             </div>
-        </div>
-        <div class="mb-3">
-            <label>Operation amount:
-                <input type="number" min="0.01" step=".01" name="salary" placeholder="Enter price" class="form-control"
-                       required/>
-            </label>
-        </div>
-        <div class="mb-3">
+            <div class="mb-3">
+                <label>Operation amount:
+                    <input type="number" min="0.01" step=".01" name="salary" placeholder="Enter price"
+                           class="form-control"
+                           required/>
+                </label>
+            </div>
+            <div class="mb-3">
                 <label class="form-label">Operation category:
-                    <select class="form-select"  name="category_id">
-                <c:forEach items="${categories}" var="categories">
-                    <option value="${categories.getId()}"> <c:out value="${categories.getName()}"/></option>
-                </c:forEach>
-            </select>
-            </label>
-        </div>
-        <div class="mb-3">
-            <input type="hidden" name="actionType" value="create">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Add</button>
-        </div>
-    </form>
-</div>
+                    <select class="form-select" name="category_id">
+                        <c:forEach items="${categories}" var="categories">
+                            <option value="${categories.getId()}"><c:out value="${categories.getName()}"/></option>
+                        </c:forEach>
+                    </select>
+                </label>
+            </div>
+            <div class="mb-3">
+                <input type="hidden" name="actionType" value="create">
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-outline-primary">Add</button>
+            </div>
+        </form>
+    </div>
 </c:forEach>
 
 <footer class="text-center text-lg-start bg-light text-muted">

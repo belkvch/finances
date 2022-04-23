@@ -29,14 +29,12 @@ public class DeleteCategoryServlet extends HttpServlet {
         } else {
             int id = Integer.parseInt(req.getParameter("id"));
             Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
-            if (account.getUserId().getId() == userId) {
+
                 List<Accounts> accounts = new ArrayList<>();
                 accounts.add(new Accounts(id));
                 req.setAttribute("accounts", accounts);
                 resp.sendRedirect("/category?id=" + id);
-            } else {
-                resp.sendRedirect("/error");
-            }
+
         }
     }
 

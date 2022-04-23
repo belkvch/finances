@@ -17,4 +17,5 @@ public interface AccountDAO {
 
     Accounts getLastAccount();
 
+    Accounts addUserAccountConn(Accounts account, int userId);
 }
