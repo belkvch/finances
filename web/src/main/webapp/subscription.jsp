@@ -68,14 +68,13 @@
                 <td><c:out value="${subscriptions.isActive()}"/>
                 </td>
                 <td>
-                <c:if test="${subscriptions.isActive()}">
-                        <form method="post" action="/stop-timer" style="display:inline;">
-                            <input type="hidden" name="id" value="${subscriptions.getId()}">
-                            <button type="submit" class="btn btn-outline-primary"
-                                    onclick="return confirm('Are you sure you want to stop this subscription?');">Stop
-                            </button>
-                        </form>
-                </c:if>
+                    <form method="post" action="/stop-timer" style="display:inline;">
+                        <input type="hidden" name="id" value="${subscriptions.getId()}">
+                        <button type="submit" class="btn btn-outline-primary"
+                                onclick="return confirm('Are you sure you want to stop this subscription?');">Change
+                            status
+                        </button>
+                    </form>
                     <form method="post" action="/delete-timer" style="display:inline;">
                         <input type="hidden" name="id" value="${subscriptions.getId()}">
                         <button type="submit" class="btn btn-outline-primary"

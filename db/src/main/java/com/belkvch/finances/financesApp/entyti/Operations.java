@@ -1,5 +1,6 @@
 package com.belkvch.finances.financesApp.entyti;
 
+import java.lang.management.BufferPoolMXBean;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -16,6 +17,11 @@ public class Operations {
 
     public Operations(int accountId) {
         this.accountId = accountId;
+    }
+
+    public Operations(int id, BigDecimal priceOfOperation) {
+        this.id = id;
+        this.priceOfOperation = priceOfOperation;
     }
 
     public Operations(int id, String nameOfOperation, Date dateOfOperation, BigDecimal priceOfOperation, int accountId, Category categoryId) {

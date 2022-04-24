@@ -30,6 +30,8 @@ public class StopSubscriptionServlet extends HttpServlet {
                 Subscription subscription = DefaultSubscriptionDAO.getInstance().getSubscriptionById(id);
                 if (subscription != null && subscription.isActive()) {
                     DefaultSubscriptionDAO.getInstance().changeSubscriptionToFalse(subscription);
+                } if (!subscription.isActive()) {
+                    DefaultSubscriptionDAO.getInstance().changeSubscriptionToTrue(subscription);
                 }
                 response.sendRedirect("/subscription?id=" + subscription.getAccountId());
             } catch (Exception ex) {

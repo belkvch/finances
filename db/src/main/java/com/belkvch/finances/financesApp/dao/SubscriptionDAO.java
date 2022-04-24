@@ -6,6 +6,9 @@ import java.util.List;
 
 public interface SubscriptionDAO {
 
+
+    List<Subscription> showAllSubscriptions();
+
     List<Subscription> showAllSubscriptionsForAccount(int id);
 
     Subscription addNewSubscription(Subscription subscription);
@@ -15,4 +18,6 @@ public interface SubscriptionDAO {
     Subscription changeSubscriptionToFalse(Subscription subscription);
 
     Subscription deleteSubscription(Subscription subscription);
+
+    Subscription changeSubscriptionToTrue(Subscription subscription);
 }

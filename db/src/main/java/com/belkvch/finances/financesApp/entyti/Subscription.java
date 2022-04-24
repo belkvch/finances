@@ -5,6 +5,7 @@ public class Subscription {
     private String name;
     private boolean isActive;
     private int accountId;
+    private Operations operation;
 
     public Subscription() {
     }
@@ -20,6 +21,13 @@ public class Subscription {
         this.name = name;
         this.isActive = isActive;
         this.accountId = accountId;
+    }
+
+    public Subscription(String name, boolean isActive, int accountId, Operations operation) {
+        this.name = name;
+        this.isActive = isActive;
+        this.accountId = accountId;
+        this.operation = operation;
     }
 
     public int getId() {
@@ -52,5 +60,13 @@ public class Subscription {
 
     public void setAccountId(int accountId) {
         this.accountId = accountId;
+    }
+
+    public Operations getOperation() {
+        return operation;
+    }
+
+    public void setOperation(Operations operation) {
+        this.operation = operation;
     }
 }

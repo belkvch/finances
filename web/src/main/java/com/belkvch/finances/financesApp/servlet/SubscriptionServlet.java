@@ -17,6 +17,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 @WebServlet("/subscription")
 public class SubscriptionServlet extends HttpServlet {
@@ -68,7 +72,6 @@ public class SubscriptionServlet extends HttpServlet {
                 subscription.setName(name);
             }
             subscription.setActive(true);
-            DefaultSubscriptionDAO.getInstance().addNewSubscription(subscription);
 
 
             Operations operation = new Operations();
@@ -94,7 +97,9 @@ public class SubscriptionServlet extends HttpServlet {
                     if (subtract.compareTo(BigDecimal.valueOf(0)) > 0 || subtract.compareTo(BigDecimal.valueOf(0)) == 0) {
                         account.setAmount(subtract);
                         DefaultAccountDAO.getInstance().changeOperationAmount(account);
-                        DefaultOperationsDAO.getInstance().addNewOperation(operation);
+                        Operations operationNew = DefaultOperationsDAO.getInstance().addNewOperation(operation);
+                        subscription.setOperation(operationNew);
+                        DefaultSubscriptionDAO.getInstance().addNewSubscription(subscription);
                     } else {
                         resp.sendRedirect("/error");
                     }
@@ -105,10 +110,34 @@ public class SubscriptionServlet extends HttpServlet {
                 resp.sendRedirect("/error");
             }
 
+            ScheduledExecutorService sesService = Executors.newSingleThreadScheduledExecutor();
+            Runnable sec = new Runnable() {
+                @Override
+                public void run() {
+                    List <Subscription> subscriptions = DefaultSubscriptionDAO.getInstance().showAllSubscriptions();
+                    for (Subscription sub: subscriptions) {
+                        if (sub.isActive()) {
+                            Operations operation = DefaultOperationsDAO.getInstance().getOperationById(sub.getOperation().getId());
+                            BigDecimal amount = operation.getPriceOfOperation();
+                            Accounts account = DefaultAccountDAO.getInstance().getAccountById(sub.getAccountId());
+                            BigDecimal subtract = account.getAmount().subtract(amount);
+                            if (subtract.compareTo(BigDecimal.valueOf(0)) > 0 || subtract.compareTo(BigDecimal.valueOf(0)) == 0) {
+                                account.setAmount(subtract);
+                                DefaultAccountDAO.getInstance().changeOperationAmount(account);
+                                DefaultOperationsDAO.getInstance().addNewOperation(operation);
+                            }
+                        }
+                    }
+                }
+            };
+            ScheduledFuture<?> scheduledFuture = sesService.scheduleAtFixedRate(sec, 30, 30, TimeUnit.SECONDS);
 
             resp.sendRedirect("/subscription?id=" + subscription.getAccountId());
         } else {
             resp.sendRedirect("/error");
         }
+
     }
+
 }
+

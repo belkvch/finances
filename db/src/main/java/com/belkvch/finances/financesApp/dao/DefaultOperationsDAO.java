@@ -11,9 +11,9 @@ import java.util.List;
 public class DefaultOperationsDAO implements OperationsDAO {
     private static volatile DefaultOperationsDAO instance;
     private static final String SELECT_ALL = "select * from operations, category where operations.category_id = category.id";
-    private static final String SELECT_ALL_FOR_ACCOUNT = "select * from operations, category where operations.account_id=? and operations.date_op=? and operations.category_id = category.id";
+    private static final String SELECT_ALL_FOR_ACCOUNT = "select * from operations, category where operations.account_id=? and operations.date_op=? and operations.category_id = category.id ORDER BY operations.id";
     private static final String SELECT_OPERATION_BY_ID = "select * from operations, category where operations.id = ? and operations.category_id = category.id";
-    private static final String SELECT_OPERATION_FOR_HISTORY = "select * from operations, category where operations.account_id=? and operations.category_id = category.id";
+    private static final String SELECT_OPERATION_FOR_HISTORY = "select * from operations, category where operations.account_id=? and operations.category_id = category.id ORDER BY operations.id";
     private static final String INSERT_OPERATION = "insert into operations(name,date_op,salary,account_id,category_id)  VALUES(?,?,?,?,?)";
     private static final String UPDATE_OPERATION_NAME = "update operations set name = ? where id = ?";
     private static final String UPDATE_OPERATION_DATE = "update operations set date_op = ? where id = ?";
@@ -170,7 +170,7 @@ public class DefaultOperationsDAO implements OperationsDAO {
     @Override
     public Operations addNewOperation(Operations operation) {
         try (Connection connection = DBManager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_OPERATION);
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_OPERATION, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, operation.getNameOfOperation());
             java.util.Date utilDate = operation.getDateOfOperation();
             java.sql.Date date = new java.sql.Date(utilDate.getTime());
