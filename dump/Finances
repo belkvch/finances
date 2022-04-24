@@ -5,7 +5,7 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-04-23 21:46:57
+-- Started on 2022-04-25 01:53:24
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -79,7 +79,7 @@ CREATE SEQUENCE public.accounts_id_seq
 ALTER TABLE public.accounts_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3395 (class 0 OID 0)
+-- TOC entry 3396 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -118,7 +118,7 @@ CREATE SEQUENCE public.category_id_seq
 ALTER TABLE public.category_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3396 (class 0 OID 0)
+-- TOC entry 3397 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -159,7 +159,7 @@ CREATE SEQUENCE public.currency_id_seq
 ALTER TABLE public.currency_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3397 (class 0 OID 0)
+-- TOC entry 3398 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: currency_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -201,7 +201,7 @@ CREATE SEQUENCE public.finances_bd_id_seq
 ALTER TABLE public.finances_bd_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3398 (class 0 OID 0)
+-- TOC entry 3399 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: finances_bd_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -239,7 +239,7 @@ CREATE SEQUENCE public.roles_id_seq
 ALTER TABLE public.roles_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3399 (class 0 OID 0)
+-- TOC entry 3400 (class 0 OID 0)
 -- Dependencies: 211
 -- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -256,7 +256,8 @@ CREATE TABLE public.subscriptions (
     id integer NOT NULL,
     name character varying(500),
     is_active boolean,
-    account_id integer
+    account_id integer,
+    oper_id integer
 );
 
 
@@ -279,7 +280,7 @@ CREATE SEQUENCE public.subscriptions_id_seq
 ALTER TABLE public.subscriptions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3400 (class 0 OID 0)
+-- TOC entry 3401 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -319,7 +320,7 @@ CREATE SEQUENCE public.users_id_seq
 ALTER TABLE public.users_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3401 (class 0 OID 0)
+-- TOC entry 3402 (class 0 OID 0)
 -- Dependencies: 213
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -384,7 +385,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 3386 (class 0 OID 17096)
+-- TOC entry 3387 (class 0 OID 17096)
 -- Dependencies: 221
 -- Data for Name: account_category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -421,7 +422,6 @@ COPY public.account_category (account_id, category_id) FROM stdin;
 6	62
 5	62
 5	63
-5	64
 8	66
 7	66
 17	66
@@ -438,7 +438,7 @@ COPY public.account_category (account_id, category_id) FROM stdin;
 
 
 --
--- TOC entry 3389 (class 0 OID 17145)
+-- TOC entry 3390 (class 0 OID 17145)
 -- Dependencies: 224
 -- Data for Name: account_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -453,7 +453,7 @@ COPY public.account_user (account_id, user_id) FROM stdin;
 
 
 --
--- TOC entry 3383 (class 0 OID 17063)
+-- TOC entry 3384 (class 0 OID 17063)
 -- Dependencies: 218
 -- Data for Name: accounts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -462,14 +462,14 @@ COPY public.accounts (id, amount, currency_id) FROM stdin;
 7	100.00	1
 8	0.05	2
 6	369.16	2
-5	9998538.60	1
-17	102.28	3
 28	9934.50	1
+17	112.28	3
+5	9870718.60	1
 \.
 
 
 --
--- TOC entry 3385 (class 0 OID 17080)
+-- TOC entry 3386 (class 0 OID 17080)
 -- Dependencies: 220
 -- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -478,7 +478,6 @@ COPY public.category (id, category_name, is_necessary) FROM stdin;
 61	Food	t
 62	Medical	t
 63	LoL	f
-64	Vape	f
 66	Gift	t
 1	None	t
 2	Transfer	t
@@ -488,7 +487,7 @@ COPY public.category (id, category_name, is_necessary) FROM stdin;
 
 
 --
--- TOC entry 3381 (class 0 OID 17055)
+-- TOC entry 3382 (class 0 OID 17055)
 -- Dependencies: 216
 -- Data for Name: currency; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -501,7 +500,7 @@ COPY public.currency (id, name, to_byn, to_eur, to_usd) FROM stdin;
 
 
 --
--- TOC entry 3375 (class 0 OID 16748)
+-- TOC entry 3376 (class 0 OID 16748)
 -- Dependencies: 210
 -- Data for Name: operations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -512,13 +511,11 @@ COPY public.operations (id, name, date_op, salary, account_id, category_id) FROM
 94	Transfer	2022-04-22	1000.00	5	2
 96	Transfer	2022-04-23	100.00	6	2
 95	Spotify	2022-04-22	23.00	5	66
-97	Buy zoom	2022-04-23	100.00	28	59
-98	Transfer	2022-04-23	10.00	17	2
 \.
 
 
 --
--- TOC entry 3377 (class 0 OID 17036)
+-- TOC entry 3378 (class 0 OID 17036)
 -- Dependencies: 212
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -531,17 +528,17 @@ COPY public.roles (id, name) FROM stdin;
 
 
 --
--- TOC entry 3388 (class 0 OID 17132)
+-- TOC entry 3389 (class 0 OID 17132)
 -- Dependencies: 223
 -- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.subscriptions (id, name, is_active, account_id) FROM stdin;
+COPY public.subscriptions (id, name, is_active, account_id, oper_id) FROM stdin;
 \.
 
 
 --
--- TOC entry 3379 (class 0 OID 17043)
+-- TOC entry 3380 (class 0 OID 17043)
 -- Dependencies: 214
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -559,7 +556,7 @@ COPY public.users (id, username, password, role_id) FROM stdin;
 
 
 --
--- TOC entry 3402 (class 0 OID 0)
+-- TOC entry 3403 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: accounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -568,7 +565,7 @@ SELECT pg_catalog.setval('public.accounts_id_seq', 28, true);
 
 
 --
--- TOC entry 3403 (class 0 OID 0)
+-- TOC entry 3404 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -577,7 +574,7 @@ SELECT pg_catalog.setval('public.category_id_seq', 67, true);
 
 
 --
--- TOC entry 3404 (class 0 OID 0)
+-- TOC entry 3405 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: currency_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -586,16 +583,16 @@ SELECT pg_catalog.setval('public.currency_id_seq', 1, false);
 
 
 --
--- TOC entry 3405 (class 0 OID 0)
+-- TOC entry 3406 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: finances_bd_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.finances_bd_id_seq', 98, true);
+SELECT pg_catalog.setval('public.finances_bd_id_seq', 3695, true);
 
 
 --
--- TOC entry 3406 (class 0 OID 0)
+-- TOC entry 3407 (class 0 OID 0)
 -- Dependencies: 211
 -- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -604,16 +601,16 @@ SELECT pg_catalog.setval('public.roles_id_seq', 1, false);
 
 
 --
--- TOC entry 3407 (class 0 OID 0)
+-- TOC entry 3408 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: subscriptions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.subscriptions_id_seq', 1, true);
+SELECT pg_catalog.setval('public.subscriptions_id_seq', 43, true);
 
 
 --
--- TOC entry 3408 (class 0 OID 0)
+-- TOC entry 3409 (class 0 OID 0)
 -- Dependencies: 213
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -703,7 +700,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3233 (class 2606 OID 17150)
+-- TOC entry 3234 (class 2606 OID 17150)
 -- Name: account_user account_user_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -712,7 +709,7 @@ ALTER TABLE ONLY public.account_user
 
 
 --
--- TOC entry 3234 (class 2606 OID 17155)
+-- TOC entry 3235 (class 2606 OID 17155)
 -- Name: account_user account_user_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -748,6 +745,15 @@ ALTER TABLE ONLY public.account_category
 
 
 --
+-- TOC entry 3233 (class 2606 OID 17160)
+-- Name: subscriptions oper_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT oper_id_fk FOREIGN KEY (oper_id) REFERENCES public.operations(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- TOC entry 3227 (class 2606 OID 17121)
 -- Name: operations operations_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
@@ -774,7 +780,7 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.roles(id);
 
 
--- Completed on 2022-04-23 21:46:57
+-- Completed on 2022-04-25 01:53:24
 
 --
 -- PostgreSQL database dump complete
