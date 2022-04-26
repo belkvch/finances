@@ -22,7 +22,7 @@
             <br>
             <button type="submit" class="btn btn-outline-primary">Login</button>
             <br>
-            You still don't have an account? <a href="/registration">Register!</a> It's free:)
+            <p class="mt-2">You still don't have an account? <a href="/registration">Register!</a> It's free:)</p>
         </form>
     </div>
 </center>

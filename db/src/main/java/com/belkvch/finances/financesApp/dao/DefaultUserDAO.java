@@ -39,7 +39,7 @@ public class DefaultUserDAO implements UserDAO {
         user.setId(resultSet.getInt("id"));
         user.setLogin(resultSet.getString("username"));
         user.setPassword(resultSet.getString("password"));
-        user.setRoleId(new Role(resultSet.getInt("id"), resultSet.getString("name")));
+        user.setRoleId(new Role(resultSet.getInt("role_id"), resultSet.getString("name")));
         return user;
     }
 

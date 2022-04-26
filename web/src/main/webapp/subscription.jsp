@@ -8,48 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        button {
+            margin: 5px 5px 5px 5px
+        }
+    </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/main">
-            <img src="https://avatanplus.com/files/resources/original/593c1cca299df15c92d075ba.png" alt="Logo"
-                 style="width:40px;"
-                 class="rounded-pill">
-        </a>
-        <a class="navbar-brand" href="/main">CatCash</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mynavbar">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/accounts">Accounts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/currency">Currency</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin">Users</a>
-                </li>
-            </ul>
-        </div>
-        <div class="d-flex">
-            <form method="post" action="/logout" style="display:inline;" class="d-flex">
-                <input type="hidden">
-                <button type="submit" class="btn btn-outline-primary btn-sm"
-                        onclick="return confirm('Are you sure to sign out?');">Sign Out
-                </button>
-            </form>
-        </div>
-    </div>
-</nav>
-
-<center>
-    <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
-</center>
-<br>
+<jsp:include page="NavBar.jsp" />
 
 <div class="container mt-3">
     <h2>Your subscriptions:</h2>
@@ -89,87 +56,54 @@
 </div>
 
 <c:forEach items="${operationsList}" var="operationsList">
-    <div class="container mt-3">
-        <h2>Add new Subscription</h2>
-        <form method="POST" action="/subscription">
-            <div class="mb-3 mt-3">
-                <input type="hidden" name="id" value="${operationsList.getAccountId()}">
-                <label>Subscription and operation name:
-                    <input name="name" placeholder="Enter name" class="form-control" required/>
-                </label>
+    <div class="container mt-3 mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropAddS">
+            Add new subscription
+        </button>
+        <div class="modal fade" id="staticBackdropAddS" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Add new subscription</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="/subscription" class="mb-0">
+                            <div class="mb-3 mt-3">
+                                <input type="hidden" name="id" value="${operationsList.getAccountId()}">
+                                <label class="d-flex">Subscription and operation name:
+                                    <input name="name" placeholder="Enter name" class="form-control" required/>
+                                </label>
+                            </div>
+                            <div class="mb-3">
+                                <label class="d-flex">Operation amount:
+                                    <input type="number" min="0.01" step=".01" name="salary" placeholder="Enter price"
+                                           class="form-control"
+                                           required/>
+                                </label>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label d-flex">Operation category:
+                                    <select class="form-select" name="category_id">
+                                        <c:forEach items="${categories}" var="categories">
+                                            <option value="${categories.getId()}"><c:out value="${categories.getName()}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <input type="hidden" name="actionType" value="create">
+                                <button type="submit" class="btn btn-outline-primary" style="width: 120px;">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label>Operation amount:
-                    <input type="number" min="0.01" step=".01" name="salary" placeholder="Enter price"
-                           class="form-control"
-                           required/>
-                </label>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Operation category:
-                    <select class="form-select" name="category_id">
-                        <c:forEach items="${categories}" var="categories">
-                            <option value="${categories.getId()}"><c:out value="${categories.getName()}"/></option>
-                        </c:forEach>
-                    </select>
-                </label>
-            </div>
-            <div class="mb-3">
-                <input type="hidden" name="actionType" value="create">
-            </div>
-            <div class="mb-3">
-                <button type="submit" class="btn btn-outline-primary">Add</button>
-            </div>
-        </form>
+        </div>
     </div>
 </c:forEach>
 
-<footer class="text-center text-lg-start bg-light text-muted">
-    <section
-            class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-        <div class="me-5 d-none d-lg-block">
-            <span>Get connected with us on social networks:</span>
-        </div>
-        <div>
-            <a href="https://www.instagram.com/belkvch/" class="me-4 text-reset">
-                Instagram
-            </a>
-            <a href="https://www.linkedin.com/in/polina-belkevich-a28123230/" class="me-4 text-reset">
-                Linkedin
-            </a>
-            <a href="https://gitlab.com/belkvch" class="me-4 text-reset">
-                GitLab
-            </a>
-        </div>
-    </section>
-    <section class="">
-        <div class="container text-center text-md-start mt-5">
-            <div class="row mt-3">
-                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">
-                        CatCash
-                    </h6>
-                    <p>We are small Belarusian studio, which develops financial web2 apps.
-                        Our mission is to make your operations accurate and life is easier.
-                    <p>Inspiring leader, that builds amazing products and bring innovative ideas to life.
-                    </p>
-                </div>
-                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">
-                        Contact
-                    </h6>
-                    <p> Belarus, Minsk</p>
-                    <p> pbelkevich@gmail.com</p>
-                    <p> + 375(29)844-65-98</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        © 2022 Copyright:
-        <a class="text-reset fw-bold" href="https://www.netcracker.com/">netcracker.com</a>
-    </div>
-</footer>
+<jsp:include page="Footer.jsp" />
 
 </body>
 </html>
