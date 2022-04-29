@@ -15,6 +15,14 @@ public class DefaultAccountDAO implements AccountDAO {
             "where users.id = ?" +
             "and accounts.currency_id=currency.id " +
             "and account_user.user_id=users.id and account_user.account_id = accounts.id " +
+            "and accounts.is_active_account = 'true' " +
+            "ORDER BY accounts.id";
+
+    private static final String SELECT_ALL_FOR_USER_ARCHIVE = "select * from accounts,users,currency, account_user " +
+            "where users.id = ?" +
+            "and accounts.currency_id=currency.id " +
+            "and account_user.user_id=users.id and account_user.account_id = accounts.id " +
+            "and accounts.is_active_account = 'false' " +
             "ORDER BY accounts.id";
 
     private static final String INSERT_ACCOUNT = "insert into accounts(currency_id,amount)  VALUES(?,?)";
@@ -36,6 +44,8 @@ public class DefaultAccountDAO implements AccountDAO {
 
     private static final String INSERT_USER_ACCOUNT = "insert into account_user(user_id, account_id)  VALUES(?,?)";
 
+    private static final String UPDATE_ACCOUNT_STATUS = "update accounts set is_active_account = 'false' where id = ?";
+
     private DefaultAccountDAO() {
     }
 
@@ -55,6 +65,7 @@ public class DefaultAccountDAO implements AccountDAO {
         accounts.setId(resultSet.getInt("id"));
         accounts.setAmount(resultSet.getBigDecimal("amount"));
         accounts.setCurrencyId(new Currency(resultSet.getInt("currency_id"), resultSet.getString("name")));
+        accounts.setActiveAccount(resultSet.getBoolean("is_active_account"));
         return accounts;
     }
 
@@ -78,6 +89,22 @@ public class DefaultAccountDAO implements AccountDAO {
         List<Accounts> accounts = new ArrayList<>();
         try (Connection connection = DBManager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FOR_USER);
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                accounts.add(initAccount(resultSet));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return accounts;
+    }
+
+    @Override
+    public List<Accounts> showAllAccountsForUserArchive(int userId) {
+        List<Accounts> accounts = new ArrayList<>();
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FOR_USER_ARCHIVE);
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -165,6 +192,19 @@ public class DefaultAccountDAO implements AccountDAO {
             throwables.printStackTrace();
         } catch (NullPointerException e) {
             System.out.println(e);
+        }
+        return null;
+    }
+
+    @Override
+    public Accounts changeAccountStatus(Accounts account) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_STATUS);
+            preparedStatement.setInt(1, account.getId());
+            preparedStatement.executeUpdate();
+            return account;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return null;
     }

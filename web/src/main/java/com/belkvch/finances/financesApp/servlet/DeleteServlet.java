@@ -31,9 +31,11 @@ public class DeleteServlet extends HttpServlet {
                 Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
                 if (operation.getCategoryId().getId() != 2) {
                     Accounts account = DefaultAccountDAO.getInstance().getAccountById(operation.getAccountId());
-                    account.setAmount(operation.getPriceOfOperation().add(account.getAmount()));
-                    DefaultAccountDAO.getInstance().changeOperationAmount(account);
-                    DefaultOperationsDAO.getInstance().deleteOperation(operation);
+                    if (account.isActiveAccount()) {
+                        account.setAmount(operation.getPriceOfOperation().add(account.getAmount()));
+                        DefaultAccountDAO.getInstance().changeOperationAmount(account);
+                        DefaultOperationsDAO.getInstance().deleteOperation(operation);
+                    }
                 }
                 response.sendRedirect(request.getContextPath() + "/operations?id=" + operation.getAccountId());
             } catch (Exception ex) {

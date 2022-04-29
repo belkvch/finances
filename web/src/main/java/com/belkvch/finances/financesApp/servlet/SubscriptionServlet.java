@@ -125,12 +125,14 @@ public class SubscriptionServlet extends HttpServlet {
                                 account.setAmount(subtract);
                                 DefaultAccountDAO.getInstance().changeOperationAmount(account);
                                 DefaultOperationsDAO.getInstance().addNewOperation(operation);
+                            } else {
+                                DefaultSubscriptionDAO.getInstance().changeSubscriptionToFalse(sub);
                             }
                         }
                     }
                 }
             };
-            ScheduledFuture<?> scheduledFuture = sesService.scheduleAtFixedRate(sec, 30, 30, TimeUnit.SECONDS);
+            ScheduledFuture<?> scheduledFuture = sesService.scheduleAtFixedRate(sec, 10, 10, TimeUnit.SECONDS);
 
             resp.sendRedirect("/subscription?id=" + subscription.getAccountId());
         } else {

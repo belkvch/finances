@@ -18,6 +18,7 @@
 
 <jsp:include page="NavBar.jsp" />
 
+<c:forEach items="${accounts}" var="accounts">
 <div class="container mt-3">
     <form method="POST" action="/history" class="d-flex">
         <div class="mb-3 mt-3">
@@ -51,8 +52,10 @@
             <th><b>Date</b></th>
             <th><b>Price</b></th>
             <th><b>Category</b></th>
+            <c:if test="${accounts.isActiveAccount()}">
             <th><b>Edit</b></th>
             <th><b>Delete</b></th>
+            </c:if>
         </tr>
         </thead>
         <tbody>
@@ -66,6 +69,7 @@
                 </td>
                 <td><c:out value="${operation.getCategoryId().getName()}"/>
                 </td>
+                <c:if test="${accounts.isActiveAccount()}">
                 <td><a href="/update?id=${operation.id}">Edit</a></td>
                 <td>
                     <c:if test="${operation.getCategoryId().getId() != 2}">
@@ -77,12 +81,13 @@
                     </form>
                     </c:if>
                 </td>
+                </c:if>
             </tr>
         </c:forEach>
         </tbody>
     </table>
 </div>
-
+</c:forEach>
 
 <jsp:include page="Footer.jsp" />
 

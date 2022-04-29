@@ -9,6 +9,8 @@ public interface AccountDAO {
 
     List<Accounts> showAllAccountsForUser(int userId);
 
+    List<Accounts> showAllAccountsForUserArchive(int userId);
+
     Accounts addNewAccount(Accounts accounts);
 
     Accounts getAccountById(int id);
@@ -18,4 +20,6 @@ public interface AccountDAO {
     Accounts getLastAccount();
 
     Accounts addUserAccountConn(Accounts account, int userId);
+
+    Accounts changeAccountStatus(Accounts account);
 }

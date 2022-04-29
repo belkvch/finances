@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<jsp:include page="NavBar.jsp" />
+<jsp:include page="NavBar.jsp"/>
 
 <div class="container mt-3">
     <h2>Categories:</h2>
@@ -37,16 +37,16 @@
                     <form method="POST" action="/updateCategory">
                         <c:forEach items="${accounts}" var="accounts">
                             <input type="hidden" name="id" value="${accounts.getId()}">
+                            <c:if test="${!categories.isNecessary()}">
+                                <div class="d-flex align-items-center">
+                                    <label>
+                                        <input name="category_name" class="form-control" required/>
+                                    </label>
+                                    <input type="hidden" name="category_id" value="${categories.getId()}">
+                                    <button type="submit" class="btn btn-outline-primary">Change</button>
+                                </div>
+                            </c:if>
                         </c:forEach>
-                        <c:if test="${!categories.isNecessary()}">
-                        <div class="d-flex align-items-center">
-                            <label>
-                                <input name="category_name" class="form-control" required/>
-                            </label>
-                            <input type="hidden" name="category_id" value="${categories.getId()}">
-                            <button type="submit" class="btn btn-outline-primary">Change</button>
-                        </div>
-                    </c:if>
                     </form>
                 </td>
                 <td>
@@ -74,7 +74,8 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropAddC">
         Add new category
     </button>
-    <div class="modal fade" id="staticBackdropAddC" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdropAddC" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -102,7 +103,7 @@
     </div>
 </div>
 
-<jsp:include page="Footer.jsp" />
+<jsp:include page="Footer.jsp"/>
 
 </body>
 </html>

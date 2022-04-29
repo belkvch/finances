@@ -6,6 +6,7 @@ public class Accounts {
     private int id;
     private BigDecimal amount;
     private Currency currencyId;
+    private boolean isActiveAccount;
 
     public Accounts() {
     }
@@ -48,6 +49,14 @@ public class Accounts {
 
     public void setCurrencyId(Currency currencyId) {
         this.currencyId = currencyId;
+    }
+
+    public boolean isActiveAccount() {
+        return isActiveAccount;
+    }
+
+    public void setActiveAccount(boolean activeAccount) {
+        isActiveAccount = activeAccount;
     }
 
 }

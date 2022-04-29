@@ -19,6 +19,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/currency">Currency</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/archive-account?id=${sessionScope.id}">Archive</a>
+        </li>
         <c:if test="${sessionScope.role == 2}">
           <li class="nav-item">
             <a class="nav-link" href="/admin">Users</a>

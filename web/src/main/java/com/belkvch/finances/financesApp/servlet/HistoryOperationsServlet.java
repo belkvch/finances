@@ -36,6 +36,11 @@ public class HistoryOperationsServlet extends HttpServlet {
             try {
                 if (user.getId() == userId) {
 
+                    List<Accounts> accounts =new ArrayList<>();
+                    Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
+                    accounts.add(account);
+                    req.setAttribute("accounts", accounts);
+
                     List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
                     req.setAttribute("categories", categories);
 

@@ -36,6 +36,7 @@
             <th><b>Categories</b></th>
             <th><b>Add</b></th>
             <th><b>Transfer</b></th>
+            <th><b>Archive</b></th>
         </tr>
         </thead>
         <tbody>
@@ -80,6 +81,15 @@
                                 <input type="hidden" name="id" value="${accounts.getId()}">
                                 <input type="hidden" name="actionType" value="transfer">
                                 <button type="submit" class="btn btn-outline-primary">Add</button>
+                            </div>
+                        </form>
+                    </td>
+
+                    <td>
+                        <form method="POST" action="/archive-account">
+                            <div class="d-flex align-items-center">
+                                <input type="hidden" name="id" value="${accounts.getId()}">
+                                <button type="submit" class="btn btn-outline-primary">Archive</button>
                             </div>
                         </form>
                     </td>

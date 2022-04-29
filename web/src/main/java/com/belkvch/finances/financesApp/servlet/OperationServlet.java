@@ -36,6 +36,11 @@ public class OperationServlet extends HttpServlet {
                 int id = Integer.parseInt(req.getParameter("id"));
                 User user = DefaultUserDAO.getInstance().getUserByAccountId(id, userId);
                 if (user.getId() == userId) {
+                    List<Accounts> accounts =new ArrayList<>();
+                    Accounts account = DefaultAccountDAO.getInstance().getAccountById(id);
+                    accounts.add(account);
+                    req.setAttribute("accounts", accounts);
+
                     List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(id);
                     req.setAttribute("categories", categories);
 
