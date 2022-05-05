@@ -33,11 +33,11 @@ public class UserFilter implements Filter {
             if (BCrypt.checkpw(password, user.getPassword())) {
             httpSession.setAttribute("login", username);
             httpSession.setAttribute("id", DefaultUserDAO.getInstance().getByLogin(username).getId());
-//            httpSession.setAttribute("role", DefaultUserDAO.getInstance().getByLogin(username).getRole());
+            httpSession.setAttribute("role", DefaultUserDAO.getInstance().getByLogin(username).getRoleId().getId());
             httpServletResponse.sendRedirect("/main");
             }
         } else {
-            if ("/login".equals(url) || "/registration".equals(url)) {
+            if ("/login".equals(url) || "/registration".equals(url) || url.startsWith("/ws")) {
                 filterChain.doFilter(servletRequest, servletResponse);
             }
             httpServletRequest.getRequestDispatcher("/login.jsp").forward(httpServletRequest, httpServletResponse);

@@ -6,22 +6,24 @@ public class Accounts {
     private int id;
     private BigDecimal amount;
     private Currency currencyId;
-    private User userId;
+    private boolean isActiveAccount;
 
     public Accounts() {
     }
 
-    public Accounts(BigDecimal amount, Currency currencyId, User userId) {
-        this.amount = amount;
-        this.currencyId = currencyId;
-        this.userId = userId;
+    public Accounts(int id) {
+        this.id = id;
     }
 
-    public Accounts(int id, BigDecimal amount, Currency currencyId, User userId) {
+    public Accounts(BigDecimal amount, Currency currencyId) {
+        this.amount = amount;
+        this.currencyId = currencyId;
+    }
+
+    public Accounts(int id, BigDecimal amount, Currency currencyId) {
         this.id = id;
         this.amount = amount;
         this.currencyId = currencyId;
-        this.userId = userId;
     }
 
 
@@ -49,11 +51,12 @@ public class Accounts {
         this.currencyId = currencyId;
     }
 
-    public User getUserId() {
-        return userId;
+    public boolean isActiveAccount() {
+        return isActiveAccount;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setActiveAccount(boolean activeAccount) {
+        isActiveAccount = activeAccount;
     }
+
 }

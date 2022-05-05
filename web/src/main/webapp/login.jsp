@@ -10,7 +10,7 @@
 
 <center>
     <div class="container mt-3">
-        <h2 class="display-5"> Registration to CatCash: </h2>
+        <h2 class="display-5"> Login to CatCash: </h2>
         <form method="POST" action="/login">
             <div class="container mt-3">
                 <label>Login <input name="login" class="form-control" required/></label>
@@ -22,7 +22,7 @@
             <br>
             <button type="submit" class="btn btn-outline-primary">Login</button>
             <br>
-            You still don't have an account? <a href="/registration">Register!</a> It's free:)
+            <p class="mt-2">You still don't have an account? <a href="/registration">Register!</a> It's free:)</p>
         </form>
     </div>
 </center>

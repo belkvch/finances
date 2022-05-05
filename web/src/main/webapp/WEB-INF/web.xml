@@ -8,31 +8,18 @@
         <filter-name>UserFilter</filter-name>
         <filter-class>com.belkvch.finances.financesApp.servlet.UserFilter</filter-class>
     </filter>
-
     <servlet>
         <servlet-name>OperationServlet</servlet-name>
         <servlet-class>com.belkvch.finances.financesApp.servlet.OperationServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>OperationServlet</servlet-name>
         <url-pattern>/operations/*</url-pattern>
     </servlet-mapping>
-
-
     <filter-mapping>
         <filter-name>UserFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-<!--    <filter>-->
-<!--        <filter-name>AdminFilter</filter-name>-->
-<!--        <filter-class>com.belkvch.finances.financesApp.servlet.AdminFilter</filter-class>-->
-<!--    </filter>-->
-<!--    <filter-mapping>-->
-<!--        <filter-name>AdminFilter</filter-name>-->
-<!--        <url-pattern>/admin/*</url-pattern>-->
-<!--    </filter-mapping>-->
 
 
 </web-app>

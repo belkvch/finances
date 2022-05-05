@@ -8,32 +8,16 @@
 
     <style>
         #message p {
-            padding: 10px 35px;
             font-size: 18px;
         }
 
-        /* Add a green text color and a checkmark when the requirements are right */
         .valid {
             color: green;
         }
 
-        .valid:before {
-            position: relative;
-            left: -35px;
-            content: "✔";
-        }
-
-        /* Add a red text color and an "x" icon when the requirements are wrong */
         .invalid {
-            color: red;
+            color: tomato;
         }
-
-        .invalid:before {
-            position: relative;
-            left: -35px;
-            content: "✖";
-        }
-
     </style>
 </head>
 <body>
@@ -52,17 +36,14 @@
             </div>
             <br>
             <button type="submit" class="btn btn-outline-primary">Registration</button>
-            <br>
-            <div id="message">
-                <h3>Password must contain the following:</h3>
+            <p class="mt-2">If you have an account: <a href="/login">Login</a></p>
+            <div id="message" class="p-5">
+                <h4>Password must contain the following:</h4>
                 <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
                 <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
                 <p id="number" class="invalid">A <b>number</b></p>
                 <p id="length" class="invalid">Minimum <b>8 characters</b></p>
             </div>
-            <br>
-            If you have an account:
-            <a href="/login">Login</a>
         </form>
     </div>
 </center>

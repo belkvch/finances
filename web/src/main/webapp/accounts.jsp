@@ -8,158 +8,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        button {
+            margin: 5px 5px 5px 5px
+        }
+    </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/main">
-            <img src="https://avatanplus.com/files/resources/original/593c1cca299df15c92d075ba.png" alt="Logo"
-                 style="width:40px;"
-                 class="rounded-pill">
-        </a>
-        <a class="navbar-brand" href="/main">CatCash</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mynavbar">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/accounts">Accounts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/currency">Currency</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin">Users</a>
-                </li>
-            </ul>
-        </div>
-        <div class="d-flex">
-            <form method="post" action="/logout" style="display:inline;" class="d-flex">
-                <input type="hidden">
-                <button type="submit" class="btn btn-outline-primary btn-sm"
-                        onclick="return confirm('Are you sure to sign out?');">Sign Out
-                </button>
-            </form>
-        </div>
-    </div>
-</nav>
+<jsp:include page="NavBar.jsp" />
 
 <center>
-    <h2 class="display-5"> Welcome, ${sessionScope.login}</h2>
+    <h2 class="display-5 mt-3"> Welcome, ${sessionScope.login}</h2>
 </center>
 
 <br>
 
-<c:forEach items="${accounts}" var="accounts">
-    <c:if test="${accounts != null}">
-        <div class="container mt-3">
-            <h2>You're accounts:</h2>
-            <table class="table table-borderless">
-                <thead>
+<div class="container mt-3">
+    <h2>Your accounts:</h2>
+    <table class="table table-borderless">
+        <thead>
+        <tr>
+            <th><b>Id</b></th>
+            <th><b>Balance</b></th>
+            <th><b>Currency</b></th>
+            <th><b>Operations</b></th>
+            <th><b>Categories</b></th>
+            <th><b>Add</b></th>
+            <th><b>Transfer</b></th>
+            <th><b>Archive</b></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${accounts}" var="accounts">
+            <c:if test="${accounts != null}">
                 <tr>
-                    <th><b>Balance</b></th>
-                    <th><b>Currency</b></th>
-                    <th><b>Operations</b></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
+                    <td><c:out value="${accounts.getId()}"/>
                     <td><c:out value="${accounts.getAmount()}"/>
                     <td><c:out value="${accounts.getCurrencyId().getName()}"/>
                     <td><a href="/operations?id=${accounts.id}">Show</a>
+                    <td><a href="/category?id=${accounts.id}">Show</a>
+                    <td>
+                        <form method="POST" action="/updateAccount">
+                            <div class="d-flex align-items-center">
+                                <label>
+                                    <input type="number" min="0.01" step=".01" name="amount" class="form-control"
+                                           required/>
+                                </label>
+                                <input type="hidden" name="id" value="${accounts.getId()}">
+                                <button type="submit" class="btn btn-outline-primary">Add</button>
+                            </div>
+                        </form>
+                    </td>
+
+                    <td>
+                        <form method="POST" action="/transfer">
+                            <div class="d-flex align-items-center">
+                                <label style="min-width: 100px;margin-right: 5px;">
+                                    <input type="number" min="0.01" step=".01" name="transfer_amount" class="form-control"
+                                           required/>
+                                </label>
+                                <label class="form-label" style="margin-bottom: 0">
+                                    <select class="form-select" name="account_id">
+                                        <c:forEach items="${accountsList}" var="accountsList">
+                                            <c:if test="${accountsList.getId() != accounts.getId()}">
+                                                <option value="${accountsList.getId()}">
+                                                    <c:out value="${accountsList.getId()}"/></option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                </label>
+                                <input type="hidden" name="id" value="${accounts.getId()}">
+                                <input type="hidden" name="actionType" value="transfer">
+                                <button type="submit" class="btn btn-outline-primary">Add</button>
+                            </div>
+                        </form>
+                    </td>
+
+                    <td>
+                        <form method="POST" action="/archive-account">
+                            <div class="d-flex align-items-center">
+                                <input type="hidden" name="id" value="${accounts.getId()}">
+                                <button type="submit" class="btn btn-outline-primary">Archive</button>
+                            </div>
+                        </form>
+                    </td>
                 </tr>
-                </tbody>
-            </table>
-        </div>
-        <br>
-    </c:if>
-</c:forEach>
 
-
-<div class="container mt-3">
-    <h2>Add new operation</h2>
-    <form method="POST" action="/accounts">
-<%--        <div class="mb-3 mt-3">--%>
-<%--            <input type="hidden" value="<c:out value="${account.getUserId.getId()}"/>" name="user_id"/>--%>
-<%--        </div>--%>
-
-        <div class="mb-3">
-            <label>Account balance:
-                <input type="number" min="0.01" step=".01" name="amount" placeholder="Enter price" class="form-control"
-                       required/>
-            </label>
-        </div>
-
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio1" name="currency_id" value="1" checked>
-            <label class="form-check-label" for="radio1">BYN</label>
-        </div>
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio2" name="currency_id" value="2">
-            <label class="form-check-label" for="radio2">EUR</label>
-        </div>
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="radio3" name="currency_id" value="3">
-            <label class="form-check-label" for="radio3">USD</label>
-        </div>
-
-        <div class="mb-3">
-            <input type="hidden" name="actionType" value="create">
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-outline-primary">Add</button>
-        </div>
-    </form>
+            </c:if>
+        </c:forEach>
+        </tbody>
+    </table>
 </div>
 
-<footer class="text-center text-lg-start bg-light text-muted">
-    <section
-            class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-        <div class="me-5 d-none d-lg-block">
-            <span>Get connected with us on social networks:</span>
-        </div>
-        <div>
-            <a href="https://www.instagram.com/belkvch/" class="me-4 text-reset">
-                Instagram
-            </a>
-            <a href="https://www.linkedin.com/in/polina-belkevich-a28123230/" class="me-4 text-reset">
-                Linkedin
-            </a>
-            <a href="https://gitlab.com/belkvch" class="me-4 text-reset">
-                GitLab
-            </a>
-        </div>
-    </section>
-    <section class="">
-        <div class="container text-center text-md-start mt-5">
-            <div class="row mt-3">
-                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">
-                        CatCash
-                    </h6>
-                    <p>We are small Belarusian studio, which develops financial web2 apps.
-                        Our mission is to make your operations accurate and life is easier.
-                    <p>Inspiring leader, that builds amazing products and bring innovative ideas to life.
-                    </p>
+<div class="container mt-3 mb-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Add new account
+    </button>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add new account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">
-                        Contact
-                    </h6>
-                    <p> Belarus, Minsk</p>
-                    <p> pbelkevich@gmail.com</p>
-                    <p> + 375(29)844-65-98</p>
+                <div class="modal-body">
+                    <form method="POST" action="/accounts" class="mb-0">
+                        <div class="mb-3">
+                            <label class="d-flex">
+                                Account balance:
+                                <input type="number" min="0.01" step=".01" name="amount" placeholder="Enter price" class="form-control"
+                                       required/>
+                            </label>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <p class="mb-0" style="margin-right: 1rem;">Account currency:</p>
+                            <div>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="radio1" name="currency_id" value="1" checked>
+                                    <label class="form-check-label" for="radio1">BYN</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="radio2" name="currency_id" value="2">
+                                    <label class="form-check-label" for="radio2">EUR</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="radio3" name="currency_id" value="3">
+                                    <label class="form-check-label" for="radio3">USD</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container mt-3 mb-3 p-0 d-flex justify-content-center flex-column">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#demo">Add account with other user</button>
+                            <div id="demo" class="collapse">
+                                <div class="mb-3">
+                                    <label>Enter the user's id:
+                                        <input type="number" min="0" step="1" name="with_user_id" value="0" placeholder="Enter id" class="form-control" required/>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer justify-content-center">
+                            <input type="hidden" name="actionType" value="create">
+                            <button type="submit" class="btn btn-outline-primary" style="width: 120px;">Add</button>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        © 2022 Copyright:
-        <a class="text-reset fw-bold" href="https://www.netcracker.com/">netcracker.com</a>
     </div>
-</footer>
+</div>
+
+<jsp:include page="Footer.jsp" />
+
 
 </body>
 </html>
