@@ -22,6 +22,7 @@ public class DefaultUserDAO implements UserDAO {
     private static final String UPDATE_USER_LOGIN = "update users set username = ? where id = ?";
     private static final String UPDATE_USER_PASSWORD = "update users set password = ? where id = ?";
     private static final String SELECT_USER_BY_ACCOUNT_ID = "select * from users,accounts,account_user,roles where accounts.id = ? and users.id = ? and account_user.user_id=users.id and account_user.account_id = accounts.id and users.role_id = roles.id";
+    private static final String SELECT_USER_BY_ONLY_ACCOUNT_ID = "select * from users,account_user,roles where account_user.account_id = ? and account_user.user_id=users.id and users.role_id = roles.id";
 
     public static DefaultUserDAO getInstance() {
         if (instance == null) {
@@ -65,7 +66,7 @@ public class DefaultUserDAO implements UserDAO {
             String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, passwordHash);
-            user.setRoleId(new Role(1,"USER"));
+            user.setRoleId(new Role(1, "USER"));
             preparedStatement.setObject(3, user.getRoleId().getId());
             preparedStatement.executeUpdate();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
@@ -191,6 +192,21 @@ public class DefaultUserDAO implements UserDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ACCOUNT_ID);
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, UserId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return initUser(resultSet);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public User getUserByOnlyAccountId(int id) {
+        try (Connection connection = DBManager.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ONLY_ACCOUNT_ID);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return initUser(resultSet);

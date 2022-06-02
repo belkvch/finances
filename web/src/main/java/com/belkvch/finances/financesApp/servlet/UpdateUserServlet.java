@@ -3,6 +3,7 @@ package com.belkvch.finances.financesApp.servlet;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,8 @@ import java.util.List;
 
 @WebServlet("/update-user")
 public class UpdateUserServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateUserServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -32,12 +35,14 @@ public class UpdateUserServlet extends HttpServlet {
                     request.setAttribute("users", users);
                     getServletContext().getRequestDispatcher("/update-user.jsp").forward(request, response);
                 } else {
+                    LOGGER.info("user is empty");
                     response.sendRedirect("/error");
                 }
             } else {
                 response.sendRedirect("/accounts");
             }
         } catch (NumberFormatException e) {
+            LOGGER.info("NumberFormatException in doGet in UpdateUserServlet");
             response.sendRedirect("/error");
         }
 
@@ -50,12 +55,14 @@ public class UpdateUserServlet extends HttpServlet {
             if (user != null) {
                 int role = Integer.parseInt(request.getParameter("role_id"));
                 if (role == 0) {
+                    LOGGER.info("role is 0");
                     response.sendRedirect("/error");
                 } else {
                     if (user.getRoleId().getId() != 2) {
                         user.setRoleId(new Role(role));
                         DefaultUserDAO.getInstance().changeUserRole(user);
                     } else {
+                        LOGGER.info("user is admin");
                         response.sendRedirect("/error");
                     }
                     response.sendRedirect("/admin");

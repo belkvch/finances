@@ -5,6 +5,7 @@ import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.Subscription;
 import com.belkvch.finances.financesApp.entyti.User;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,8 @@ import java.io.IOException;
 
 @WebServlet("/stop-timer")
 public class StopSubscriptionServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StopSubscriptionServlet.class);
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession httpSession = request.getSession(true);
@@ -35,6 +38,7 @@ public class StopSubscriptionServlet extends HttpServlet {
                 }
                 response.sendRedirect("/subscription?id=" + subscription.getAccountId());
             } catch (Exception ex) {
+                LOGGER.info("Exception in StopSubServlet");
                 response.sendRedirect("/error");
             }
         }

@@ -1,10 +1,10 @@
 package com.belkvch.finances.financesApp.servlet;
 
-import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
 import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +18,8 @@ import java.util.List;
 
 @WebServlet("/deleteCategory")
 public class DeleteCategoryServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteCategoryServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession(true);
@@ -37,6 +39,7 @@ public class DeleteCategoryServlet extends HttpServlet {
                     resp.sendRedirect("/category?id=" + id);
                 }
             } catch (NumberFormatException e) {
+                LOGGER.info("NumberFormatException in doGet in DeleteCategoryServlet");
                 resp.sendRedirect("/error");
             }
         }
@@ -61,6 +64,7 @@ public class DeleteCategoryServlet extends HttpServlet {
                 }
                 response.sendRedirect("/category?id=" + id);
             } catch (Exception ex) {
+                LOGGER.info("Exception in doGet in DeleteCategoryServlet");
                 response.sendRedirect("/error");
             }
         }

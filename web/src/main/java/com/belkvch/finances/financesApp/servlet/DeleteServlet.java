@@ -7,6 +7,7 @@ import com.belkvch.finances.financesApp.entyti.Accounts;
 import com.belkvch.finances.financesApp.entyti.Operations;
 import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +19,8 @@ import java.io.IOException;
 
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteServlet.class);
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession httpSession = request.getSession(true);
         int userId = (int) httpSession.getAttribute("id");
@@ -39,6 +42,7 @@ public class DeleteServlet extends HttpServlet {
                 }
                 response.sendRedirect(request.getContextPath() + "/operations?id=" + operation.getAccountId());
             } catch (Exception ex) {
+                LOGGER.info("Exception in DeleteServlet");
                 response.sendRedirect("/error");
             }
         }

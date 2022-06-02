@@ -24,4 +24,6 @@ public interface UserDAO {
     User changeUserPassword(User user);
 
     User getUserByAccountId(int id, int UserId);
+
+    User getUserByOnlyAccountId(int id);
 }

@@ -5,6 +5,7 @@ import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +24,8 @@ import java.util.List;
 
 @WebServlet("/operations")
 public class OperationServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession(true);
@@ -57,12 +60,12 @@ public class OperationServlet extends HttpServlet {
                     req.setAttribute("operations", operations);
                     getServletContext().getRequestDispatcher("/operations.jsp").forward(req, resp);
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException | NullPointerException e) {
+                LOGGER.info("NumberFormatException or NullPointerException in OperationServlet doGet");
                 resp.sendRedirect("/error");
             } catch (ParseException e) {
+                LOGGER.info("ParseException in OperationServlet doGet");
                 e.printStackTrace();
-            } catch (NullPointerException e) {
-                resp.sendRedirect("/error");
             }
         }
     }
@@ -79,6 +82,7 @@ public class OperationServlet extends HttpServlet {
 
             String name = req.getParameter("name");
             if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+                LOGGER.info("name is empty");
                 resp.sendRedirect("/error");
             } else {
                 operation.setNameOfOperation(name);
@@ -90,9 +94,8 @@ public class OperationServlet extends HttpServlet {
                 sdf.setLenient(false);
                 Date submitDate = sdf.parse(date);
                 operation.setDateOfOperation(submitDate);
-            } catch (ParseException e) {
-                resp.sendRedirect("/error");
-            } catch (NumberFormatException e) {
+            } catch (ParseException | NumberFormatException e) {
+                LOGGER.info("NumberFormatException or ParseException in OperationServlet doPost");
                 resp.sendRedirect("/error");
             }
 
@@ -110,12 +113,15 @@ public class OperationServlet extends HttpServlet {
                         DefaultAccountDAO.getInstance().changeOperationAmount(account);
                         DefaultOperationsDAO.getInstance().addNewOperation(operation);
                     } else {
+                        LOGGER.info("compareTo wrong");
                         resp.sendRedirect("/error");
                     }
                 } else {
+                    LOGGER.info("compareTo wrong");
                     resp.sendRedirect("/error");
                 }
             } catch (NumberFormatException e) {
+                LOGGER.info("NumberFormatException in OperationServlet doPost");
                 resp.sendRedirect("/error");
             }
 

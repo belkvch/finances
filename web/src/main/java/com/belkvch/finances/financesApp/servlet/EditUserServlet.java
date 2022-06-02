@@ -2,6 +2,7 @@ package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
+import org.slf4j.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.servlet.ServletException;
@@ -17,6 +18,8 @@ import java.util.List;
 
 @WebServlet("/edit-user")
 public class EditUserServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditUserServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession httpSession = request.getSession(true);
@@ -50,6 +53,7 @@ public class EditUserServlet extends HttpServlet {
                 String newPassword = request.getParameter("password");
                 if (BCrypt.checkpw(oldPassword, user.getPassword())) {
                     if (newLogin == null || newLogin.isEmpty() || newLogin.trim().isEmpty()) {
+                        LOGGER.info("new login is empty");
                         response.sendRedirect("/error");
                     } else {
                         user.setLogin(newLogin);
@@ -58,6 +62,7 @@ public class EditUserServlet extends HttpServlet {
                     }
 
                     if (newPassword == null || newPassword.isEmpty() || newPassword.trim().isEmpty()) {
+                        LOGGER.info("new password is empty");
                         response.sendRedirect("/error");
                     } else {
                         user.setPassword(newPassword);
@@ -70,6 +75,7 @@ public class EditUserServlet extends HttpServlet {
                     response.sendRedirect("/edit-user?id=" + user.getId());
             }
         } else {
+            LOGGER.info("actionType isn't edit");
             response.sendRedirect("/error");
         }
     }

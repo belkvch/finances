@@ -3,6 +3,7 @@ package com.belkvch.finances.financesApp.servlet;
 import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.entyti.Category;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,8 @@ import java.io.IOException;
 
 @WebServlet("/deleteCategoryAdmin")
 public class DeleteCategoryForAdminServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteCategoryForAdminServlet.class);
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int category_id = Integer.parseInt(request.getParameter("category_id"));
@@ -21,6 +24,7 @@ public class DeleteCategoryForAdminServlet extends HttpServlet {
             DefaultOperationsDAO.getInstance().changeOperationCategoryToNull(category_id);
             DefaultCategoryDAO.getInstance().deleteCategory(category);
         } else {
+            LOGGER.info("admin can't delete this category");
             response.sendRedirect("/error");
         }
         response.sendRedirect("/admin-category");

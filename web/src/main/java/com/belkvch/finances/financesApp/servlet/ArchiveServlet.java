@@ -5,6 +5,7 @@ import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.Accounts;
 import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +18,8 @@ import java.util.List;
 
 @WebServlet("/archive-account")
 public class ArchiveServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession(true);
@@ -33,8 +36,12 @@ public class ArchiveServlet extends HttpServlet {
                     List<Accounts> accounts = DefaultAccountDAO.getInstance().showAllAccountsForUserArchive(userId);
                     req.setAttribute("accounts", accounts);
                     req.getRequestDispatcher("/archive-account.jsp").forward(req, resp);
-                } else resp.sendRedirect("/error");
+                } else {
+                    LOGGER.info("other user");
+                    resp.sendRedirect("/error");
+                }
             } catch (NullPointerException e) {
+                LOGGER.info("NullPointerException in doGet in ArchiveServlet");
                 resp.sendRedirect("/error");
             }
         }
@@ -57,6 +64,7 @@ public class ArchiveServlet extends HttpServlet {
                 }
                 response.sendRedirect("/accounts");
             } catch (Exception ex) {
+                LOGGER.info("Exception in doPost in ArchiveServlet");
                 response.sendRedirect("/error");
             }
         }

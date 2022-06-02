@@ -4,6 +4,8 @@ import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
 import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
+import org.slf4j.*;
+import org.slf4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +19,8 @@ import java.util.List;
 
 @WebServlet("/accounts")
 public class AccountServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession(true);
@@ -40,49 +44,55 @@ public class AccountServlet extends HttpServlet {
             Accounts account = new Accounts();
             HttpSession httpSession = req.getSession(true);
             int userId = (int) httpSession.getAttribute("id");
-
-            int withUserId = Integer.parseInt(req.getParameter("with_user_id"));
-            int currencyId = Integer.parseInt(req.getParameter("currency_id"));
-            if (currencyId == 0) {
-                resp.sendRedirect("/error");
-            } else {
-                account.setCurrencyId(new Currency(currencyId));
-            }
             try {
+                int withUserId = Integer.parseInt(req.getParameter("with_user_id"));
+                int currencyId = Integer.parseInt(req.getParameter("currency_id"));
+                if (currencyId == 0) {
+                    LOGGER.info("currencyId is 0");
+                    resp.sendRedirect("/error");
+                } else {
+                    account.setCurrencyId(new Currency(currencyId));
+                }
+
                 BigDecimal bigDecimal = new BigDecimal(req.getParameter("amount"));
                 if (bigDecimal.compareTo(BigDecimal.valueOf(0)) > 0) {
                     account.setAmount(bigDecimal);
                 } else {
+                    LOGGER.info("compareTo wrong");
                     resp.sendRedirect("/error");
                 }
-            } catch (NumberFormatException e) {
-                resp.sendRedirect("/error");
-            }
 
-            if (withUserId == 0) {
-                Accounts newAccount = DefaultAccountDAO.getInstance().addNewAccount(account);
-                DefaultAccountDAO.getInstance().addUserAccountConn(newAccount, userId);
-                List<Category> categories = DefaultCategoryDAO.getInstance().showAllCategories();
-                for (Category category : categories) {
-                    if (category.isNecessary()) {
-                        DefaultCategoryDAO.getInstance().addCategoryAccountConn(category, newAccount.getId());
-                    }
-                }
-            } else {
-                if (DefaultUserDAO.getInstance().getUserById(withUserId) != null && withUserId != userId) {
+                if (withUserId == 0) {
                     Accounts newAccount = DefaultAccountDAO.getInstance().addNewAccount(account);
                     DefaultAccountDAO.getInstance().addUserAccountConn(newAccount, userId);
-                    DefaultAccountDAO.getInstance().addUserAccountConn(newAccount, withUserId);
                     List<Category> categories = DefaultCategoryDAO.getInstance().showAllCategories();
                     for (Category category : categories) {
                         if (category.isNecessary()) {
                             DefaultCategoryDAO.getInstance().addCategoryAccountConn(category, newAccount.getId());
                         }
                     }
-                } else resp.sendRedirect("/error");
+                } else {
+                    if (DefaultUserDAO.getInstance().getUserById(withUserId) != null && withUserId != userId) {
+                        Accounts newAccount = DefaultAccountDAO.getInstance().addNewAccount(account);
+                        DefaultAccountDAO.getInstance().addUserAccountConn(newAccount, userId);
+                        DefaultAccountDAO.getInstance().addUserAccountConn(newAccount, withUserId);
+                        List<Category> categories = DefaultCategoryDAO.getInstance().showAllCategories();
+                        for (Category category : categories) {
+                            if (category.isNecessary()) {
+                                DefaultCategoryDAO.getInstance().addCategoryAccountConn(category, newAccount.getId());
+                            }
+                        }
+                    } else {
+                        LOGGER.info("wrong if in doPost in AccountServlet for make account for two users");
+                        resp.sendRedirect("/error");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                LOGGER.info("NumberFormatException for doPost in AccountServlet");
+                resp.sendRedirect("/error");
             }
+            resp.sendRedirect("/accounts");
         }
-        resp.sendRedirect("/accounts");
     }
 }
 

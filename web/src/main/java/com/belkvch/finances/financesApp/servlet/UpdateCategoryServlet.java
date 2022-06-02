@@ -7,6 +7,7 @@ import com.belkvch.finances.financesApp.entyti.Accounts;
 import com.belkvch.finances.financesApp.entyti.Category;
 import com.belkvch.finances.financesApp.entyti.Role;
 import com.belkvch.finances.financesApp.entyti.User;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +21,8 @@ import java.util.List;
 
 @WebServlet("/updateCategory")
 public class UpdateCategoryServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateCategoryServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession(true);
@@ -39,6 +42,7 @@ public class UpdateCategoryServlet extends HttpServlet {
                     resp.sendRedirect("/category?id=" + id);
                 }
             } catch (NullPointerException e) {
+                LOGGER.info("NullPointerException in doGet in UpdateCategoryServlet");
                 resp.sendRedirect("/error");
             }
         }
@@ -52,12 +56,14 @@ public class UpdateCategoryServlet extends HttpServlet {
         if (category != null && !category.isNecessary()) {
             String name = req.getParameter("category_name");
             if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+                LOGGER.info("name is empty");
                 resp.sendRedirect("/error");
             } else {
                 category.setName(name);
             }
             DefaultCategoryDAO.getInstance().changeCategoryName(category);
         } else {
+            LOGGER.info("user can't change this category");
             resp.sendRedirect("/error");
         }
         resp.sendRedirect("/category?id=" + id);

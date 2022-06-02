@@ -1,10 +1,9 @@
 package com.belkvch.finances.financesApp.servlet;
 
-import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
-import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.DefaultSubscriptionDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +15,8 @@ import java.io.IOException;
 
 @WebServlet("/delete-timer")
 public class DeleteSubscriptionServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteSubscriptionServlet.class);
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession httpSession = request.getSession(true);
         int userId = (int) httpSession.getAttribute("id");
@@ -30,6 +31,7 @@ public class DeleteSubscriptionServlet extends HttpServlet {
                 DefaultSubscriptionDAO.getInstance().deleteSubscription(subscription);
                 response.sendRedirect("/subscription?id=" + subscription.getAccountId());
             } catch (Exception ex) {
+                LOGGER.info("Exception in DeleteSubscriptionServlet");
                 response.sendRedirect("/error");
             }
         }

@@ -2,6 +2,7 @@ package com.belkvch.finances.financesApp.servlet;
 
 import com.belkvch.finances.financesApp.dao.*;
 import com.belkvch.finances.financesApp.entyti.*;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +25,8 @@ import java.util.concurrent.TimeUnit;
 
 @WebServlet("/subscription")
 public class SubscriptionServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession(true);
@@ -50,9 +53,8 @@ public class SubscriptionServlet extends HttpServlet {
 
                     getServletContext().getRequestDispatcher("/subscription.jsp").forward(req, resp);
                 }
-            } catch (NumberFormatException e) {
-                resp.sendRedirect("/error");
-            } catch (NullPointerException e) {
+            } catch (NumberFormatException | NullPointerException e) {
+                LOGGER.info("NullPointerException or NumberFormatException in doGet in SubscriptionServlet");
                 resp.sendRedirect("/error");
             }
         }
@@ -67,6 +69,7 @@ public class SubscriptionServlet extends HttpServlet {
             subscription.setAccountId(account_id);
             String name = req.getParameter("name");
             if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+                LOGGER.info("name is empty");
                 resp.sendRedirect("/error");
             } else {
                 subscription.setName(name);
@@ -84,6 +87,7 @@ public class SubscriptionServlet extends HttpServlet {
                 java.sql.Date date = new java.sql.Date(todayWithZeroTime.getTime());
                 operation.setDateOfOperation(date);
             } catch (ParseException e) {
+                LOGGER.info("ParseException");
                 e.printStackTrace();
             }
             int categoryId = Integer.parseInt(req.getParameter("category_id"));
@@ -101,12 +105,15 @@ public class SubscriptionServlet extends HttpServlet {
                         subscription.setOperation(operationNew);
                         DefaultSubscriptionDAO.getInstance().addNewSubscription(subscription);
                     } else {
+                        LOGGER.info("wrong compareTo");
                         resp.sendRedirect("/error");
                     }
                 } else {
+                    LOGGER.info("wrong compareTo");
                     resp.sendRedirect("/error");
                 }
             } catch (NumberFormatException e) {
+                LOGGER.info("NumberFormatException in doPost in SubscriptionServlet");
                 resp.sendRedirect("/error");
             }
 
@@ -136,6 +143,7 @@ public class SubscriptionServlet extends HttpServlet {
 
             resp.sendRedirect("/subscription?id=" + subscription.getAccountId());
         } else {
+            LOGGER.info("actionType isn't create");
             resp.sendRedirect("/error");
         }
 

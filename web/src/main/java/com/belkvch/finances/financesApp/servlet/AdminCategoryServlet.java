@@ -4,6 +4,7 @@ import com.belkvch.finances.financesApp.dao.DefaultAccountDAO;
 import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,8 @@ import java.util.List;
 
 @WebServlet("/admin-category")
 public class AdminCategoryServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminCategoryServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession(true);
@@ -27,6 +30,7 @@ public class AdminCategoryServlet extends HttpServlet {
             req.setAttribute("categories", categories);
             req.getRequestDispatcher("/admin-category.jsp").forward(req, resp);
         } else {
+            LOGGER.info("the user isn't admin");
             resp.sendRedirect("/accounts");
         }
     }
@@ -49,9 +53,9 @@ public class AdminCategoryServlet extends HttpServlet {
                     DefaultCategoryDAO.getInstance().addCategoryAccountConn(newCategory,account.getId());
                 }
             }
-
             resp.sendRedirect("/admin-category");
         } else {
+            LOGGER.info("actionType in doPost in AdminCategoryServlet isn't create");
             resp.sendRedirect("/error");
         }
     }

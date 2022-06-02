@@ -5,6 +5,7 @@ import com.belkvch.finances.financesApp.dao.DefaultCategoryDAO;
 import com.belkvch.finances.financesApp.dao.DefaultOperationsDAO;
 import com.belkvch.finances.financesApp.dao.DefaultUserDAO;
 import com.belkvch.finances.financesApp.entyti.*;
+import org.slf4j.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +23,8 @@ import java.util.List;
 
 @WebServlet("/update")
 public class UpdateServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession httpSession = request.getSession(true);
@@ -34,7 +37,8 @@ public class UpdateServlet extends HttpServlet {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
-                if (operation != null) {
+                User user = DefaultUserDAO.getInstance().getUserByOnlyAccountId(operation.getAccountId());
+                if (user.getId() == currenUser.getId()) {
                     List<Category> categories = DefaultCategoryDAO.getInstance().showCategoriesById(operation.getAccountId());
                     request.setAttribute("categories", categories);
 
@@ -43,9 +47,11 @@ public class UpdateServlet extends HttpServlet {
                     request.setAttribute("operations", operations);
                     getServletContext().getRequestDispatcher("/update.jsp").forward(request, response);
                 } else {
+                    LOGGER.info("users don't match");
                     response.sendRedirect("/error");
                 }
             } catch (NumberFormatException e) {
+                LOGGER.info("NumberFormatException in doGet in UpdateServlet");
                 response.sendRedirect("/error");
             }
         }
@@ -57,9 +63,10 @@ public class UpdateServlet extends HttpServlet {
             Operations operation = DefaultOperationsDAO.getInstance().getOperationById(id);
             Accounts accountCheck = DefaultAccountDAO.getInstance().getAccountById(operation.getAccountId());
             if (accountCheck.isActiveAccount()) {
-                if (operation != null && operation.getCategoryId().getId() != 2) {
+                if (operation.getCategoryId().getId() != 2) {
                     String name = request.getParameter("name");
                     if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+                        LOGGER.info("name is empty");
                         response.sendRedirect("/error");
                     } else {
                         operation.setNameOfOperation(name);
@@ -73,10 +80,8 @@ public class UpdateServlet extends HttpServlet {
                         Date submitDate = sdf.parse(date);
                         operation.setDateOfOperation(submitDate);
                         DefaultOperationsDAO.getInstance().changeOperationDate(operation);
-                    } catch (ParseException e) {
-                        response.sendRedirect("/error");
-
-                    } catch (NumberFormatException e) {
+                    } catch (ParseException | NumberFormatException e) {
+                        LOGGER.info("ParseException or NumberFormatException in UpdateServlet");
                         response.sendRedirect("/error");
                     }
 
@@ -104,9 +109,11 @@ public class UpdateServlet extends HttpServlet {
                                 DefaultOperationsDAO.getInstance().changeOperationSalary(operation);
                             }
                         } else {
+                            LOGGER.info("wrong compareTo");
                             response.sendRedirect("/error");
                         }
                     } catch (NumberFormatException e) {
+                        LOGGER.info("NumberFormatException in doPost in UpdateServlet ");
                         response.sendRedirect("/error");
                     }
 
@@ -117,6 +124,7 @@ public class UpdateServlet extends HttpServlet {
             }
             response.sendRedirect("/operations?id=" + operation.getAccountId());
         } else {
+            LOGGER.info("actionType isn't change");
             response.sendRedirect("/error");
         }
     }
