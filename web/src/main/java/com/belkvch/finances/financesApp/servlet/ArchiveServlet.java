@@ -41,7 +41,7 @@ public class ArchiveServlet extends HttpServlet {
                     resp.sendRedirect("/error");
                 }
             } catch (NullPointerException e) {
-                LOGGER.info("NullPointerException in doGet in ArchiveServlet");
+                LOGGER.error("NullPointerException in doGet in ArchiveServlet");
                 resp.sendRedirect("/error");
             }
         }
@@ -64,7 +64,7 @@ public class ArchiveServlet extends HttpServlet {
                 }
                 response.sendRedirect("/accounts");
             } catch (Exception ex) {
-                LOGGER.info("Exception in doPost in ArchiveServlet");
+                LOGGER.error("Exception in doPost in ArchiveServlet");
                 response.sendRedirect("/error");
             }
         }
